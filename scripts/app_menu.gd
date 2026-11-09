@@ -14,10 +14,27 @@ var save_name:LineEdit
 var save_list:VBoxContainer
 var loading_bar:ProgressBar
 var selected_save=""
+var splash_art:TextureRect
+var brand_shade:TextureRect
+var shade:ColorRect
 
 func _ready() -> void:
 	mouse_filter=Control.MOUSE_FILTER_STOP
-	var shade=ColorRect.new()
+	splash_art=TextureRect.new()
+	splash_art.texture=preload("res://assets/branding/hyperscale-splash.png")
+	splash_art.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
+	splash_art.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	splash_art.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	splash_art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(splash_art)
+	brand_shade=TextureRect.new()
+	var gradient=Gradient.new()
+	gradient.colors=PackedColorArray([Color(0.025,0.07,0.065,0.88),Color(0.025,0.07,0.065,0.12)])
+	var gradient_texture=GradientTexture2D.new();gradient_texture.gradient=gradient
+	gradient_texture.fill_from=Vector2(0,0.5);gradient_texture.fill_to=Vector2(1,0.5)
+	brand_shade.texture=gradient_texture;brand_shade.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	brand_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);add_child(brand_shade)
+	shade=ColorRect.new()
 	shade.color=Color(0.025,0.07,0.065,0.85)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(shade)
@@ -52,7 +69,20 @@ func refresh() -> void:
 		body.remove_child(child)
 		child.queue_free()
 	fit()
-	game.label(body,"HYPERSCALE: DATACENTER TYCOON",Rect2(30,17,880,48),31,game.INK)
+	var branded=mode in ["title","loading"]
+	splash_art.visible=branded;brand_shade.visible=branded;shade.visible=not branded
+	body.add_theme_stylebox_override("panel",StyleBoxEmpty.new() if branded else game.style(Color("142c2b")))
+	if mode=="title":
+		feedback=game.paragraph(body,"",Rect2(40,678,1020,32),14,game.GOLD)
+		title_home();call_deferred("focus_first");return
+	if mode=="loading":
+		brand_logo(Rect2(170,105,780,260))
+		game.panel(body,Rect2(160,395,800,195),Color(0.05,0.13,0.12,0.95))
+		game.label(body,"PREPARING YOUR TOWN",Rect2(230,420,660,28),18,game.MINT)
+		loading_bar=ProgressBar.new();loading_bar.position=Vector2(230,467);loading_bar.size=Vector2(660,24);body.add_child(loading_bar)
+		feedback=game.paragraph(body,"",Rect2(230,516,660,57),16,game.INK)
+		return
+	brand_logo(Rect2(22,8,200,66))
 	game.label(body,{"title":"YOUR TOWN HAD HISTORY. NOW IT HAS CAPACITY.","pause":"COMPANY MENU · SIMULATION PAUSED","new":"ESTABLISH YOUR COMPANY","load":"LOAD A TOWN","save":"SAVE YOUR TOWN","settings":"SETTINGS","credits":"CREDITS","loading":"PREPARING YOUR TOWN","unsaved":"PROTECT YOUR PROGRESS"}.get(mode,mode.to_upper()),Rect2(32,73,950,27),13,game.MINT)
 	if mode not in ["title","loading","unsaved"]: game.button(body,"Back · Esc",Rect2(940,27,150,38),back)
 	feedback=game.paragraph(body,"",Rect2(32,666,1050,44),14,game.GOLD)
@@ -70,6 +100,39 @@ func refresh() -> void:
 			game.paragraph(body,"Tip: leave spare power and cooling capacity before signing a critical customer.",Rect2(50,390,1000,60),18)
 		"unsaved": unsaved()
 	call_deferred("focus_first")
+
+func brand_logo(rect:Rect2) -> TextureRect:
+	var logo=TextureRect.new();logo.name="BrandLogo"
+	logo.texture=preload("res://assets/branding/hyperscale-logo.png")
+	logo.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;logo.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.mouse_filter=Control.MOUSE_FILTER_IGNORE;logo.position=rect.position;logo.size=rect.size
+	logo.tooltip_text="Hyperscale: Datacenter Tycoon";body.add_child(logo);return logo
+
+func title_home() -> void:
+	brand_logo(Rect2(25,24,750,250))
+	game.label(body,"YOUR TOWN HAD HISTORY. NOW IT HAS CAPACITY.",Rect2(40,286,800,26),14,game.MINT)
+	var latest=game.saves.continue_path()
+	if not game.saves.last_error.is_empty(): feedback.text=game.saves.last_error
+	var items=[
+		["Continue",func():game.load_town(latest)],
+		["New Company",func():game.request_leave(func():open("new"))],
+		["Load Game",func():open("load")],
+		["Settings",func():open("settings")],
+		["Credits",func():open("credits")],
+		["Quit",func():game.request_leave(func():game.get_tree().quit())]]
+	for i in range(items.size()):
+		var b=game.button(body,items[i][0],Rect2(40,335+i*53,290,44),items[i][1],i==0)
+		if i==0: b.disabled=latest.is_empty()
+	var preview=game.panel(body,Rect2(580,499,500,153),Color(0.05,0.13,0.12,0.94))
+	if latest.is_empty():
+		game.label(preview,"A town full of potential",Rect2(22,15,456,30),23)
+		game.paragraph(preview,"Build a campus. Win AI customers. Keep the lights on. Give the town a future worth living in.",Rect2(22,58,456,67),17)
+	else:
+		var meta=game.saves.read_metadata(latest)
+		game.label(preview,"CONTINUE YOUR COMPANY",Rect2(22,13,456,23),12,game.MINT)
+		game.label(preview,meta.get("company","Your company"),Rect2(22,44,456,33),23)
+		game.label(preview,"%s · Day %d · %s" % [meta.get("scenario","littlebrook").capitalize(),meta.get("day",1),game.money(meta.get("cash",0))],Rect2(22,93,456,26),16)
+	game.label(body,"Tab / Shift+Tab navigate · Enter selects · F11 toggles fullscreen",Rect2(580,671,500,24),12,game.MINT)
 
 func focus_first() -> void:
 	if not visible or mode=="loading": return
@@ -290,7 +353,8 @@ func capture_key(event:InputEventKey) -> bool:
 	return true
 
 func credits() -> void:
-	game.paragraph(body,"HYPERSCALE: DATACENTER TYCOON\n\nDesign and development: this project, built with Codex and Godot.\nOriginal code-drawn isometric artwork, synthesized music, ambience and action audio.\n\nGodot Engine is MIT licensed. Its license and third-party notices are distributed with the Windows executable.\n\nDesign inspirations: classic construction and management games, the delight of a working system, and the absurd appetite of AI for infrastructure.",Rect2(50,150,1000,400),21)
+	game.paragraph(body,"HYPERSCALE: DATACENTER TYCOON\n\nDesign and development: this project, built with Codex and Godot.\nOriginal code-drawn isometric artwork, synthesized music, ambience and action audio.
+Brand icon, logo and title illustration created for this project (see assets/branding).\n\nGodot Engine is MIT licensed. Its license and third-party notices are distributed with the Windows executable.\n\nDesign inspirations: classic construction and management games, the delight of a working system, and the absurd appetite of AI for infrastructure.",Rect2(50,150,1000,400),21)
 
 func unsaved() -> void:
 	game.paragraph(body,"Your current town has changes since its last save. Save a campaign checkpoint before continuing, or discard only those unsaved changes.",Rect2(50,190,1000,120),25)

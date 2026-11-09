@@ -58,7 +58,7 @@ static func measure(sim) -> Dictionary:
 			r.noise_sum+=noise;r.noise_peak=maxf(r.noise_peak,noise);r.exposure+=1
 		if lot.kind in sim.BUILDINGS:
 			r.jobs+=int(lot.level)*(4 if lot.kind=="datacenter" else 2)
-			r.trips+=int(lot.level)*(4 if lot.kind=="datacenter" else 1)
+			r.trips+=int(lot.level)*(hall_activity(sim,lot)*4 if lot.kind=="datacenter" else 1.0)
 			if lot.kind=="datacenter": r.campuses+=1
 			r.sources.append(i)
 	for id in result:
@@ -79,11 +79,27 @@ static func measure(sim) -> Dictionary:
 		for key in ["noise","pressure","target","trips","benefit"]: r[key]=snappedf(float(r[key]),0.000001)
 	return result
 
+## Deliveries follow work: an idle, failed, refitting or disconnected hall keeps a
+## quarter of its traffic (security, staff and spares).
+static func hall_activity(sim,lot:Dictionary) -> float:
+	if not sim.Operations.available(lot,sim.hour) or int(lot.get("refit_until",0))>sim.hour: return 0.25
+	if sim.utility_for(lot,"power").is_empty() or sim.cooling_for(lot).is_empty(): return 0.25
+	return 1.0
+
 static func refresh(sim) -> void:
 	sim.civic_reports=measure(sim)
 
-static func notify(sim,id:String,message:String) -> void:
+## The level a promised concern must reach in 24h. Reliability fades by itself
+## (4%/h), so that promise means "no further disruption": the value it would reach
+## if every shortfall stopped now, plus a small tolerance. Other causes need a 35% cut,
+## and always a real one: at least two points below today's value.
+static func promise_target(cause:String,value:float) -> float:
+	if cause=="reliability": return value*pow(0.96,24)+1.0
+	return minf(value*0.65,value-2.0)
+
+static func notify(sim,id:String,message:String,routine:bool=false) -> void:
 	var row={"hour":sim.hour,"ward":id,"message":message}
+	if routine: row.routine=true
 	sim.civic.alerts.append(row)
 	if sim.civic.alerts.size()>30: sim.civic.alerts.pop_front()
 	sim.civic.history.push_front(row.duplicate())
@@ -121,9 +137,9 @@ static func advance(sim,m:Dictionary) -> void:
 			if r.concerns[w.promise_cause]<=w.promise_value:
 				w.grievance=maxf(0,w.grievance-6);w.stress=maxf(0,w.stress-10);w.opinion=minf(100,w.opinion+6)
 				sim.civic.standing=minf(100,sim.civic.standing+3)
-				notify(sim,id,"Promise kept: the agreed concern fell. Trust improved.")
+				notify(sim,id,"Promise kept: the agreed concern fell. Trust improved.",true)
 			else:
-				w.grievance+=10;w.stress+=4
+				w.grievance+=10;w.stress=minf(60,w.stress+4)
 				notify(sim,id,"Promise broken: the agreed concern is still too high. Trust fell.")
 			w.ceasefire_until=0;w.promise_cause="";w.promise_value=0.0
 		if sim.hour>=sim.civic.grace_until:
@@ -131,8 +147,9 @@ static func advance(sim,m:Dictionary) -> void:
 			elif r.pressure>=18 and w.ceasefire_until<=sim.hour: w.stress=minf(60,w.stress+(2 if r.pressure>=30 else 1))
 		var stage=4 if w.stress>=28 else (3 if w.stress>=18 else (2 if w.stress>=10 else (1 if w.stress>=4 else 0)))
 		if stage!=w.stage:
+			var easing=stage<w.stage
 			w.stage=stage
-			notify(sim,id,STAGES[stage]+": "+(CAUSES[r.primary] if stage>0 else "Concerns eased; expansion can continue."))
+			notify(sim,id,STAGES[stage]+": "+(CAUSES[r.primary] if stage>0 else "Concerns eased; expansion can continue."),easing)
 		for key in FLOAT_FIELDS: w[key]=snappedf(float(w[key]),0.000001)
 		var weight=maxi(3,int(r.population));total+=w.opinion*weight;weight_total+=weight
 	sim.approval=clampi(roundi(total/maxf(1,weight_total)),0,100)
@@ -156,7 +173,9 @@ static func act(sim,action:String,id:String,index:int=-1,preview:bool=false) -> 
 	if action=="negotiate":
 		if sim.hour-w.last_talk<48: return "The council will meet again in %dh." % (48-(sim.hour-w.last_talk))
 		if r.concerns[r.primary]<8: return "There is no substantial concern to negotiate."
+		if r.primary=="reliability" and sim.metrics().local_shortfalls.get(id,0.0)<=0.001: return "Service disruption has already stopped and is fading on its own; there is nothing to promise."
 	elif action=="expedite" and w.waiver_until>sim.hour: return "An expedited permit is already active."
+	elif action=="expedite" and w.stage<4: return "Expedited permits only apply while hall permits are paused here."
 	elif action=="quiet":
 		if index<0 or index>=sim.lots.size() or not sim.lots[index].kind in sim.BUILDINGS: return "Choose an owned hall or utility."
 		if sim.lots[index].get("quiet",false): return "This site already has acoustic barriers."
@@ -169,7 +188,7 @@ static func act(sim,action:String,id:String,index:int=-1,preview:bool=false) -> 
 	sim.post("community",-COSTS[action],Geo.DISTRICTS[id].name+" / "+action)
 	match action:
 		"negotiate":
-			w.last_talk=sim.hour;w.ceasefire_until=sim.hour+24;w.promise_cause=r.primary;w.promise_value=maxf(8,r.concerns[r.primary]*0.65)
+			w.last_talk=sim.hour;w.ceasefire_until=sim.hour+24;w.promise_cause=r.primary;w.promise_value=promise_target(r.primary,r.concerns[r.primary])
 		"expedite":
 			w.waiver_until=sim.hour+24;w.grievance+=12;w.stress=minf(60,w.stress+4);shock(sim,-8)
 		"quiet": sim.lots[index].quiet=true

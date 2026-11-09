@@ -8,10 +8,15 @@ const SaveStore = preload("res://scripts/save_store.gd")
 const Settings = preload("res://scripts/game_settings.gd")
 const Economy = preload("res://scripts/economy.gd")
 const MapTools = preload("res://scripts/map_tools.gd")
+const UiTheme = preload("res://scripts/ui_theme.gd")
+const Icon = preload("res://scripts/ui_icon.gd")
+const Meter = preload("res://scripts/ui_meter.gd")
 const INK = Color("e2e9dc")
 const MUTED = Color("8da69d")
 const MINT = Color("a5dfbc")
 const GOLD = Color("e4ca8b")
+const CORAL = Color("ef8a6f")
+const TOOL_NAMES = {"inspect":"Inspect","buy":"Buy land","demolish":"Bulldoze","datacenter":"Server hall","power":"Substation","cooling":"Cooling"}
 var sim = Sim.new()
 var stage: Control
 var town
@@ -77,6 +82,16 @@ var operations_button:Button
 var has_alert=false
 var inspector_permit_error=""
 var build_profile="balanced"
+var meters: Dictionary = {}
+var company_label: Label
+var time_status: Label
+var sound_button: Button
+var view_cluster: Panel
+var research_button: Button
+var dock_end := 0.0
+var inspector_open := true
+var cursor_icon: Control
+var hall_menu: PopupPanel
 
 func _ready() -> void:
 	get_tree().auto_accept_quit = false
@@ -87,6 +102,7 @@ func _ready() -> void:
 	settings=Settings.new(qa)
 	if not qa: settings.load_settings()
 	session_started=qa and not "--front-menu" in OS.get_cmdline_user_args()
+	theme=UiTheme.build()
 	announced_win = sim.won
 	announced_campaign=sim.campaign_won
 	stage = Control.new()
@@ -117,27 +133,23 @@ func layout_stage() -> void:
 	var w = stage.size.x
 	var h = stage.size.y
 	if town == null: return
-	header.size.x = w - 40
-	inspector.position.x = w - 320
-	inspector.size.y = h - 295
+	# World first: thin top bar, a bottom dock, and one floating inspector.
+	header.size.x = w - 24
+	inspector.position = Vector2(w - 312, 76)
+	fit_inspector()
 	town.position = Vector2.ZERO
 	town.size = stage.size
-	town.play_area = Rect2(20, 185, w - 360, h - 365)
+	town.play_area = Rect2(12, 70, w - 336, h - 70 - 88)
 	town.update_camera()
-	clock_label.position.x = w - 705
-	pause_button.position.x = w - 588
-	speed_button.position.x = w - 487
-	fullscreen_button.position.x = w - 407
-	mission.position.y = h - 163
-	companion.position = Vector2(w - 688, h - 163)
-	mission.size.x = w - 722
-	objective.size.x = mission.size.x - 124
-	guide_button.position.x=mission.size.x-100
-	objective_detail.size.x = mission.size.x - 34
-	toolbar.position.y = h - 86
-	toolbar.size.x = w - 40
-	toast_label.position.y = h - 244
-	toast_label.size.x = w - 400
+	toolbar.position = Vector2(12, h - 78)
+	toolbar.size.x = w - 24
+	companion.position.x = dock_end + 10
+	companion.size.x = toolbar.size.x - dock_end - 20
+	ai_text.size.x = companion.size.x - 62
+	view_cluster.position = Vector2(12, h - 128)
+	overlay_legend.position = Vector2(view_cluster.size.x + 20, h - 124)
+	overlay_legend.size.x = minf(760, w - 360 - overlay_legend.position.x)
+	toast_label.position = Vector2(town.play_area.position.x + (town.play_area.size.x - toast_label.size.x) / 2, h - 170)
 	if business!=null: business.fit()
 	if menu!=null: menu.fit()
 	if map_tools!=null: map_tools.fit()
@@ -152,13 +164,71 @@ func style(bg: Color, border: Color = Color("314b46"), radius: int = 10) -> Styl
 	sb.content_margin_right = 14
 	return sb
 
-func panel(parent: Node, rect: Rect2, bg: Color = Color("152d2c")) -> Panel:
+func panel(parent: Node, rect: Rect2, bg: Color = Color("152d2c"), shadow: bool = false) -> Panel:
 	var p = Panel.new()
 	p.position = rect.position
 	p.size = rect.size
-	p.add_theme_stylebox_override("panel", style(bg))
+	var sb = style(bg)
+	sb.anti_aliasing = true
+	if shadow:
+		sb.shadow_color = Color(0, 0, 0, 0.32)
+		sb.shadow_size = 12
+		sb.shadow_offset = Vector2(0, 4)
+	p.add_theme_stylebox_override("panel", sb)
 	parent.add_child(p)
 	return p
+
+func icon(parent: Node, glyph: String, rect: Rect2, color: Color = INK) -> Control:
+	var i = Icon.new(glyph, color)
+	i.position = rect.position
+	i.size = rect.size
+	parent.add_child(i)
+	return i
+
+## Dock button: glyph above a short caption, with the keyboard shortcut in the corner.
+func icon_button(parent: Node, glyph: String, caption: String, key: String, rect: Rect2, action: Callable) -> Button:
+	var b = button(parent, "", rect, action)
+	b.tooltip_text = caption + ("  [" + key + "]" if key != "" else "")
+	b.set_meta("glyph", icon(b, glyph, Rect2((rect.size.x - 24) / 2, 7, 24, 24)))
+	var cap = label(b, caption, Rect2(2, rect.size.y - 22, rect.size.x - 4, 18), 11, INK)
+	cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cap.clip_text = true
+	b.set_meta("caption", cap)
+	var badge = label(b, key, Rect2(rect.size.x - 28, 3, 24, 13), 9, MUTED)
+	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	b.set_meta("key", badge)
+	return b
+
+func set_caption(b: Button, caption: String, key: String = "") -> void:
+	if b.has_meta("caption"):
+		b.get_meta("caption").text = caption
+		b.get_meta("key").text = key
+		b.tooltip_text = caption + ("  [" + key + "]" if key != "" else "")
+	else: b.text = caption
+
+## Header gauge: icon, caption, large value and, for capacities, a thin meter.
+func stat_chip(key: String, glyph: String, caption: String, x: float, w: float, with_meter: bool) -> void:
+	icon(header, glyph, Rect2(x, 16, 22, 22), MINT)
+	label(header, caption, Rect2(x + 30, 5, w - 30, 15), 10, MUTED)
+	if key == "cash":
+		stats.cash = button(header, "", Rect2(x + 24, 19, w - 26, 30), func(): business.open("finance"))
+		stats.cash.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		stats.cash.set_meta("base_font_size", 19)
+		stats.cash.add_theme_font_size_override("font_size", roundi(19 * settings.ui_scale))
+		for state in ["normal", "hover", "pressed", "focus"]:
+			var flat = stats.cash.get_theme_stylebox(state).duplicate()
+			flat.content_margin_left = 6
+			if state == "normal": flat.bg_color = Color(0, 0, 0, 0); flat.border_color = Color(0, 0, 0, 0)
+			stats.cash.add_theme_stylebox_override(state, flat)
+	else:
+		stats[key] = label(header, "—", Rect2(x + 30, 19, w - 30, 26), 19)
+		stats[key].mouse_filter = Control.MOUSE_FILTER_PASS
+	if with_meter:
+		var m = Meter.new()
+		m.position = Vector2(x + 30, 46)
+		m.size = Vector2(w - 42, 4)
+		header.add_child(m)
+		meters[key] = m
 
 func label(parent: Node, text: String, rect: Rect2, font_size: int = 16, color: Color = INK) -> Label:
 	var l = Label.new()
@@ -222,71 +292,149 @@ func build_interface() -> void:
 	town = Town.new()
 	town.sim = sim
 	town.lot_selected.connect(on_selected)
+	town.lot_activated.connect(apply_tool)
+	town.cost_tag = tool_tag
+	# The ghost is mint only when a click would build right now.
+	town.ghost_valid = func(i):
+		var tag = tool_tag(i)
+		return tag.get("tone", "bad") != "bad" and String(tag.get("text", "")).begins_with("Build")
+	# The selected tool's glyph rides beside the cursor over the map.
+	cursor_icon = Panel.new()
+	var badge = style(Color(0.05, 0.12, 0.11, 0.9), MINT, 15)
+	cursor_icon.add_theme_stylebox_override("panel", badge)
+	cursor_icon.size = Vector2(30, 30)
+	cursor_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cursor_icon.set_meta("glyph", icon(cursor_icon, "inspect", Rect2(5, 5, 20, 20), MINT))
+	cursor_icon.visible = false
+	town.add_child(cursor_icon)
 	stage.add_child(town)
-	header = panel(stage, Rect2(20, 18, 1400, 90))
-	label(header, "HYPERSCALE", Rect2(20, 13, 265, 32), 27)
-	label(header, "DATACENTER TYCOON", Rect2(23, 48, 250, 22), 13, MINT)
-	var columns = [["cash", "AVAILABLE CASH", 300, 170], ["profit", "NET / HOUR", 480, 135], ["compute", "COMPUTE BUSY", 635, 155], ["power", "POWER · MW", 810, 150], ["cooling", "COOLING · CU", 980, 150], ["approval", "APPROVAL / AI ADOPTION", 1150, 210]]
-	for column in columns:
-		label(header, column[1], Rect2(column[2], 17, column[3], 20), 11, MUTED)
-		if column[0]=="cash":
-			stats.cash=button(header,"",Rect2(column[2],38,column[3],36),func():business.open("finance"))
-			stats.cash.set_meta("base_font_size",24)
-			stats.cash.add_theme_font_size_override("font_size",roundi(24*settings.ui_scale))
-		else: stats[column[0]] = label(header, "—", Rect2(column[2], 38, column[3], 36), 26)
-	district_card = panel(stage, Rect2(20, 119, 380, 59), Color(0.08, 0.19, 0.16, 0.88))
-	town_heading=label(district_card, "01  /  LITTLEBROOK", Rect2(14, 5, 350, 25), 17, INK)
-	label(district_card, "Founding district  ·  Every plot has a story", Rect2(14, 31, 350, 22), 13, INK)
-	contract_button=button(stage,"C  Contracts",Rect2(414,120,125,38),func():business.open("offers"),true)
-	button(stage,"G  Company",Rect2(548,120,115,38),func():business.open("company"))
-	button(stage,"Map",Rect2(670,120,60,38),func():map_tools.open())
-	overlay_choice=OptionButton.new()
-	overlay_choice.position=Vector2(20,187);overlay_choice.size=Vector2(155,32)
+	# --- Top bar: where am I, what time is it, and how healthy is the campus. ---
+	header = panel(stage, Rect2(12, 10, 1416, 56), Color("122826"), true)
+	district_card = header
+	var emblem = TextureRect.new()
+	emblem.texture = preload("res://assets/branding/hyperscale-icon.png")
+	emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	emblem.position = Vector2(10, 8); emblem.size = Vector2(40, 40)
+	emblem.tooltip_text = "Hyperscale: Datacenter Tycoon"
+	header.add_child(emblem)
+	town_heading = label(header, "LITTLEBROOK", Rect2(56, 7, 152, 24), 17, INK)
+	company_label = label(header, "", Rect2(56, 31, 152, 18), 11, MUTED)
+	clock_label = label(header, "", Rect2(212, 7, 112, 24), 16, INK)
+	time_status = label(header, "", Rect2(212, 31, 112, 18), 11, GOLD)
+	pause_button = button(header, "", Rect2(322, 10, 40, 36), toggle_pause)
+	pause_button.set_meta("glyph", icon(pause_button, "play", Rect2(10, 8, 20, 20)))
+	speed_button = button(header, "1×", Rect2(366, 10, 44, 36), cycle_speed)
+	speed_button.tooltip_text = "Cycle speed 1× / 3× / 6×  [F4]"
+	fullscreen_button = button(header, "", Rect2(414, 10, 40, 36), toggle_fullscreen)
+	fullscreen_button.tooltip_text = "Fill the display / return to window  [F11]"
+	icon(fullscreen_button, "fullscreen", Rect2(11, 9, 18, 18))
+	var divider = ColorRect.new(); divider.color = Color("2f4b45")
+	divider.position = Vector2(468, 10); divider.size = Vector2(1, 36); header.add_child(divider)
+	stat_chip("cash", "cash", "CASH", 482, 150, false)
+	stat_chip("profit", "profit", "NET / HOUR", 636, 118, false)
+	stat_chip("compute", "compute", "COMPUTE IN USE", 758, 144, true)
+	stat_chip("power", "power", "POWER  MW", 906, 136, true)
+	stat_chip("cooling", "cooling", "COOLING  CU", 1046, 136, true)
+	stat_chip("approval", "approval", "APPROVAL", 1186, 110, true)
+	stat_chip("adoption", "research", "AI ADOPTION", 1300, 106, true)
+	meters.approval.invert = true
+	meters.adoption.fixed_color = Color("8fb8de")
+	# --- Objective card and alerts float over the top-left of the world. ---
+	mission = panel(stage, Rect2(12, 76, 420, 78), Color(0.09, 0.2, 0.18, 0.93), true)
+	objective = label(mission, "", Rect2(14, 6, 330, 24), 15, MINT)
+	objective_detail = paragraph(mission, "", Rect2(14, 31, 396, 42), 12, INK)
+	objective_detail.max_lines_visible = 2
+	objective_detail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	objective_detail.mouse_filter = Control.MOUSE_FILTER_PASS
+	guide_button = button(mission, "Guide", Rect2(348, 6, 62, 26), func(): business.open("tutorial"))
+	alert_button = button(stage, "", Rect2(12, 162, 420, 34), focus_alert)
+	for state in ["normal", "hover"]:
+		var warn = style(Color("4a3a1f") if state == "normal" else Color("5d4825"), GOLD)
+		warn.content_margin_left = 38
+		alert_button.add_theme_stylebox_override(state, warn)
+	alert_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	alert_button.add_theme_color_override("font_color", Color("fbe7b5"))
+	icon(alert_button, "alert", Rect2(10, 7, 20, 20), GOLD)
+	alert_button.visible = false
+	# --- Map view controls sit at the bottom-left of the world. ---
+	view_cluster = panel(stage, Rect2(12, 772, 208, 42), Color(0.07, 0.16, 0.15, 0.94), true)
+	icon(view_cluster, "layers", Rect2(8, 11, 20, 20), MINT)
+	overlay_choice = OptionButton.new()
+	overlay_choice.position = Vector2(32, 5); overlay_choice.size = Vector2(124, 32)
+	overlay_choice.tooltip_text = "Map layer: electricity, cooling, noise, ownership or opinion"
 	for layer_name in MapTools.LAYERS: overlay_choice.add_item(layer_name)
-	overlay_choice.item_selected.connect(func(i):map_tools.set_layer(MapTools.LAYERS[i]))
-	stage.add_child(overlay_choice)
-	overlay_legend=label(stage,"Scroll: zoom · Middle-drag: pan · Map: bookmarks and building list",Rect2(187,187,905,32),12,INK)
-	overlay_legend.add_theme_stylebox_override("normal",style(Color(0.06,0.13,0.11,0.94)))
-	operations_button=button(stage,"Operations",Rect2(20,229,165,32),func():business.open("operations"))
-	council_button=button(stage,"Town council",Rect2(195,229,150,32),func():open_town())
-	alert_button=button(stage,"",Rect2(355,229,640,32),focus_alert)
-	alert_button.visible=false
-	clock_label = label(stage, "", Rect2(735, 121, 112, 26), 12, INK)
-	clock_label.add_theme_color_override("font_shadow_color", Color("1b3329"))
-	clock_label.add_theme_constant_override("shadow_offset_y", 1)
-	pause_button = button(stage, ">  Run", Rect2(902, 119, 92, 34), toggle_pause)
-	speed_button = button(stage, "1×", Rect2(1003, 119, 70, 34), cycle_speed)
-	fullscreen_button = button(stage, "F11  [ ]", Rect2(1033, 119, 77, 34), toggle_fullscreen)
-	fullscreen_button.tooltip_text = "Fill the display / return to window"
-	inspector = panel(stage, Rect2(1120, 120, 300, 605))
-	mission = panel(stage, Rect2(20, 737, 718, 65), Color("203b33"))
-	objective = label(mission, "", Rect2(17, 7, 575, 26), 17, MINT)
-	objective_detail = label(mission, "", Rect2(17, 35, 680, 22), 13, INK)
-	guide_button=button(mission,"Guide",Rect2(610,5,90,30),func():business.open("tutorial"))
-	companion = panel(stage, Rect2(752, 737, 668, 65), Color("1b3236"))
-	button(companion,"AI",Rect2(10,14,54,36),func():business.open("research"),true)
-	ai_text = paragraph(companion, "", Rect2(74, 10, 575, 48), 14, INK)
-	toolbar = panel(stage, Rect2(20, 814, 1400, 66), Color("152927"))
-	var modes = [["inspect", "Q  Inspect", 114], ["buy", "B  Buy land", 127], ["demolish", "X  Bulldoze", 130], ["datacenter", "1  Server hall", 148], ["power", "2  Power", 122], ["cooling", "3  Cooling", 125]]
-	var bx = 12
-	for mode in modes:
-		var key: String = mode[0]
-		tools_buttons[key] = button(toolbar, mode[1], Rect2(bx, 12, mode[2], 42), func(): set_tool(key))
-		bx += mode[2] + 8
-	button(toolbar, "Save", Rect2(847, 12, 80, 42), manual_save)
-	button(toolbar, "Load", Rect2(935, 12, 80, 42), load_saved)
-	button(toolbar, "New town", Rect2(1023, 12, 110, 42), func():request_leave(restart))
-	button(toolbar, "?", Rect2(1141, 12, 48, 42), show_help)
-	button(toolbar, "Sound on", Rect2(1197, 12, 115, 42), toggle_sound)
-	label(toolbar, "v1.2", Rect2(1327, 20, 58, 25), 12, MINT)
-	toast_label = label(stage, "", Rect2(46, 685, 1010, 30), 15, GOLD)
-	toast_label.add_theme_color_override("font_shadow_color", Color("102422"))
-	toast_label.add_theme_constant_override("shadow_offset_x", 1)
-	toast_label.add_theme_constant_override("shadow_offset_y", 2)
+	overlay_choice.item_selected.connect(func(i): map_tools.set_layer(MapTools.LAYERS[i]))
+	view_cluster.add_child(overlay_choice)
+	var map_button = button(view_cluster, "", Rect2(162, 5, 40, 32), func(): map_tools.open())
+	map_button.tooltip_text = "Town atlas: minimap, building list and camera bookmarks"
+	icon(map_button, "map", Rect2(10, 6, 20, 20))
+	overlay_legend = label(stage, "", Rect2(232, 776, 700, 34), 12, INK)
+	overlay_legend.add_theme_stylebox_override("normal", style(Color(0.06, 0.13, 0.11, 0.94)))
+	overlay_legend.visible = false
+	# --- Floating property inspector. ---
+	inspector = panel(stage, Rect2(1128, 76, 300, 632), Color("142b29"), true)
+	# --- Bottom dock: build tools | management | system, then the AI news line. ---
+	toolbar = panel(stage, Rect2(12, 822, 1416, 66), Color("102422"), true)
+	var groups = [
+		["inspect", "buy", "demolish"],
+		["datacenter", "power", "cooling"],
+		["contracts", "company", "operations", "council", "research"],
+		["menu", "help", "sound"]]
+	var captions = {"contracts":"Contracts", "company":"Company", "operations":"Operations", "council":"Council", "research":"Research", "menu":"Menu", "help":"Help", "sound":"Sound"}
+	var bx = 8
+	for group in groups:
+		for key in group:
+			var caption: String = TOOL_NAMES.get(key, captions.get(key, key))
+			var wide = 58 if key in ["menu", "help", "sound"] else 68
+			var b: Button
+			match key:
+				"contracts": b = icon_button(toolbar, key, caption, "C", Rect2(bx, 6, wide, 54), func(): business.open("offers")); contract_button = b
+				"company": b = icon_button(toolbar, key, caption, "G", Rect2(bx, 6, wide, 54), func(): business.open("company"))
+				"operations": b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), func(): business.open("operations")); operations_button = b
+				"council": b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), func(): open_town()); council_button = b
+				"research": b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), func(): business.open("research")); research_button = b
+				"menu": b = icon_button(toolbar, key, caption, "Esc", Rect2(bx, 6, wide, 54), func(): menu.open("pause"))
+				"help": b = icon_button(toolbar, key, caption, "F1", Rect2(bx, 6, wide, 54), show_help)
+				"sound": b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), toggle_sound); sound_button = b
+				"datacenter":
+					b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), func(): open_hall_menu()); tools_buttons[key] = b
+					var caret = label(b, "▴", Rect2(5, 2, 14, 14), 11, GOLD)
+					caret.tooltip_text = "Choose hardware"
+				_: b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), func(): set_tool(key)); tools_buttons[key] = b
+			bx += wide + 4
+		bx += 10
+		if group != groups[-1]:
+			var sep = ColorRect.new(); sep.color = Color("2f4b45")
+			sep.position = Vector2(bx - 12, 12); sep.size = Vector2(1, 42); toolbar.add_child(sep)
+	dock_end = bx
+	companion = panel(toolbar, Rect2(dock_end + 10, 6, 300, 54), Color("17302e"))
+	var ai_button = button(companion, "AI", Rect2(8, 9, 40, 36), func(): business.open("research"), true)
+	ai_button.tooltip_text = "Your AI companion · research journal"
+	ai_text = paragraph(companion, "", Rect2(56, 4, 230, 46), 13, INK)
+	ai_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	ai_text.clip_text = true
+	ai_text.max_lines_visible = 2
+	ai_text.mouse_filter = Control.MOUSE_FILTER_PASS
+	# --- News popup: a pill above the dock, like a ticker message. ---
+	toast_label = label(stage, "", Rect2(300, 700, 760, 38), 15, Color("fbe7b5"))
+	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	toast_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	var pill = style(Color(0.07, 0.15, 0.14, 0.96), GOLD, 18)
+	pill.shadow_color = Color(0, 0, 0, 0.35); pill.shadow_size = 10; pill.shadow_offset = Vector2(0, 3)
+	toast_label.add_theme_stylebox_override("normal", pill)
 	dialog = ConfirmationDialog.new()
 	dialog.title = "Hyperscale: Datacenter Tycoon"
 	dialog.min_size = Vector2i(500, 170)
 	dialog.dialog_autowrap = true
+	dialog.ok_button_text = "Confirm"
+	for b in [dialog.get_ok_button(), dialog.get_cancel_button()]:
+		b.custom_minimum_size = Vector2(140, 40)
+		b.add_theme_stylebox_override("normal", style(Color("203c37")))
+		b.add_theme_stylebox_override("hover", style(Color("33574b"), MINT))
+	dialog.get_ok_button().add_theme_stylebox_override("normal", style(MINT))
+	dialog.get_ok_button().add_theme_color_override("font_color", Color("152d2c"))
+	dialog.get_ok_button().add_theme_color_override("font_hover_color", Color("152d2c"))
 	dialog.confirmed.connect(func():
 		if pending.is_valid(): pending.call())
 	add_child(dialog)
@@ -302,14 +450,14 @@ func build_interface() -> void:
 	var help_content=VBoxContainer.new();help_content.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	help_content.add_theme_constant_override("separation",22);help_scroll.add_child(help_content)
 	var help_sections=[
-		["BUILD A CAMPUS","Buy warehouse 04-06, clear it and build a server hall. Add power and cooling nearby. Utilities share capacity but reach only 4 / 7 / 12 blocks at tiers 1 / 2 / 3. Map layers show coverage, noise, ownership and opinion. Riverfront cooling gains 25% capacity. Remote road works cost extra; protected sites need a heritage hearing."],
+		["BUILD A CAMPUS","Pick a tool from the dock, then click the map: Buy land (B) buys the plot, Bulldoze (X) clears it, and Server hall / Substation / Cooling (1 / 2 / 3) build there. A see-through preview of the building follows the cursor (mint: can build; coral: cannot), and the tag beside it shows the price or the reason. The Server hall button opens a hardware menu. Inspect (Q) or right-click only selects. Buy warehouse 04-06, clear it and build a server hall. Add power and cooling nearby. Utilities share capacity but reach only 4 / 7 / 12 blocks at tiers 1 / 2 / 3. Map layers show coverage, noise, ownership and opinion. Riverfront cooling gains 25% capacity. Remote road works cost extra; protected sites need a heritage hearing."],
 		["GROW YOUR COMPANY","Contracts: C. Company: G. Projects pay on delivery; services pay hourly plus a bonus. Required delivery: 90% inference, 99% critical, 85% experimental. Review fees and deadline slack before signing. Use Active to prioritize scarce capacity. Two deliveries unlock tier 2; four unlock tier 3; eight unlock repeat commissions. Each town also has its own charter requirements. Click cash for finance, borrowing and hardware refits."],
 		["KEEP THE LIGHTS ON","Operations shows forecasts, failures and maintenance. Batteries bridge startup; generators need fuel and a working hub. Mobile chillers can cover heat or cooling service. Preventive crews reduce wear. Forecasts and incidents can pause time automatically; change this in Settings."],
 		["THE TOWN PUSHES BACK","Town council separates public approval from AI adoption. Homes, noise, traffic, resource strain and unreliable services create specific concerns. Warning → petition → demonstration → permit pause. At a pause, new halls and hall upgrades are restricted; utility upgrades, repairs, refits and remedies remain available. Reduce pressure below 12 to recover. Negotiate a 24h measurable promise, rehouse families, quiet or relocate equipment, restore parks, preserve heritage or fund infrastructure. Expedited permits last 24h and damage trust."],
 		["FEED THE AI","Company or the AI button opens research. Reserve 0%, 10%, 25% or 50% of online compute for Engineer, Commercial or Visionary projects. Research gets capacity before customers; its review shows the delivery and cash-flow cost. Switching projects keeps progress. Completed projects release compute. Customer scout introduces SmilingFace and later local pilots; experimental research unlocks unusual commissions. Outreach creates demand you must actually serve."],
 		["PEOPLE AND CUSTOMERS","Company contains staffing and nine fictional customer profiles. Technicians cost $7 per team/hour and dispatch paid repairs or service. Engineers cost $9 and shorten new visits/refits, to a minimum of one hour. Commercial teams cost $6 and improve newly signed project deadlines and fees. Hire up to three teams per role. Existing jobs and signed contract terms keep their rules. Delivery vans and workers represent actual dispatches."],
 		["THREE TOWNS, YOUR PACE","Town charter explains the finale: Littlebrook needs eight deliveries; Sunsprawl adds sustained efficient operation with limited water; Oldbridge requires preservation, rehousing and trust. Completing a charter offers the next town or continued play. Local achievements belong to the saved company; sandbox does not award them. The nine-step Guide can be skipped or resumed. At 1x, an hour takes four seconds; 3x and 6x are available. Settings separate music and ambience and include reduced motion."],
-		["SAVE AND NAVIGATE","Space: pause / run. F4: speed. F5: quicksave. F9: load. F1: this guide. F11 or Alt+Enter: fullscreen. Escape closes a panel, exits fullscreen or opens the company menu. Home: whole town. Mouse wheel: zoom. Middle-drag: pan. Tab / Shift+Tab: keyboard focus; Enter selects. Map provides buildings and saved camera bookmarks. Core controls can be rebound in Settings. Autosaves rotate every 15 seconds. Save Game creates a named slot. Leaving unsaved work asks what to do; loaded towns begin paused."]]
+		["SAVE AND NAVIGATE","The top bar shows cash, net cash per hour and capacity gauges; a gauge turns gold near its limit and red when demand exceeds supply. Click cash for finances. Space: pause / run. F4: speed. F5: quicksave. F9: load. F1: this guide. F11 or Alt+Enter: fullscreen. Escape closes a panel, exits fullscreen or opens the company menu. Home: whole town. Mouse wheel: zoom. Middle-drag: pan. Tab / Shift+Tab: keyboard focus; Enter selects. Map provides buildings and saved camera bookmarks. Core controls can be rebound in Settings. Autosaves rotate every 15 seconds. Save Game creates a named slot. Leaving unsaved work asks what to do; loaded towns begin paused."]]
 	for section in help_sections:
 		var heading=label(help_content,section[0],Rect2(0,0,680,30),19,MINT)
 		heading.custom_minimum_size.y=32
@@ -331,11 +479,17 @@ func set_tool(mode: String) -> void:
 	tool = mode
 	town.tool = mode
 	for key in tools_buttons:
-		tools_buttons[key].add_theme_stylebox_override("normal", style(Color("3c6251") if key == mode else Color("203c37"), MINT if key == mode else Color("314b46")))
+		var active = key == mode
+		var sb = style(Color("2f5a4a") if active else Color("1a3431"), MINT if active else Color("2a4440"))
+		if active: sb.set_border_width_all(2)
+		tools_buttons[key].add_theme_stylebox_override("normal", sb)
+		if tools_buttons[key].has_meta("glyph"): tools_buttons[key].get_meta("glyph").tint = MINT if active else INK
 	refresh_inspector()
 
 func on_selected(index: int) -> void:
 	selected = index
+	inspector_open = true
+	inspector.visible = true
 	Sim.Tutorial.mark(sim,"inspect")
 	dirty=true
 	if town.tool != tool:
@@ -353,9 +507,23 @@ func refresh_inspector() -> void:
 	var lot: Dictionary = sim.lots[selected]
 	var building=sim.building_stats(lot)
 	var names = {"grass": "Open land", "house": "Town home", "warehouse": "Old warehouse", "park": "Pocket park", "monument": "Founder's monument", "water": "River", "road": "Public road", "datacenter": "Server hall", "power": "Substation", "cooling": "Cooling plant"}
-	label(inspector, "PROPERTY  /  %02d-%02d" % [lot.x + 1, lot.y + 1], Rect2(20, 17, 260, 22), 12, MUTED)
-	label(inspector, names[lot.kind], Rect2(20, 49, 268, 36), 24)
+	label(inspector, "PROPERTY  /  %02d-%02d" % [lot.x + 1, lot.y + 1], Rect2(20, 17, 220, 22), 12, MUTED)
+	var close = button(inspector, "", Rect2(258, 12, 28, 28), func(): inspector_open = false; inspector.visible = false)
+	close.tooltip_text = "Close the inspector. Selecting a plot reopens it."
+	icon(close, "close", Rect2(7, 7, 14, 14), MUTED)
+	var kind_glyph = {"datacenter":"datacenter", "power":"power", "cooling":"cooling", "grass":"buy", "house":"approval", "park":"council", "monument":"council", "warehouse":"company", "road":"map", "water":"map"}
+	var badge = panel(inspector, Rect2(20, 47, 40, 40), Color("21403a"))
+	icon(badge, kind_glyph.get(lot.kind, "inspect"), Rect2(9, 9, 22, 22), MINT if lot.owned else GOLD)
+	label(inspector, names[lot.kind], Rect2(70, 49, 218, 36), 24)
 	label(inspector, "YOUR PROPERTY" if lot.owned else "TOWN PROPERTY", Rect2(20, 94, 260, 24), 12, MINT if lot.owned else GOLD)
+	if Sim.BUILDINGS.has(lot.kind):
+		var condition = float(lot.get("condition", 100))
+		label(inspector, "CONDITION  %d%%" % roundi(condition), Rect2(150, 90, 130, 18), 11, MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		var wear = Meter.new()
+		wear.invert = true
+		wear.position = Vector2(150, 110); wear.size = Vector2(130, 4)
+		wear.set_values(condition, 100)
+		inspector.add_child(wear)
 	var descriptions = {
 		"grass": "Room for your next big idea. One building fits on each plot.",
 		"house": "An occupied town property. Relocation and neighborhood disruption carry an approval cost.",
@@ -431,10 +599,128 @@ func refresh_inspector() -> void:
 			if clear_button.disabled: clear_button.tooltip_text="A permanent conservation covenant protects this site."
 			paragraph(inspector, "Conservation protects this site permanently. Its park or landmark remains part of the town." if lot.get("preserved",false) else "Clearing costs %s and %d approval. Construction is not refunded." % [money(sim.demolition_cost(lot.kind)),Sim.Geography.demolition_impact(lot)], Rect2(20, 444, 260, 67))
 	button(inspector,"Operations / condition" if Sim.BUILDINGS.has(lot.kind) else "C  Customer contracts",Rect2(20,543,260,39),func():business.open("operations" if Sim.BUILDINGS.has(lot.kind) else "offers"))
+	fit_inspector()
 	refresh_status()
 
+func fit_inspector() -> void:
+	var bottom = 0.0
+	for child in inspector.get_children():
+		if child is Control and child.visible: bottom = maxf(bottom, child.position.y + child.size.y)
+	inspector.size.y = minf(bottom + 18, stage.size.y - 76 - 92)
+
+## Clicking the map with a tool performs that tool's action, as in classic tycoon
+## games. Inspect only selects. Destructive actions still ask for confirmation.
+func apply_tool(index: int) -> void:
+	if index < 0 or index >= sim.lots.size() or tool == "inspect": return
+	var lot: Dictionary = sim.lots[index]
+	match tool:
+		"buy":
+			if lot.kind in ["road", "water"] or lot.owned: return
+			buy_selected()
+		"demolish":
+			if lot.kind in ["road", "water", "grass"]: return
+			if not lot.owned: toast("Buy this property before clearing it."); return
+			demolish_selected()
+		"datacenter", "power", "cooling":
+			if lot.kind in ["road", "water"]: return
+			if not lot.owned: toast("Buy this plot first (" + settings.key_label("buy") + "), then build."); return
+			if lot.kind != "grass": return
+			build_selected(tool)
+
+## Short cursor label for the hovered plot: what the active tool would cost, or why not.
+func tool_tag(index: int) -> Dictionary:
+	var lot: Dictionary = sim.lots[index]
+	if lot.kind in ["road", "water"]: return {"text": "Public land", "tone": "bad"}
+	match tool:
+		"buy":
+			if lot.owned: return {"text": "Owned", "tone": "warn"}
+			return {"text": "Buy " + money(lot.price), "tone": "ok" if sim.cash >= lot.price else "bad"}
+		"demolish":
+			if not lot.owned: return {"text": "Buy first · " + money(lot.price), "tone": "warn"}
+			if lot.kind == "grass": return {}
+			if lot.get("preserved", false): return {"text": "Preserved", "tone": "bad"}
+			if lot.get("protected", false) and not lot.get("permit", false): return {"text": "Heritage hearing needed", "tone": "bad"}
+			var cost = sim.demolition_cost(lot.kind)
+			var impact = Sim.Geography.demolition_impact(lot)
+			return {"text": "Clear " + money(cost) + (" · -%d approval" % impact if impact > 0 else ""), "tone": ("warn" if impact > 0 else "ok") if sim.cash >= cost else "bad"}
+		"datacenter", "power", "cooling":
+			if not lot.owned: return {"text": "Buy first · " + money(lot.price), "tone": "warn"}
+			if lot.kind != "grass": return {"text": "Clear the site first", "tone": "bad"}
+			var p = sim.site_preview(index, tool, build_profile)
+			if not p.permit_error.is_empty(): return {"text": "Hall permits paused", "tone": "bad"}
+			var cost = sim.construction_cost(index, tool, build_profile)
+			if sim.cash < cost: return {"text": "Need " + money(cost), "tone": "bad"}
+			var missing = []
+			if tool != "power" and not p.power: missing.append("power")
+			if tool == "datacenter" and not p.cooling: missing.append("cooling")
+			if missing.is_empty(): return {"text": "Build " + money(cost), "tone": "ok"}
+			return {"text": "Build " + money(cost) + " · no " + " / ".join(missing) + " in reach", "tone": "warn"}
+	return {}
+
+## Server hall flyout: one row per hardware profile, above the dock button. Picking a
+## row selects the hall tool with that hardware; locked rows explain how to unlock.
+func open_hall_menu() -> void:
+	set_tool("datacenter")
+	if hall_menu != null: hall_menu.queue_free()
+	hall_menu = PopupPanel.new()
+	var k = stage.scale.x
+	var sb = style(Color("122826"), Color("3e6359"), 10)
+	sb.content_margin_left = 10 * k; sb.content_margin_right = 10 * k; sb.content_margin_top = 10 * k; sb.content_margin_bottom = 10 * k
+	sb.shadow_color = Color(0, 0, 0, 0.4); sb.shadow_size = 12
+	hall_menu.add_theme_stylebox_override("panel", sb)
+	var rows = VBoxContainer.new(); rows.add_theme_constant_override("separation", int(6 * k))
+	hall_menu.add_child(rows)
+	var head = Label.new(); head.text = "SERVER HALL HARDWARE"
+	head.add_theme_font_size_override("font_size", roundi(11 * k * settings.ui_scale)); head.add_theme_color_override("font_color", MUTED)
+	rows.add_child(head)
+	for profile in Economy.HARDWARE.keys():
+		var hw: Dictionary = Economy.HARDWARE[profile]
+		var unlocked: bool = sim.hardware_unlocked(profile)
+		var row = Button.new()
+		row.custom_minimum_size = Vector2(330, 58) * k
+		row.toggle_mode = false
+		row.disabled = not unlocked
+		var active = profile == build_profile
+		row.add_theme_stylebox_override("normal", style(Color("2f5a4a") if active else Color("1a3431"), MINT if active else Color("2a4440")))
+		row.add_theme_stylebox_override("hover", style(Color("33574b"), MINT))
+		row.add_theme_stylebox_override("pressed", style(Color("3c6251"), MINT))
+		row.add_theme_stylebox_override("disabled", style(Color("162a27"), Color("243a36")))
+		row.add_theme_stylebox_override("focus", style(Color(0, 0, 0, 0), GOLD))
+		row.tooltip_text = hw.brief
+		var name_label = Label.new(); name_label.text = hw.name
+		name_label.position = Vector2(12, 6) * k; name_label.size = Vector2(220, 22) * k
+		name_label.add_theme_font_size_override("font_size", roundi(15 * k * settings.ui_scale))
+		name_label.add_theme_color_override("font_color", INK if unlocked else MUTED)
+		row.add_child(name_label)
+		var price = Label.new(); price.text = money(hw.cost) if unlocked else "Tier 2"
+		price.position = Vector2(230, 6) * k; price.size = Vector2(88, 22) * k
+		price.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		price.add_theme_font_size_override("font_size", roundi(15 * k * settings.ui_scale))
+		price.add_theme_color_override("font_color", GOLD if unlocked else MUTED)
+		row.add_child(price)
+		var summary = String(hw.brief).split(";")[0].split(". ")[0].trim_suffix(".")
+		var note = Label.new(); note.text = summary if unlocked else "Locked: deliver two customers to unlock tier 2."
+		note.position = Vector2(12, 30) * k; note.size = Vector2(306, 20) * k
+		note.clip_text = true; note.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		note.add_theme_font_size_override("font_size", roundi(11 * k * settings.ui_scale))
+		note.add_theme_color_override("font_color", MUTED)
+		row.add_child(note)
+		for child in [name_label, price, note]: child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.pressed.connect(func():
+			build_profile = profile; town.build_profile = profile; dirty = true
+			hall_menu.hide(); set_tool("datacenter")
+			toast(hw.name + " selected. Click an owned, cleared plot to build."))
+		rows.add_child(row)
+	add_child(hall_menu)
+	var anchor: Rect2 = tools_buttons.datacenter.get_global_rect()
+	hall_menu.reset_size()
+	var size_px = hall_menu.get_contents_minimum_size()
+	hall_menu.popup(Rect2i(Vector2i(int(anchor.position.x), int(anchor.position.y - size_px.y - 12 * k)), Vector2i(size_px)))
+
 func upgrade_selected() -> void:
-	complete_action(sim.upgrade(selected),"Building upgraded. Review the campus utility balance.")
+	var result = sim.upgrade(selected)
+	if result == "": town.start_build(selected, true)
+	complete_action(result,"Building upgraded. Review the campus utility balance.")
 
 func buy_selected() -> void:
 	var result = sim.buy(selected)
@@ -442,6 +728,7 @@ func buy_selected() -> void:
 
 func build_selected(kind: String) -> void:
 	var result = sim.build(selected, kind,build_profile if kind=="datacenter" else "balanced")
+	if result == "": town.start_build(selected)
 	complete_action(result, Sim.BUILDINGS[kind].name + " constructed. Check your power and cooling.")
 
 func demolish_selected() -> void:
@@ -453,8 +740,9 @@ func demolish_selected() -> void:
 	else: do_demolish(index)
 
 func do_demolish(index: int) -> void:
+	var key = town.building_key(sim.lots[index])
 	var result = sim.demolish(index)
-	if result == "": town.dust(index)
+	if result == "": town.start_demolition(index, key)
 	complete_action(result, "Site cleared. Your future has excellent floor space.")
 
 func complete_action(error: String, success: String) -> void:
@@ -516,26 +804,45 @@ func refresh_hud() -> void:
 	var op_status=sim.operations_status()
 	has_alert=not offline.is_empty() or not op_status.is_empty()
 	alert_button.visible=has_alert
-	if not op_status.is_empty(): alert_button.text="! "+op_status
-	elif not offline.is_empty(): alert_button.text="! %d campus outside utility reach · Locate" % offline.size()
+	if not op_status.is_empty(): alert_button.text=op_status
+	elif not offline.is_empty(): alert_button.text="%d building outside utility reach · Locate" % offline.size()
+	alert_button.tooltip_text=alert_button.text+" (click to respond)"
 	stats.cash.text = money(sim.cash)
 	if absf(sim.cash)>=1000000: stats.cash.text=("-$" if sim.cash<0 else "$")+"%.2fm" % (absf(sim.cash)/1000000.0)
-	stats.cash.tooltip_text="Open finances and hardware · Cash "+money(sim.cash)
+	stats.cash.add_theme_color_override("font_color", CORAL if sim.cash < 0 else INK)
+	stats.cash.tooltip_text="Open finances, loans and hardware · Cash "+money(sim.cash)+(" · Debt "+money(sim.finance.debt) if sim.finance.debt>0 else "")
 	stats.profit.text = ("+" if m.profit >= 0 else "") + money(m.profit)
-	stats.profit.add_theme_color_override("font_color", MINT if m.profit >= 0 else GOLD)
-	stats.compute.text = "%d / %d" % [m.sold+m.research_compute,m.compute]
-	stats.compute.tooltip_text="Paying work %.1f · AI research %.1f · Online %.1f" % [m.sold,m.research_compute,m.compute]
+	stats.profit.add_theme_color_override("font_color", MINT if m.profit >= 0 else CORAL)
+	stats.profit.tooltip_text="Net cash flow per simulation hour, after upkeep, wages, electricity and interest"
+	var used=m.sold+m.research_compute
+	stats.compute.text = "%d / %d" % [used,m.compute]
+	stats.compute.tooltip_text="Paying work %.1f · AI research %.1f · Online %.1f · Unused compute earns nothing" % [m.sold,m.research_compute,m.compute]
+	meters.compute.set_values(used,m.compute)
+	meters.compute.fixed_color=Color("7fd3a4") if m.compute>0 else Color(0,0,0,0)
 	stats.power.text = "%d / %d" % [m.power_need, m.power]
 	stats.cooling.text = "%d / %d" % [m.cooling_need, m.cooling]
-	stats.power.add_theme_color_override("font_color", GOLD if m.power_need > m.power else INK)
-	stats.cooling.add_theme_color_override("font_color", GOLD if m.cooling_need > m.cooling else INK)
-	stats.approval.text = "%d%% / %d%%" % [sim.approval,roundi(Sim.Civic.adoption(sim))]
-	stats.approval.tooltip_text="Town approval / AI adoption. Open Town council for causes and responses."
+	meters.power.set_values(m.power_need,m.power)
+	meters.cooling.set_values(m.cooling_need,m.cooling)
+	stats.power.add_theme_color_override("font_color", CORAL if m.power_need > m.power else INK)
+	stats.cooling.add_theme_color_override("font_color", CORAL if m.cooling_need > m.cooling else INK)
+	stats.power.tooltip_text="Electricity demand / supply. Short supply throttles every hall."
+	stats.cooling.tooltip_text="Cooling demand / supply. Short supply throttles every hall."
+	stats.approval.text = "%d%%" % sim.approval
+	meters.approval.set_values(sim.approval,100)
+	stats.approval.add_theme_color_override("font_color", CORAL if sim.approval < 40 else INK)
+	stats.approval.tooltip_text="Public approval. Open Council for causes, district stress and remedies."
+	var adoption=roundi(Sim.Civic.adoption(sim))
+	stats.adoption.text = "%d%%" % adoption
+	meters.adoption.set_values(adoption,100)
+	stats.adoption.tooltip_text="Average AI adoption. Raises the town's spot-market demand; independent of approval."
 	var civic_count=0
 	for ward in sim.civic.wards.values():
 		if ward.stage>=2: civic_count+=1
-	council_button.text=("! Council (%d)" % civic_count) if civic_count>0 else "Town council"
-	clock_label.text = "Day %d · %02d:00" % [sim.hour / 24 + 1, sim.hour % 24]
+	set_caption(council_button,("Council (%d!)" % civic_count) if civic_count>0 else "Council")
+	council_button.get_meta("glyph").tint=GOLD if civic_count>0 else INK
+	clock_label.text = "Day %d  %02d:00" % [sim.hour / 24 + 1, sim.hour % 24]
+	company_label.text = sim.company_name
+	update_time_controls()
 	clock_label.tooltip_text="Day %d, %02d:00 · %s · 1× = 4 seconds/hour" % [sim.hour/24+1,sim.hour%24,"Paused" if paused else "Running at %d×" % speed]
 	if not sim.bought:
 		objective.text = "01 / 04     A foothold in "+Sim.Scenarios.info(sim.scenario_id).name
@@ -565,8 +872,7 @@ func refresh_hud() -> void:
 		ai_text.text = "Emergency funding available: press R for a one-time $8,000 grant."
 	update_guide()
 	refresh_status()
-	contract_button.text=settings.key_label("contracts")+"  Contracts"
-	contract_button.tooltip_text="Customer board · %d active contracts" % sim.active.size()
+	set_caption(contract_button,"Contracts %d/3" % sim.active.size() if not sim.active.is_empty() else "Contracts",settings.key_label("contracts"))
 
 func _process(delta: float) -> void:
 	if stage == null: return
@@ -583,6 +889,8 @@ func _process(delta: float) -> void:
 			child.visible=not title_only
 	alert_button.visible=not title_only and has_alert
 	toast_label.visible=not title_only and toast_timer>0
+	inspector.visible=not title_only and inspector_open
+	overlay_legend.visible=not title_only and map_tools.layer!="Town view"
 	if session_started and not in_menu: handle_operation_alerts()
 	if session_started and not paused and not in_menu and not dialog.visible and not help_dialog.visible:
 		accumulator += minf(delta, 0.25) * speed
@@ -610,6 +918,13 @@ func _process(delta: float) -> void:
 				accumulator=0
 				break
 	town.work_fraction=0.5 if settings.reduced_motion else accumulator/4.0
+	town.reduced_motion=settings.reduced_motion
+	if cursor_icon != null:
+		var over = tool != "inspect" and town.hovered >= 0 and town.play_area.has_point(town.mouse_position) and not business.visible and not menu.visible
+		cursor_icon.visible = over
+		if over:
+			cursor_icon.get_meta("glyph").glyph = tool
+			cursor_icon.position = town.mouse_position + Vector2(-36, -34)
 	if toast_timer<=0 and not notice_queue.is_empty():
 		toast(notice_queue.pop_front())
 		chime()
@@ -626,16 +941,33 @@ func _process(delta: float) -> void:
 
 func toast(text: String) -> void:
 	toast_label.text = text
+	toast_label.tooltip_text = text
+	var font = toast_label.get_theme_font("font")
+	var font_size = toast_label.get_theme_font_size("font_size")
+	var width = clampf(font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + 52, 260, town.play_area.size.x - 40)
+	toast_label.size = Vector2(width, 38)
+	toast_label.position.x = town.play_area.position.x + (town.play_area.size.x - width) / 2
 	toast_timer = 6
 	toast_label.visible = true
 
 func toggle_pause() -> void:
 	paused = not paused
-	pause_button.text = ">  Run" if paused else "II  Pause"
+	update_time_controls()
 
 func cycle_speed() -> void:
 	speed = 3 if speed == 1 else (6 if speed == 3 else 1)
+	update_time_controls()
+
+func update_time_controls() -> void:
+	if pause_button == null: return
+	pause_button.get_meta("glyph").glyph = "play" if paused else "pause"
+	pause_button.tooltip_text = ("Run time" if paused else "Pause time") + "  [Space]"
+	var pressed = style(Color("6b5a2c") if paused else Color("1a3431"), GOLD if paused else Color("2a4440"))
+	pause_button.add_theme_stylebox_override("normal", pressed)
 	speed_button.text = str(speed) + "×"
+	if time_status != null:
+		time_status.text = "PAUSED" if paused else "RUNNING  %d×" % speed
+		time_status.add_theme_color_override("font_color", GOLD if paused else MINT)
 
 func manual_save() -> void:
 	menu.open("save")
@@ -690,14 +1022,14 @@ func run_leave_action() -> void:
 func return_to_title() -> void:
 	session_started=false
 	paused=true
-	pause_button.text=">  Run"
+	update_time_controls()
 	business.visible=false
 	menu.open("title")
 
-func start_company(company:String,scenario:String,challenge:String,guide:bool=true) -> void:
+func start_company(company:String,scenario:String,challenge:String,guide:bool=true,carried:Array=[]) -> void:
 	menu.loading(10,"Preparing "+Sim.Scenarios.info(scenario).name+"…")
 	await get_tree().process_frame
-	sim.new_game(company,scenario,challenge)
+	sim.new_game(company,scenario,challenge,carried)
 	sim.tutorial.enabled=guide
 	if scenario=="sandbox":
 		sim.cash=1000000
@@ -717,7 +1049,7 @@ func start_company(company:String,scenario:String,challenge:String,guide:bool=tr
 	announced_campaign=false
 	notice_queue.clear()
 	paused=true
-	pause_button.text=">  Run"
+	update_time_controls()
 	session_started=true
 	dirty=true
 	business.visible=false
@@ -745,7 +1077,7 @@ func load_town(path:String,recover:bool=false) -> void:
 	session_started=true
 	dirty=false
 	paused=true
-	pause_button.text=">  Run"
+	update_time_controls()
 	accumulator=0
 	announced_win=sim.won
 	announced_campaign=sim.campaign_won
@@ -774,10 +1106,12 @@ func toggle_sound() -> void:
 	sound_enabled = not sound_enabled
 	settings.sound=sound_enabled
 	settings.save_settings()
-	# Button is the only control with this caption.
-	for p in stage.get_children():
-		for c in p.get_children():
-			if c is Button and c.text.begins_with("Sound "): c.text = "Sound on" if sound_enabled else "Sound off"
+	update_sound_button()
+
+func update_sound_button() -> void:
+	if sound_button == null: return
+	sound_button.get_meta("glyph").glyph = "sound" if sound_enabled else "sound_off"
+	set_caption(sound_button, "Sound" if sound_enabled else "Muted")
 
 func chime() -> void:
 	if not sound_enabled or sound == null: return
@@ -890,8 +1224,10 @@ func apply_settings(resize_window:bool=false,persist:bool=true) -> void:
 		DisplayServer.window_set_size(settings.resolution)
 	apply_text_size(stage)
 	for action in tools_buttons:
-		tools_buttons[action].text=settings.key_label(action)+"  "+{"inspect":"Inspect","buy":"Buy land","demolish":"Bulldoze","datacenter":"Server hall","power":"Power","cooling":"Cooling"}[action]
-	contract_button.text=settings.key_label("contracts")+"  Contracts"
+		set_caption(tools_buttons[action],TOOL_NAMES[action],settings.key_label(action))
+	set_caption(contract_button,"Contracts",settings.key_label("contracts"))
+	update_sound_button()
+	update_time_controls()
 	if town!=null:
 		town.text_scale=settings.ui_scale
 		town.queue_redraw()
@@ -934,16 +1270,17 @@ func handle_operation_alerts() -> void:
 	if not civic_alerts.is_empty():
 		refresh_inspector()
 		for item in civic_alerts: notice_queue.append(Sim.Geography.DISTRICTS[item.ward].name+": "+item.message)
-		if settings.auto_pause:
+		var urgent_civic=civic_alerts.filter(func(a):return not a.get("routine",false))
+		if settings.auto_pause and not urgent_civic.is_empty():
 			if not paused: toggle_pause()
-			open_town(civic_alerts[-1].ward)
+			open_town(urgent_civic[-1].ward)
 		toast(civic_alerts[-1].message)
 	var alerts=sim.take_operation_alerts()
 	if alerts.is_empty(): return
 	for item in alerts: notice_queue.append(item.message)
 	if alerts[-1].lot>=0:
 		selected=int(alerts[-1].lot);town.selected=selected;refresh_inspector()
-	if settings.auto_pause:
+	if settings.auto_pause and alerts.any(func(a):return not a.get("routine",false)):
 		if not paused: toggle_pause()
 		business.open("operations")
 	toast(alerts[-1].message)

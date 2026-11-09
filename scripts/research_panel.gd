@@ -16,6 +16,7 @@ func section(parent:Node,title:String) -> VBoxContainer:
 	panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	var style=game.style(Color("1d3833"))
 	style.content_margin_top=16;style.content_margin_bottom=16
+	style.border_width_left=4;style.border_color=Color("3c6b5a");style.content_margin_left=18
 	panel.add_theme_stylebox_override("panel",style);parent.add_child(panel)
 	var box=VBoxContainer.new();box.add_theme_constant_override("separation",12);panel.add_child(box)
 	copy(box,title,21,game.MINT)

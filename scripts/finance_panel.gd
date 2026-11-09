@@ -71,12 +71,12 @@ func hardware_card(parent:Node,lot:Dictionary) -> void:
 	var preview=game.paragraph(p,"",Rect2(20,137,930,99),14,game.INK)
 	var refit_button=game.button(p,"Refit hall",Rect2(780,86,185,42),func():
 		var profile:String=choices[option.selected]
-		game.ask("Refit server hall?","%s: %s. This hall is offline for %d game hours. Active contracts keep their deadlines.\n\n%s" % [Economy.HARDWARE[profile].name,game.money_detail(Economy.HARDWARE[profile].refit),sim.Workforce.duration(sim,2),Economy.HARDWARE[profile].brief],func():game.complete_action(sim.refit(idx,profile),"Hardware refit started. See the equipment timer for completion.")))
+		game.ask("Refit server hall?","%s: %s. This hall is offline for %d game hours. Active contracts keep their deadlines.\n\n%s" % [Economy.HARDWARE[profile].name,game.money_detail(sim.refit_cost(sim.lots[idx],profile)),sim.Workforce.duration(sim,2),Economy.HARDWARE[profile].brief],func():game.complete_action(sim.refit(idx,profile),"Hardware refit started. See the equipment timer for completion.")))
 	var update_preview=func():
 		var profile:String=choices[option.selected]
 		var candidate=lot.duplicate();candidate.hardware=profile
 		var b=sim.building_stats(candidate)
-		preview.text="%s\nAfter refit: %d compute · %.1f MW · %.1f cooling · %s/h equipment and staff\nRefit cost: %s · %dh downtime · Energy is billed separately" % [Economy.HARDWARE[profile].brief,b.capacity,b.power,b.cooling,game.money_detail(b.upkeep),game.money_detail(Economy.HARDWARE[profile].refit),game.sim.Workforce.duration(game.sim,2)]
+		preview.text="%s\nAfter refit: %d compute · %.1f MW · %.1f cooling · %s/h equipment and staff\nRefit cost: %s · %dh downtime · Condition carries over · Energy is billed separately" % [Economy.HARDWARE[profile].brief,b.capacity,b.power,b.cooling,game.money_detail(b.upkeep),game.money_detail(sim.refit_cost(lot,profile)),game.sim.Workforce.duration(game.sim,2)]
 		refit_button.disabled=profile==lot.get("hardware","balanced") or int(lot.get("refit_until",0))>sim.hour
 	option.item_selected.connect(func(_i):update_preview.call())
 	halls.append({"lot":lot,"status":status,"button":refit_button,"option":option,"choices":choices})
@@ -101,4 +101,4 @@ func update_live() -> void:
 		var remaining=maxi(0,int(lot.get("refit_until",0))-sim.hour)
 		item.status.text=Economy.HARDWARE[lot.get("hardware","balanced")].name+(" · REFITTING · %dh left" % remaining if remaining>0 else " · Ready")
 		var profile:String=item.choices[item.option.selected]
-		item.button.disabled=remaining>0 or profile==lot.get("hardware","balanced") or sim.cash<Economy.HARDWARE[profile].refit
+		item.button.disabled=remaining>0 or profile==lot.get("hardware","balanced") or sim.cash<sim.refit_cost(lot,profile)

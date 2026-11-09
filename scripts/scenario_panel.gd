@@ -13,7 +13,7 @@ func draw(parent:Node) -> void:
 	if info.next!="":
 		box=section(parent,"The next town / a new company chapter")
 		copy(box,"You may continue operating this town after its finale. Moving on starts a fresh company in the next town with its own budget and saves. Save this town before leaving if you want to return.")
-		next_button=action(box,"Continue to "+sim.Scenarios.info(info.next).name,func():game.request_leave(func():game.start_company(sim.company_name,info.next,sim.difficulty,false)))
+		next_button=action(box,"Continue to "+sim.Scenarios.info(info.next).name,func():game.request_leave(func():game.start_company(sim.company_name,info.next,sim.difficulty,false,sim.achievements.duplicate())))
 	update_live()
 func update_live() -> void:
 	var sim=game.sim;var m=sim.metrics()

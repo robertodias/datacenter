@@ -103,7 +103,7 @@ func run() -> void:
 	var prepared=upgraded();var unprepared=upgraded()
 	for company in [prepared,unprepared]: expect(company.accept_contract("robotics")=="","Sign strict customer for the resilience comparison")
 	prepared.operate("battery");prepared.operate("generator");prepared.operate("fuel")
-	for company in [prepared,unprepared]: inject(company,"outage")
+	for company in [prepared,unprepared]: inject(company,"outage",10)
 	for i in range(35): prepared.tick();unprepared.tick()
 	expect("robotics" in prepared.completed and not "robotics" in unprepared.completed,"Resilience changes the strict customer's actual contract outcome")
 	# Exact state resumes under a combined outage, heatwave, fuel draw and service.

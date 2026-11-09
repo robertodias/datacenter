@@ -1,6 +1,6 @@
 extends RefCounted
 const Economy=preload("res://scripts/economy.gd")
-const ROLES={"technicians":{"name":"Technicians","wage":7,"brief":"Each team automatically dispatches one service visit at a time. Normal visit fees still apply; failed equipment and condition below 45% enter the queue."},"engineers":{"name":"Engineers","wage":9,"brief":"Each team removes one hour from new service visits and hardware refits, to a minimum of one hour. Work already underway keeps its agreed duration."},"commercial":{"name":"Commercial staff","wage":6,"brief":"Each team negotiates four extra hours for new project deadlines and 10% lower new failure/cancellation fees. Service durations and existing contracts stay fixed."}}
+const ROLES={"technicians":{"name":"Technicians","wage":7,"brief":"Each team automatically dispatches one service visit at a time. Normal visit fees still apply; failed equipment and condition below 45% enter the queue."},"engineers":{"name":"Engineers","wage":9,"brief":"Each team removes one hour from new service visits and hardware refits, to a minimum of one hour. Work already underway keeps its agreed duration."},"commercial":{"name":"Commercial staff","wage":6,"brief":"Each team negotiates four extra hours for new project deadlines and 10% lower new failure/cancellation fees. Terms last while the teams stay: dismissing them withdraws the extra hours and fee discount."}}
 const PRIORITIES=["Failures first","Utilities first","Halls first"]
 static func fresh() -> Dictionary:
 	return {"technicians":0,"engineers":0,"commercial":0,"priority":"Failures first","jobs":[],"history":[],"next_id":0}
@@ -10,8 +10,29 @@ static func wages(sim) -> float:
 	return total
 static func set_team(sim,role:String,count:int) -> String:
 	if not ROLES.has(role) or count<0 or count>3: return "Choose zero to three teams per role."
+	var added=count-int(sim.workforce.get(role,0))
+	if added>0:
+		var fee=hiring_fee(role)*added
+		if sim.cash<fee: return "Recruiting costs %d per team (12 hours of wages)." % hiring_fee(role)
+		sim.post("staff",-fee,"Recruit %d %s" % [added,ROLES[role].name.to_lower()])
 	sim.workforce[role]=count
+	if role=="commercial": renegotiate(sim,count)
 	return ""
+
+## Commercial terms last only while the teams that negotiated them stay employed.
+static func renegotiate(sim,teams:int) -> void:
+	for c in sim.active:
+		var signed=int(c.get("commercial",0))
+		if teams>=signed: continue
+		var lost=signed-teams
+		if c.type=="project":
+			c.deadline=maxi(1,int(c.deadline)-4*lost);c.remaining=clampi(int(c.remaining)-4*lost,1,int(c.deadline))
+		c.penalty_rate=minf(1.0,float(c.penalty_rate)/(1.0-0.1*signed)*(1.0-0.1*teams))
+		c.commercial=teams
+		sim.notices.append("%s: commercial terms withdrawn with the staff who negotiated them." % c.name)
+static func hiring_fee(role:String) -> int:
+	return ROLES[role].wage*12
+
 static func duration(sim,base:int) -> int:
 	return maxi(1,base-int(sim.workforce.get("engineers",0)))
 static func dispatch(sim,kind:String,site:int,hours:int) -> void:
@@ -32,7 +53,9 @@ static func advance(sim) -> void:
 	if state.technicians<=0: return
 	var occupied=sim.lots.filter(func(lot):return sim.BUILDINGS.has(lot.kind) and int(lot.get("service_until",0))>sim.hour).size()
 	var capacity=int(state.technicians)+(1 if sim.ops.crews else 0)
-	var queue=sim.lots.filter(func(lot):return sim.BUILDINGS.has(lot.kind) and (lot.get("failed",false) or lot.get("condition",100)<45) and int(lot.get("service_until",0))<=sim.hour and int(lot.get("refit_until",0))<=sim.hour)
+	# Preventive visits wait for incidents to clear; failed equipment is always repaired.
+	var hold=sim.Operations.incident_pending(sim)
+	var queue=sim.lots.filter(func(lot):return sim.BUILDINGS.has(lot.kind) and (lot.get("failed",false) or (lot.get("condition",100)<45 and not hold)) and int(lot.get("service_until",0))<=sim.hour and int(lot.get("refit_until",0))<=sim.hour)
 	queue.sort_custom(func(a,b):
 		var left=priority_value(sim,a);var right=priority_value(sim,b)
 		return sim.cell(int(a.x),int(a.y))<sim.cell(int(b.x),int(b.y)) if left==right else left<right)
@@ -40,7 +63,7 @@ static func advance(sim) -> void:
 		if occupied>=capacity: break
 		var index=sim.cell(int(lot.x),int(lot.y))
 		if sim.Operations.act(sim,"service",index)=="":
-			occupied+=1;sim.Operations.alert(sim.ops,"Technician team dispatched to %02d-%02d." % [lot.x+1,lot.y+1],index)
+			occupied+=1;sim.Operations.alert(sim.ops,"Technician team dispatched to %02d-%02d." % [lot.x+1,lot.y+1],index,true)
 static func valid(state) -> bool:
 	if not state is Dictionary or not state.get("priority") in PRIORITIES: return false
 	for role in ROLES:

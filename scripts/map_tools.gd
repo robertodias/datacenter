@@ -78,6 +78,7 @@ func set_layer(value:String) -> void:
 	game.town.overlay=value
 	game.dirty=true
 	game.overlay_legend.text=legend()
+	game.overlay_legend.visible=value!="Town view"
 	if is_instance_valid(layer_legend): layer_legend.text=legend()
 	game.overlay_choice.select(LAYERS.find(value))
 

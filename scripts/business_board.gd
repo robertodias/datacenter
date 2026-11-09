@@ -89,17 +89,26 @@ func refresh() -> void:
 	operations_view=null
 	town_view=null
 	signature=current_signature()
-	var headings={"town":"TOWN COUNCIL","research":"FEED THE AI","workforce":"PEOPLE / STAFFING","scenario":"TOWN CHARTER","tutorial":"FIRST STEPS","clients":"MEET YOUR CUSTOMERS","achievements":"COMPANY ACHIEVEMENTS"}
-	game.label(body,headings.get(tab,"CAMPUS OPERATIONS"),Rect2(24,17,650,35),26)
-	game.button(body,"Close  ·  Esc",Rect2(890,20,145,36),func():visible=false)
+	var headings={"offers":"CUSTOMER CONTRACTS","active":"ACTIVE CONTRACTS","company":"COMPANY","finance":"FINANCES","operations":"CAMPUS OPERATIONS","town":"TOWN COUNCIL","research":"RESEARCH  /  FEED THE AI","workforce":"PEOPLE  /  STAFFING","scenario":"TOWN CHARTER","tutorial":"FIRST STEPS","clients":"MEET YOUR CUSTOMERS","achievements":"COMPANY ACHIEVEMENTS"}
+	var glyphs={"offers":"contracts","active":"check","company":"company","finance":"cash","operations":"operations","town":"council","research":"research","workforce":"people","scenario":"flag","tutorial":"guide","clients":"company","achievements":"trophy"}
+	game.icon(body,glyphs.get(tab,"company"),Rect2(24,20,30,30),game.MINT)
+	game.label(body,headings.get(tab,"COMPANY"),Rect2(64,17,680,35),26)
+	var close=game.button(body,"Close  ·  Esc",Rect2(890,20,145,36),func():visible=false)
+	close.tooltip_text="Return to the town"
 	summary=game.label(body,"",Rect2(25,61,1010,28),14,game.MINT)
-	game.button(body,"Offers",Rect2(25,105,130,40),func():tab="offers";refresh(),tab=="offers")
-	game.button(body,"Active",Rect2(165,105,130,40),func():tab="active";refresh(),tab=="active")
-	game.button(body,"Company",Rect2(305,105,135,40),func():tab="company";refresh(),tab in ["company","town","research","workforce","scenario","tutorial","clients","achievements"])
-	game.button(body,"Finances",Rect2(450,105,130,40),func():tab="finance";refresh(),tab=="finance")
-	game.button(body,"Operations",Rect2(590,105,145,40),func():tab="operations";refresh(),tab=="operations")
-	run_button=game.button(body,"",Rect2(752,105,160,40),func():game.toggle_pause();update_live())
-	game.button(body,"Speed",Rect2(922,105,113,40),func():game.cycle_speed();update_live())
+	var company_tabs=["company","town","research","workforce","scenario","tutorial","clients","achievements"]
+	tab_button("Offers","contracts",Rect2(25,105,130,40),"offers",tab=="offers")
+	tab_button("Active","check",Rect2(161,105,130,40),"active",tab=="active")
+	tab_button("Company","company",Rect2(297,105,140,40),"company",tab in company_tabs)
+	tab_button("Finances","cash",Rect2(443,105,140,40),"finance",tab=="finance")
+	tab_button("Operations","operations",Rect2(589,105,152,40),"operations",tab=="operations")
+	run_button=game.button(body,"",Rect2(812,105,118,40),func():game.toggle_pause();update_live())
+	run_button.set_meta("glyph",game.icon(run_button,"play",Rect2(12,11,18,18)))
+	var speed=game.button(body,"Speed",Rect2(936,105,99,40),func():game.cycle_speed();update_live())
+	speed.tooltip_text="Cycle 1x / 3x / 6x  [F4]"
+	if tab in company_tabs and tab!="company":
+		var back=game.button(body,"<  Company",Rect2(752,20,130,36),func():tab="company";refresh())
+		back.tooltip_text="Back to the company overview"
 	var scroll=ScrollContainer.new()
 	content_scroll=scroll
 	scroll.position=Vector2(25,160)
@@ -158,8 +167,22 @@ func refresh() -> void:
 	update_live()
 	if previous_scroll>0: call_deferred("restore_scroll",previous_scroll,render_generation)
 
+func tab_button(text:String,glyph:String,rect:Rect2,target:String,active:bool) -> Button:
+	var b=game.button(body,text,rect,func():tab=target;refresh(),active)
+	for state in ["normal","hover","pressed","focus","disabled"]:
+		var sb=b.get_theme_stylebox(state).duplicate();sb.content_margin_left=34;b.add_theme_stylebox_override(state,sb)
+	game.icon(b,glyph,Rect2(12,11,18,18),Color("152d2c") if active else game.MINT)
+	return b
+
+## Accent stripe on the left edge groups each card visually, like a ledger row.
+static func accent(sb:StyleBoxFlat,color:Color=Color("3c6b5a")) -> StyleBoxFlat:
+	sb.border_width_left=4
+	sb.border_color=color
+	return sb
+
 func card(parent:Node,height:float) -> Panel:
 	var p=game.panel(parent,Rect2(0,0,990,height),Color("1d3833"))
+	p.add_theme_stylebox_override("panel",accent(p.get_theme_stylebox("panel").duplicate()))
 	p.custom_minimum_size=Vector2(970,height)
 	p.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	return p
@@ -169,24 +192,24 @@ func offer_card(parent:Node,c:Dictionary) -> void:
 	var box=ui.section(parent,c.name)
 	ui.copy(box,c.client.to_upper()+" / "+Economy.WORKLOADS[c.workload].name.to_upper()+" / "+c.type.to_upper(),12,game.MINT)
 	ui.copy(box,c.brief,15)
-	var terms="%d reserved compute · %d work · %dh deadline" % [c.compute,c.work,c.deadline]
-	if c.type=="service": terms="%d reserved compute · %dh service · %d%% delivery required" % [c.compute,c.deadline,roundi(c.min_delivery*100)]
-	ui.copy(box,terms,14)
-	var payment="Delivery payout: "+game.money(c.reward)
-	if c.type=="service": payment="Base hourly: %s + %s completion bonus" % [game.money(c.compute*c.rate),game.money(c.reward)]
-	ui.copy(box,payment,15,game.GOLD)
+	var facts=[["RESERVES","%d compute" % c.compute],["DEADLINE","%dh" % c.deadline]]
+	if c.type=="service": facts+= [["DELIVERY","%d%% required" % roundi(c.min_delivery*100)],["PAYS","%s/h + %s bonus" % [game.money(c.compute*c.rate),game.money(c.reward)]]]
+	else: facts+= [["WORK","%d compute-h" % c.work],["PAYS ON DELIVERY",game.money(c.reward)]]
+	fact_row(box,facts)
 	var quote=ui.copy(box,"",14)
 	ui.copy(box,Economy.WORKLOADS[c.workload].brief,13,game.MUTED)
 	var reason=ui.copy(box,"",13,game.MUTED)
 	var actions=HBoxContainer.new();actions.add_theme_constant_override("separation",12);box.add_child(actions)
 	var b=ui.action(actions,"Review & sign",func():review_contract(c))
 	ui.action(actions,"About "+c.client,func():client_filter=c.client;open("clients"))
-	bindings.append({"type":"offer","button":b,"c":c,"reason":reason,"quote":quote})
+	bindings.append({"type":"offer","button":b,"c":c,"reason":reason,"quote":quote,"card":box.get_parent()})
 
-func review_contract(c:Dictionary) -> void:
+func review_contract(offered:Dictionary) -> void:
+	var c:Dictionary=game.sim.contract_definition(offered.id)
+	if c.is_empty(): c=offered
 	var q=game.sim.contract_quote(c)
 	var risk="Worst-case deadline slack: %dh" % q.slack if c.type=="project" else "Delivery requirement: %d%%" % roundi(c.min_delivery*100)
-	game.ask("Sign "+c.name+"?","Reserve up to %d physical compute. Estimated delivery: %.1f work/h.\nContribution versus spot: %s/h (project payouts averaged).\nCampus cash flow while working: %s/h; bonuses pay later.\n%s. Failure / cancellation fee: %s.\nLate: -5 reputation. Cancellation: -3 reputation.\n%s\n\n%s\n\nExisting campus uses %.1f MW and %.1f cooling. Signing uses those machines; no new construction is included." % [c.compute,q.delivery,game.money_detail(q.margin),game.money_detail(q.cash_profit),risk,game.money(q.penalty),q.warning,Economy.WORKLOADS[c.workload].brief,q.power,q.cooling],func():game.complete_action(game.sim.accept_contract(c.id),"Signed: "+c.name))
+	game.ask("Sign "+c.name+"?","Reserve up to %d physical compute. Estimated delivery: %.1f work/h.\nContribution versus spot: %s/h (project payouts averaged).\nCampus cash flow while working: %s/h; bonuses pay later.\n%s. Failure / cancellation fee: %s.\nReputation %d: payouts x%.3f. Late: -5 reputation. Cancelling: -3, or -5 in the final quarter of the term.\n%s\n\n%s\n\nExisting campus uses %.1f MW and %.1f cooling. Signing uses those machines; no new construction is included." % [c.compute,q.delivery,game.money_detail(q.margin),game.money_detail(q.cash_profit),risk,game.money(q.penalty),game.sim.reputation,game.sim.reputation_factor(),q.warning,Economy.WORKLOADS[c.workload].brief,q.power,q.cooling],func():game.complete_action(game.sim.accept_contract(c.id),"Signed: "+c.name))
 
 func active_card(parent:Node,c:Dictionary) -> void:
 	var p=card(parent,236)
@@ -202,7 +225,7 @@ func active_card(parent:Node,c:Dictionary) -> void:
 	p.add_child(bar)
 	var status=game.label(p,"",Rect2(20,118,720,26),14)
 	game.label(p,"%s %s" % ["On delivery:" if c.type=="project" else "Completion bonus:",game.money(c.reward)],Rect2(20,154,720,24),14,game.GOLD)
-	game.button(p,"Cancel contract",Rect2(780,63,185,43),func():game.ask("Cancel "+c.name+"?","Cancellation fee: %s. Reputation: -3." % game.money(roundi(c.reward*c.penalty_rate)),func():game.complete_action(game.sim.cancel_contract(c.id),"Contract cancelled.");refresh()))
+	game.button(p,"Cancel contract",Rect2(780,63,185,43),func():game.ask("Cancel "+c.name+"?","Cancellation fee: %s. Reputation: -%d%s." % [game.money(roundi(c.reward*c.penalty_rate)),game.sim.cancel_reputation(c)," (final quarter counts as a missed deadline)" if game.sim.cancel_reputation(c)==5 else ""],func():game.complete_action(game.sim.cancel_contract(c.id),"Contract cancelled.");refresh()))
 	game.button(p,"↑ Up",Rect2(780,120,88,36),func():game.complete_action(game.sim.prioritize(c.id,-1),"Contract moved earlier in the queue."))
 	game.button(p,"↓ Down",Rect2(878,120,87,36),func():game.complete_action(game.sim.prioritize(c.id,1),"Contract moved later in the queue."))
 	game.paragraph(p,"Fee: "+game.money(roundi(c.reward*c.penalty_rate)),Rect2(780,173,185,43),12)
@@ -231,7 +254,7 @@ func company_cards(parent:Node) -> void:
 	game.button(council_card,"Open council",Rect2(780,17,185,38),func():game.open_town())
 	var p=card(parent,145)
 	game.label(p,sim.Scenarios.info(sim.scenario_id).name.to_upper()+" COMPLETE" if sim.campaign_won else sim.company_name,Rect2(20,12,800,30),23,game.GOLD if sim.campaign_won else game.INK)
-	game.label(p,"%d / 8 customers delivered  ·  Reputation %d / 100  ·  Technology tier %d" % [sim.campaign_count(),sim.reputation,sim.tech_level()],Rect2(20,51,930,26),16,game.MINT)
+	game.label(p,"%d / 8 delivered  ·  Reputation %d / 100 (new contracts pay %+.1f%%)  ·  Tier %d" % [sim.campaign_count(),sim.reputation,(sim.reputation_factor()-1.0)*100,sim.tech_level()],Rect2(20,51,930,26),16,game.MINT)
 	game.paragraph(p,"The town charter is complete. Continue with new commissions, or open Town charter to move on." if sim.campaign_won else sim.Scenarios.info(sim.scenario_id).goal,Rect2(20,88,920,48),15)
 	var goals=[
 		["First campus","Earn $1,200 from operating servers.","campus",2000],
@@ -249,11 +272,26 @@ func company_cards(parent:Node) -> void:
 	game.paragraph(p,"A $1,000 community grant restores 10 public approval. Available once every 24 game hours.",Rect2(20,52,700,50),14)
 	game.button(p,"Invest $1,000",Rect2(780,35,185,43),func():game.complete_action(sim.invest_community(),"Community investment: +10 approval.");refresh())
 
+## Key contract terms as a row of labelled boxes, so they scan like a spec sheet.
+func fact_row(parent:Node,facts:Array) -> void:
+	var row=HBoxContainer.new();row.add_theme_constant_override("separation",10);parent.add_child(row)
+	for fact in facts:
+		var cell=PanelContainer.new();cell.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		var sb=game.style(Color("15302c"),Color("2a4a43"),8);sb.content_margin_top=6;sb.content_margin_bottom=6
+		cell.add_theme_stylebox_override("panel",sb);row.add_child(cell)
+		var stack=VBoxContainer.new();stack.add_theme_constant_override("separation",0);cell.add_child(stack)
+		var cap=Label.new();cap.text=fact[0];cap.add_theme_color_override("font_color",game.MUTED)
+		cap.set_meta("base_font_size",11);cap.add_theme_font_size_override("font_size",roundi(11*game.settings.ui_scale));stack.add_child(cap)
+		var value=Label.new();value.text=fact[1];value.add_theme_color_override("font_color",game.GOLD if fact[0].begins_with("PAYS") else game.INK)
+		value.set_meta("base_font_size",16);value.add_theme_font_size_override("font_size",roundi(16*game.settings.ui_scale));stack.add_child(value)
+
 func update_live() -> void:
 	if summary==null: return
 	var m=game.sim.metrics()
 	summary.text="Cash %s   ·   Online %d   ·   Reserved %d   ·   Free %d   ·   Net %s / h   ·   Slots %d / 3" % [game.money(game.sim.cash),m.compute,m.reserved,m.free,game.money(m.profit),game.sim.active.size()]
-	run_button.text=("Run" if game.paused else "Pause")+"  ·  "+str(game.speed)+"x"
+	run_button.text="      "+("Run" if game.paused else "Pause")+"  "+str(game.speed)+"×"
+	run_button.get_meta("glyph").glyph="play" if game.paused else "pause"
+	run_button.add_theme_stylebox_override("normal",game.style(Color("6b5a2c") if game.paused else Color("203c37"),game.GOLD if game.paused else Color("314b46")))
 	for b in bindings:
 		var c:Dictionary=b.c
 		if b.type=="offer":
@@ -264,9 +302,13 @@ func update_live() -> void:
 			b.button.disabled=reason!=""
 			b.reason.text=reason if reason!="" else "Reserve %d compute\nFee: %s" % [c.compute,game.money(roundi(c.reward*c.penalty_rate))]
 			if reason!="":
-				b.quote.text="Delivery estimate available when this contract can be signed.\n"+reason+". Review capacity and existing commitments first."
+				b.quote.text="Delivery estimate appears once this contract can be signed."
 				b.quote.add_theme_color_override("font_color",game.MUTED)
+				b.reason.add_theme_color_override("font_color",game.GOLD)
+				b.card.modulate.a=0.62 if reason.begins_with("Unlocks") else 1.0
 				continue
+			b.reason.add_theme_color_override("font_color",game.MUTED)
+			b.card.modulate.a=1.0
 			var q=game.sim.contract_quote(c)
 			b.quote.text="Contribution vs spot %s/h · Campus cash net %s/h\n%.1f work/h · %s" % [game.money_detail(q.margin),game.money_detail(q.cash_profit),q.delivery,("ETA %dh · worst slack %dh" % [q.eta,q.slack]) if c.type=="project" else "Bonus requires %d%% of promised work" % roundi(c.min_delivery*100)]
 			if not q.warning.is_empty(): b.reason.text+="\nIncident warning: review Operations"
