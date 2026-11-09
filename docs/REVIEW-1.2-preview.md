@@ -49,41 +49,46 @@ New files: `scripts/ui_icon.gd` (28 vector glyphs drawn in code), `scripts/ui_me
 
 Regression coverage: `tests/test_review_fixes.gd`.
 
-## Open design recommendations (not changed)
+## Design changes applied (follow-up)
 
-These change balance or game feel, so they are left for a decision:
+| Issue | Change |
+| --- | --- |
+| Critical services could not recover from one lost hour | Services behind schedule catch up with spare (spot) compute, up to 125% of their hourly promise, never taking another contract's reservation. A long outage still forfeits the bonus. |
+| Reputation was never used | Starts at 30; sets pay on newly signed contracts from -7.5% (0) to +17.5% (100). Cancelling in the final quarter costs 5, like a missed deadline. Older saves are lifted to the new baseline. |
+| Post-campaign commissions paid below spot | Reward raised to $26,000 for 18,000 work (about $1.44 per unit). |
+| Reliability promises were free | Negotiation requires an ongoing disruption; the promise is judged against the value the concern would fade to by itself (no further disruption). |
+| Generators acted as permanent grid capacity | Generators run only during grid incidents. |
+| Backup capped at three modules | Three battery and three generator modules per owned substation, up to 12. |
 
-1. **Critical services cannot recover from one lost hour.** Work equals compute × deadline,
-   so 99% delivery allows 0.36h of shortfall; a single refit or heatwave hour fails the
-   contract. Allow ~1.25× catch-up while behind, or set work to compute × (deadline − 1).
-2. **Reputation is never used.** Missed/cancelled contracts lose reputation with no effect,
-   so cancelling a doomed contract in its last hour is always right. Make it affect offers
-   or fees, or remove it.
-3. **Post-campaign commissions pay below spot** ($1.11 per work unit vs $1.20 spot) on
-   balanced hardware. Raise rewards or scale them by tier.
-4. **Negotiating about reliability is a free win:** the concern decays to 37.5% in 24h,
-   below the 65% promise target, without any action. Judge promises on the cause, not decay.
-5. **Generators act as permanent grid capacity** and avoid civic grid strain. Dispatch them
-   only during grid incidents, or count their output as strain and noise.
-6. **Civic standing never recovers on its own** and the trust concern applies town-wide.
-7. **Backup is capped at 3 modules** regardless of campus size; late-game outages cannot be
-   covered. Scale the cap with substations or tier.
-8. **Preventive crews rarely pay off** ($3/h per building saves ~$0.43/h on a tier 1 hall).
-9. **Oldbridge memorial** removes 1 heritage loss but demolition adds 2; guide says it restores one monument.
-10. **Rescue grant** only needs cash below $2,000; **loans** have no term. Both make early
-    borrowing the dominant opening.
-11. **Engineers 2–3** only shorten 4h repairs; **technician capacity** counts manual/crew visits.
-12. **Research share** can be raised after signing with no warning that contracts will miss targets.
-13. **HUMAN_TOUCH achievement** counts manual visits; tag technician dispatches.
-14. **Mobile cooling** ignores heat and Sunsprawl penalties and uses little water.
-15. **Pre-v10 migrated saves** judge distinctions at load time rather than at the finale.
+## Map changes
+
+- Selection, hover and placement outlines and the town boundary are drawn at ground level,
+  beneath buildings, trees and people; only the floating marker stays on top.
+- The countryside outside the 16 x 16 town is veiled and its scenery dimmed, with a gold
+  double border, so the playable area reads at a glance (as with land beyond a park
+  boundary). It is decoration that fills any screen, not more city.
+- The camera keeps the middle of the view inside the town footprint (scaled with zoom),
+  so you cannot pan off into empty countryside but can still reach edge plots.
+
+## Remaining recommendations (not changed)
+
+1. **Civic standing never recovers on its own** and the trust concern applies town-wide.
+2. **Preventive crews rarely pay off** ($3/h per building saves ~$0.43/h on a tier 1 hall).
+3. **Oldbridge memorial** removes 1 heritage loss but demolition adds 2; guide says it restores one monument.
+4. **Rescue grant** only needs cash below $2,000; **loans** have no term.
+5. **Engineers 2–3** only shorten 4h repairs; **technician capacity** counts manual/crew visits.
+6. **Research share** can be raised after signing with no warning that contracts will miss targets.
+7. **HUMAN_TOUCH achievement** counts manual visits; tag technician dispatches.
+8. **Mobile cooling** ignores heat and Sunsprawl penalties and uses little water.
+9. **Pre-v10 migrated saves** judge distinctions at load time rather than at the finale.
 
 ## Verification
 
-All headless suites pass on this branch (946 checks, 0 failures): balance 114, civic 61,
-clients 51, economy 168, front door 44, geography 46, interface 96, operations 39,
-presentation 20, progression 63, release soak 12, research 50, scenarios 58, simulation 31,
-tutorial 17, visual review 15, workforce 33, and the new review-fixes suite 28. Balance
-routes stay solvent with the recruiting fee and corrected power accounting. The new HUD,
-board, dialogs and title were rendered at 1920×1080 and inspected. Human playtesting and the
-packaged-executable probes (`packaged_journey`, `fullscreen_probe`) were not rerun.
+All 18 headless suites pass after the follow-up (960 checks, 0 failures), including
+balance (five full-campaign strategies stay solvent), economy 170, progression 64 and
+review fixes 39. Tests that encoded the old "one lost hour always fails" rule now check
+both cases: a short interruption is recovered from spare compute, a long one still fails.
+A test export embeds the brand icon and product name in the Windows executable. Title,
+loading, pause, HUD, zoomed-out map and selection were rendered at 1920×1080 and inspected.
+`packaged_journey` / `fullscreen_probe` were not rerun against a new export, and there has
+been no human playtest yet.

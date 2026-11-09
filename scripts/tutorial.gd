@@ -16,7 +16,7 @@ static func mark(sim,id:String) -> void:
 static func capture(sim) -> void:
 	if sim.bought: mark(sim,"buy")
 	if sim.cleared: mark(sim,"clear")
-	if sim.built and sim.metrics().compute>0: mark(sim,"build")
+	if sim.built and sim.metrics().compute>0: mark(sim,"clear");mark(sim,"build")
 	if sim.won: mark(sim,"revenue")
 	if not sim.active.is_empty() or not sim.completed.is_empty(): mark(sim,"customer")
 	if sim.lots.any(func(lot):return lot.kind in sim.BUILDINGS and lot.level>1): mark(sim,"upgrade")

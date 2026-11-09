@@ -209,7 +209,7 @@ func review_contract(offered:Dictionary) -> void:
 	if c.is_empty(): c=offered
 	var q=game.sim.contract_quote(c)
 	var risk="Worst-case deadline slack: %dh" % q.slack if c.type=="project" else "Delivery requirement: %d%%" % roundi(c.min_delivery*100)
-	game.ask("Sign "+c.name+"?","Reserve up to %d physical compute. Estimated delivery: %.1f work/h.\nContribution versus spot: %s/h (project payouts averaged).\nCampus cash flow while working: %s/h; bonuses pay later.\n%s. Failure / cancellation fee: %s.\nLate: -5 reputation. Cancellation: -3 reputation.\n%s\n\n%s\n\nExisting campus uses %.1f MW and %.1f cooling. Signing uses those machines; no new construction is included." % [c.compute,q.delivery,game.money_detail(q.margin),game.money_detail(q.cash_profit),risk,game.money(q.penalty),q.warning,Economy.WORKLOADS[c.workload].brief,q.power,q.cooling],func():game.complete_action(game.sim.accept_contract(c.id),"Signed: "+c.name))
+	game.ask("Sign "+c.name+"?","Reserve up to %d physical compute. Estimated delivery: %.1f work/h.\nContribution versus spot: %s/h (project payouts averaged).\nCampus cash flow while working: %s/h; bonuses pay later.\n%s. Failure / cancellation fee: %s.\nReputation %d: payouts x%.3f. Late: -5 reputation. Cancelling: -3, or -5 in the final quarter of the term.\n%s\n\n%s\n\nExisting campus uses %.1f MW and %.1f cooling. Signing uses those machines; no new construction is included." % [c.compute,q.delivery,game.money_detail(q.margin),game.money_detail(q.cash_profit),risk,game.money(q.penalty),game.sim.reputation,game.sim.reputation_factor(),q.warning,Economy.WORKLOADS[c.workload].brief,q.power,q.cooling],func():game.complete_action(game.sim.accept_contract(c.id),"Signed: "+c.name))
 
 func active_card(parent:Node,c:Dictionary) -> void:
 	var p=card(parent,236)
@@ -225,7 +225,7 @@ func active_card(parent:Node,c:Dictionary) -> void:
 	p.add_child(bar)
 	var status=game.label(p,"",Rect2(20,118,720,26),14)
 	game.label(p,"%s %s" % ["On delivery:" if c.type=="project" else "Completion bonus:",game.money(c.reward)],Rect2(20,154,720,24),14,game.GOLD)
-	game.button(p,"Cancel contract",Rect2(780,63,185,43),func():game.ask("Cancel "+c.name+"?","Cancellation fee: %s. Reputation: -3." % game.money(roundi(c.reward*c.penalty_rate)),func():game.complete_action(game.sim.cancel_contract(c.id),"Contract cancelled.");refresh()))
+	game.button(p,"Cancel contract",Rect2(780,63,185,43),func():game.ask("Cancel "+c.name+"?","Cancellation fee: %s. Reputation: -%d%s." % [game.money(roundi(c.reward*c.penalty_rate)),game.sim.cancel_reputation(c)," (final quarter counts as a missed deadline)" if game.sim.cancel_reputation(c)==5 else ""],func():game.complete_action(game.sim.cancel_contract(c.id),"Contract cancelled.");refresh()))
 	game.button(p,"↑ Up",Rect2(780,120,88,36),func():game.complete_action(game.sim.prioritize(c.id,-1),"Contract moved earlier in the queue."))
 	game.button(p,"↓ Down",Rect2(878,120,87,36),func():game.complete_action(game.sim.prioritize(c.id,1),"Contract moved later in the queue."))
 	game.paragraph(p,"Fee: "+game.money(roundi(c.reward*c.penalty_rate)),Rect2(780,173,185,43),12)
@@ -254,7 +254,7 @@ func company_cards(parent:Node) -> void:
 	game.button(council_card,"Open council",Rect2(780,17,185,38),func():game.open_town())
 	var p=card(parent,145)
 	game.label(p,sim.Scenarios.info(sim.scenario_id).name.to_upper()+" COMPLETE" if sim.campaign_won else sim.company_name,Rect2(20,12,800,30),23,game.GOLD if sim.campaign_won else game.INK)
-	game.label(p,"%d / 8 customers delivered  ·  Reputation %d / 100  ·  Technology tier %d" % [sim.campaign_count(),sim.reputation,sim.tech_level()],Rect2(20,51,930,26),16,game.MINT)
+	game.label(p,"%d / 8 delivered  ·  Reputation %d / 100 (new contracts pay %+.1f%%)  ·  Tier %d" % [sim.campaign_count(),sim.reputation,(sim.reputation_factor()-1.0)*100,sim.tech_level()],Rect2(20,51,930,26),16,game.MINT)
 	game.paragraph(p,"The town charter is complete. Continue with new commissions, or open Town charter to move on." if sim.campaign_won else sim.Scenarios.info(sim.scenario_id).goal,Rect2(20,88,920,48),15)
 	var goals=[
 		["First campus","Earn $1,200 from operating servers.","campus",2000],

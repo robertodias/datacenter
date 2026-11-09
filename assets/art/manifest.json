@@ -1,0 +1,6861 @@
+[
+  {
+    "key": "rubble_0",
+    "file": "construction/rubble_0.png",
+    "category": "construction",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "low pile of broken red bricks, pale concrete and short steel beams on a dirt diamond",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "rubble_1",
+    "file": "construction/rubble_1.png",
+    "category": "construction",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "different low demolition rubble pile, grey concrete, splintered timber and bent beams on dirt diamond",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "site_crane",
+    "file": "construction/site_crane.png",
+    "category": "construction",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "isolated tower crane, mast anchored at right/back corner of plot, horizontal jib pointing left, cable and visible hook, stay wholly inside horizontal footprint limits",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "hook": [
+      109,
+      119
+    ],
+    "layer": "behind_structure"
+  },
+  {
+    "key": "site_foundation",
+    "file": "construction/site_foundation.png",
+    "category": "construction",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cleared dirt pad, flat concrete slab, corner stakes and a small site fence",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "site_frame_high",
+    "file": "construction/site_frame_high.png",
+    "category": "construction",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "three-storey steel frame, scaffolding and teal safety netting, footprint slab",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "site_frame_low",
+    "file": "construction/site_frame_low.png",
+    "category": "construction",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "one storey steel frame on concrete slab, stacked planks and beams",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "crossing_x",
+    "file": "ground/crossing_x.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat asphalt road upper-left to lower-right with ivory sidewalks and bold zebra crossing perpendicular to road",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "crossing_y",
+    "file": "ground/crossing_y.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat asphalt road upper-right to lower-left with ivory sidewalks and bold zebra crossing perpendicular to road",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "dirt_0",
+    "file": "ground/dirt_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cleared brown construction soil with subtle wheel wear; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "dry_grass_0",
+    "file": "ground/dry_grass_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet golden dry grass and muted olive tufts; distinct subtle variation 0, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "dry_grass_1",
+    "file": "ground/dry_grass_1.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet golden dry grass and muted olive tufts; distinct subtle variation 1, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "dry_grass_2",
+    "file": "ground/dry_grass_2.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet golden dry grass and muted olive tufts; distinct subtle variation 2, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "dry_grass_3",
+    "file": "ground/dry_grass_3.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet golden dry grass and muted olive tufts; distinct subtle variation 3, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "farm_rows_0",
+    "file": "ground/farm_rows_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cultivated dark soil with tidy parallel green crop rows ending before edges; distinct subtle variation 0, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "farm_rows_1",
+    "file": "ground/farm_rows_1.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cultivated dark soil with tidy parallel green crop rows ending before edges; distinct subtle variation 1, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "farm_rows_2",
+    "file": "ground/farm_rows_2.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cultivated dark soil with tidy parallel green crop rows ending before edges; distinct subtle variation 2, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "field_fallow_0",
+    "file": "ground/field_fallow_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "fallow golden field with subtle stubble patches; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "grass_0",
+    "file": "ground/grass_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet meadow-green grass with sparse grouped tufts and clover; distinct subtle variation 0, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "grass_1",
+    "file": "ground/grass_1.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet meadow-green grass with sparse grouped tufts and clover; distinct subtle variation 1, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "grass_2",
+    "file": "ground/grass_2.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet meadow-green grass with sparse grouped tufts and clover; distinct subtle variation 2, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "grass_3",
+    "file": "ground/grass_3.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet meadow-green grass with sparse grouped tufts and clover; distinct subtle variation 3, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "grass_4",
+    "file": "ground/grass_4.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet meadow-green grass with sparse grouped tufts and clover; distinct subtle variation 4, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "grass_5",
+    "file": "ground/grass_5.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet meadow-green grass with sparse grouped tufts and clover; distinct subtle variation 5, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "junction_0",
+    "file": "ground/junction_0.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat four-way asphalt intersection, road mouths centered on all four diamond sides, corner ivory sidewalks; no text",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "lot_owned",
+    "file": "ground/lot_owned.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet grassy buildable plot with crisp MINT survey border INSET 6 final pixels; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "lot_unowned",
+    "file": "ground/lot_unowned.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "quiet grassy buildable plot with faint IVORY survey border INSET 6 final pixels; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "meadow_0",
+    "file": "ground/meadow_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "green grass with sparse tiny grouped wildflowers; distinct subtle variation 0, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "meadow_1",
+    "file": "ground/meadow_1.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "green grass with sparse tiny grouped wildflowers; distinct subtle variation 1, no busy texture, zero thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "orchard_0",
+    "file": "ground/orchard_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "orchard ground with regular low green planting circles, no standing trees; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "plaza_cobble_0",
+    "file": "ground/plaza_cobble_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "warm grey cobblestone plaza, broad readable stone groups; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "plaza_cobble_1",
+    "file": "ground/plaza_cobble_1.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "slightly mossy warm grey cobblestone plaza; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "road_bus_stop_x",
+    "file": "ground/road_bus_stop_x.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat asphalt road upper-left to lower-right, ivory sidewalks, small paved lay-by inset on one side; NO lettering or painted words",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "road_x_0",
+    "file": "ground/road_x_0.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat asphalt road running upper-left to lower-right, ivory sidewalks either side, restrained amber dashed centre line, wear variant 0, reaches opposite diamond edges exactly",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "road_x_1",
+    "file": "ground/road_x_1.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat asphalt road running upper-left to lower-right, ivory sidewalks either side, restrained amber dashed centre line, wear variant 1, reaches opposite diamond edges exactly",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "road_y_0",
+    "file": "ground/road_y_0.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat asphalt road running upper-right to lower-left, ivory sidewalks either side, restrained amber dashed centre line, wear variant 0, reaches opposite diamond edges exactly",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "road_y_1",
+    "file": "ground/road_y_1.png",
+    "category": "road",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat asphalt road running upper-right to lower-left, ivory sidewalks either side, restrained amber dashed centre line, wear variant 1, reaches opposite diamond edges exactly",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "sand_0",
+    "file": "ground/sand_0.png",
+    "category": "ground",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "muted pale golden sand; flat, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_balanced_t1_off",
+    "file": "halls/hall_balanced_t1_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        131,
+        140,
+        15
+      ],
+      [
+        103,
+        154,
+        15
+      ],
+      [
+        159,
+        154,
+        15
+      ],
+      [
+        132,
+        166,
+        15
+      ]
+    ],
+    "steam": [],
+    "notes": "ONE low single-storey hall, very broad low roof, 30px wall height, highest point near final y110; warm ivory panels, deep teal framing and mint vent bars; tidy four-fan roof grid. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_balanced_t1_on",
+    "file": "halls/hall_balanced_t1_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        131,
+        140,
+        15
+      ],
+      [
+        103,
+        154,
+        15
+      ],
+      [
+        159,
+        154,
+        15
+      ],
+      [
+        132,
+        166,
+        15
+      ]
+    ],
+    "steam": [],
+    "notes": "ONE low single-storey hall, very broad low roof, 30px wall height, highest point near final y110; warm ivory panels, deep teal framing and mint vent bars; tidy four-fan roof grid. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_balanced_t2_off",
+    "file": "halls/hall_balanced_t2_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        117,
+        101,
+        12
+      ],
+      [
+        99,
+        112,
+        12
+      ],
+      [
+        141,
+        109,
+        12
+      ],
+      [
+        123,
+        120,
+        12
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; warm ivory panels, deep teal framing and mint vent bars; tidy four-fan roof grid. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_balanced_t2_on",
+    "file": "halls/hall_balanced_t2_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        117,
+        101,
+        12
+      ],
+      [
+        99,
+        112,
+        12
+      ],
+      [
+        141,
+        109,
+        12
+      ],
+      [
+        123,
+        120,
+        12
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; warm ivory panels, deep teal framing and mint vent bars; tidy four-fan roof grid. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_balanced_t3_off",
+    "file": "halls/hall_balanced_t3_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        125,
+        29,
+        13
+      ],
+      [
+        105,
+        41,
+        13
+      ],
+      [
+        150,
+        39,
+        13
+      ],
+      [
+        130,
+        51,
+        13
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; warm ivory panels, deep teal framing and mint vent bars; tidy four-fan roof grid. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_balanced_t3_on",
+    "file": "halls/hall_balanced_t3_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        125,
+        29,
+        13
+      ],
+      [
+        105,
+        41,
+        13
+      ],
+      [
+        150,
+        39,
+        13
+      ],
+      [
+        130,
+        51,
+        13
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; warm ivory panels, deep teal framing and mint vent bars; tidy four-fan roof grid. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_efficient_t1_off",
+    "file": "halls/hall_efficient_t1_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        92,
+        147,
+        16
+      ],
+      [
+        119,
+        133,
+        16
+      ]
+    ],
+    "steam": [],
+    "notes": "ONE low single-storey hall, very broad low roof, 30px wall height, highest point near final y110; sleek light ivory and pale glass, planted green roof plus two dark solar panels, only TWO large fans and closed-loop teal piping. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_efficient_t1_on",
+    "file": "halls/hall_efficient_t1_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        92,
+        147,
+        16
+      ],
+      [
+        119,
+        133,
+        16
+      ]
+    ],
+    "steam": [],
+    "notes": "ONE low single-storey hall, very broad low roof, 30px wall height, highest point near final y110; sleek light ivory and pale glass, planted green roof plus two dark solar panels, only TWO large fans and closed-loop teal piping. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_efficient_t2_off",
+    "file": "halls/hall_efficient_t2_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        92,
+        100,
+        13
+      ],
+      [
+        113,
+        90,
+        13
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; sleek light ivory and pale glass, planted green roof plus two dark solar panels, only TWO large fans and closed-loop teal piping. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_efficient_t2_on",
+    "file": "halls/hall_efficient_t2_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        92,
+        100,
+        13
+      ],
+      [
+        113,
+        90,
+        13
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; sleek light ivory and pale glass, planted green roof plus two dark solar panels, only TWO large fans and closed-loop teal piping. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_efficient_t3_off",
+    "file": "halls/hall_efficient_t3_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        104,
+        71,
+        16
+      ],
+      [
+        130,
+        82,
+        16
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; sleek light ivory and pale glass, planted green roof plus two dark solar panels, only TWO large fans and closed-loop teal piping. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_efficient_t3_on",
+    "file": "halls/hall_efficient_t3_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        104,
+        71,
+        16
+      ],
+      [
+        130,
+        82,
+        16
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; sleek light ivory and pale glass, planted green roof plus two dark solar panels, only TWO large fans and closed-loop teal piping. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_refurbished_t1_off",
+    "file": "halls/hall_refurbished_t1_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        126,
+        124,
+        10
+      ]
+    ],
+    "steam": [],
+    "notes": "ONE low single-storey hall, very broad low roof, 30px wall height, highest point near final y110; converted rust-red brick warehouse, patched cream metal cladding, mismatched roof units, exposed broad ducts, amber rusty accents; carefully maintained but visibly reused. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_refurbished_t1_on",
+    "file": "halls/hall_refurbished_t1_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        126,
+        124,
+        10
+      ]
+    ],
+    "steam": [],
+    "notes": "ONE low single-storey hall, very broad low roof, 30px wall height, highest point near final y110; converted rust-red brick warehouse, patched cream metal cladding, mismatched roof units, exposed broad ducts, amber rusty accents; carefully maintained but visibly reused. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_refurbished_t2_off",
+    "file": "halls/hall_refurbished_t2_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        92,
+        99,
+        13
+      ],
+      [
+        116,
+        107,
+        14
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; converted rust-red brick warehouse, patched cream metal cladding, mismatched roof units, exposed broad ducts, amber rusty accents; carefully maintained but visibly reused. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_refurbished_t2_on",
+    "file": "halls/hall_refurbished_t2_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        92,
+        99,
+        13
+      ],
+      [
+        116,
+        107,
+        14
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; converted rust-red brick warehouse, patched cream metal cladding, mismatched roof units, exposed broad ducts, amber rusty accents; carefully maintained but visibly reused. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_refurbished_t3_off",
+    "file": "halls/hall_refurbished_t3_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        102,
+        33,
+        10
+      ],
+      [
+        129,
+        43,
+        14
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; converted rust-red brick warehouse, patched cream metal cladding, mismatched roof units, exposed broad ducts, amber rusty accents; carefully maintained but visibly reused. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_refurbished_t3_on",
+    "file": "halls/hall_refurbished_t3_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        102,
+        33,
+        10
+      ],
+      [
+        129,
+        43,
+        14
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; converted rust-red brick warehouse, patched cream metal cladding, mismatched roof units, exposed broad ducts, amber rusty accents; carefully maintained but visibly reused. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_training_t2_off",
+    "file": "halls/hall_training_t2_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        120,
+        88,
+        11
+      ],
+      [
+        103,
+        99,
+        11
+      ],
+      [
+        143,
+        97,
+        11
+      ],
+      [
+        86,
+        109,
+        11
+      ],
+      [
+        126,
+        107,
+        11
+      ],
+      [
+        109,
+        117,
+        11
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; dense graphite and dark steel, SIX roof fans, thick power conduits and orange heat-lit vents; heavy industrial mass. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_training_t2_on",
+    "file": "halls/hall_training_t2_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        120,
+        88,
+        11
+      ],
+      [
+        103,
+        99,
+        11
+      ],
+      [
+        143,
+        97,
+        11
+      ],
+      [
+        86,
+        109,
+        11
+      ],
+      [
+        126,
+        107,
+        11
+      ],
+      [
+        109,
+        117,
+        11
+      ]
+    ],
+    "steam": [],
+    "notes": "TWO-storey tall main block on left with attached single-storey wing on right, 64px main wall height; dense graphite and dark steel, SIX roof fans, thick power conduits and orange heat-lit vents; heavy industrial mass. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_training_t3_off",
+    "file": "halls/hall_training_t3_off.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        118,
+        51,
+        12
+      ],
+      [
+        97,
+        61,
+        12
+      ],
+      [
+        140,
+        59,
+        12
+      ],
+      [
+        120,
+        69,
+        12
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; dense graphite and dark steel, SIX roof fans, thick power conduits and orange heat-lit vents; heavy industrial mass. IDENTICAL geometry to on state; all windows, indicators and vent bars dark, no emitted light.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hall_training_t3_on",
+    "file": "halls/hall_training_t3_on.png",
+    "category": "hall",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        118,
+        51,
+        12
+      ],
+      [
+        97,
+        61,
+        12
+      ],
+      [
+        140,
+        59,
+        12
+      ],
+      [
+        120,
+        69,
+        12
+      ]
+    ],
+    "steam": [],
+    "notes": "FOUR-storey narrow landmark tower, four clear stacked facade bands, lower service wing, main wall 116px high, tallest point around final y14; dense graphite and dark steel, SIX roof fans, thick power conduits and orange heat-lit vents; heavy industrial mass. Operating with readable illuminated windows, mint lights and restrained amber doorway lights.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_mobile_chiller",
+    "file": "utilities/cooling_mobile_chiller.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        115,
+        99,
+        19
+      ],
+      [
+        146,
+        84,
+        19
+      ]
+    ],
+    "steam": [],
+    "notes": "compact rented white chiller trailer on four wheels, TWO large fans, teal utility hoses; no text",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_riverfront_t1_on",
+    "file": "utilities/cooling_riverfront_t1_on.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        120,
+        145,
+        22
+      ],
+      [
+        157,
+        129,
+        22
+      ]
+    ],
+    "steam": [],
+    "notes": "two dry cooler fans on plinth matching cooling_t1_on, intake pipe pointing toward LEFT water side; no water outside slab",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_t1_off",
+    "file": "utilities/cooling_t1_off.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        100,
+        135,
+        29
+      ],
+      [
+        151,
+        161,
+        29
+      ]
+    ],
+    "steam": [],
+    "notes": "two dry cooler fan housings on low plinth. Offline; identical geometry; dark indicators. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_t1_on",
+    "file": "utilities/cooling_t1_on.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        100,
+        135,
+        29
+      ],
+      [
+        151,
+        161,
+        29
+      ]
+    ],
+    "steam": [],
+    "notes": "two dry cooler fan housings on low plinth. Online: sparse amber indicators and very faint mint bushing lights. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_t2_off",
+    "file": "utilities/cooling_t2_off.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        127,
+        99,
+        20
+      ],
+      [
+        96,
+        116,
+        20
+      ],
+      [
+        159,
+        115,
+        20
+      ],
+      [
+        128,
+        130,
+        20
+      ]
+    ],
+    "steam": [],
+    "notes": "four-fan square block, broad closed-loop pipes. Offline; identical geometry; dark indicators. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_t2_on",
+    "file": "utilities/cooling_t2_on.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        127,
+        99,
+        20
+      ],
+      [
+        96,
+        116,
+        20
+      ],
+      [
+        159,
+        115,
+        20
+      ],
+      [
+        128,
+        130,
+        20
+      ]
+    ],
+    "steam": [],
+    "notes": "four-fan square block, broad closed-loop pipes. Online: sparse amber indicators and very faint mint bushing lights. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_t3_off",
+    "file": "utilities/cooling_t3_off.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        124,
+        93,
+        14
+      ],
+      [
+        102,
+        104,
+        14
+      ],
+      [
+        150,
+        102,
+        14
+      ],
+      [
+        129,
+        114,
+        14
+      ]
+    ],
+    "steam": [],
+    "notes": "closed-loop plant with two tanks and FOUR big fan housings, pipe manifolds. Offline; identical geometry; dark indicators. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cooling_t3_on",
+    "file": "utilities/cooling_t3_on.png",
+    "category": "cooling",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        124,
+        93,
+        14
+      ],
+      [
+        102,
+        104,
+        14
+      ],
+      [
+        150,
+        102,
+        14
+      ],
+      [
+        129,
+        114,
+        14
+      ]
+    ],
+    "steam": [],
+    "notes": "closed-loop plant with two tanks and FOUR big fan housings, pipe manifolds. Online: sparse amber indicators and very faint mint bushing lights. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_battery_module",
+    "file": "utilities/power_battery_module.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        108,
+        132,
+        16
+      ],
+      [
+        138,
+        141,
+        16
+      ]
+    ],
+    "steam": [],
+    "notes": "small container-style battery block, ivory enclosure, teal louvers and a tiny amber indicator",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_generator_module",
+    "file": "utilities/power_generator_module.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        97,
+        116,
+        16
+      ],
+      [
+        127,
+        103,
+        16
+      ]
+    ],
+    "steam": [
+      [
+        173,
+        95
+      ]
+    ],
+    "notes": "diesel generator set with broad louvered housing and exhaust stack; NO smoke",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_t1_off",
+    "file": "utilities/power_t1_off.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        161,
+        164,
+        10
+      ],
+      [
+        176,
+        157,
+        10
+      ]
+    ],
+    "steam": [],
+    "notes": "one pad transformer inside low mesh fence. Offline; identical geometry; dark indicators. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_t1_on",
+    "file": "utilities/power_t1_on.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        161,
+        164,
+        10
+      ],
+      [
+        176,
+        157,
+        10
+      ]
+    ],
+    "steam": [],
+    "notes": "one pad transformer inside low mesh fence. Online: sparse amber indicators and very faint mint bushing lights. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_t2_off",
+    "file": "utilities/power_t2_off.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "two transformers plus a small overhead gantry. Offline; identical geometry; dark indicators. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_t2_on",
+    "file": "utilities/power_t2_on.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "two transformers plus a small overhead gantry. Online: sparse amber indicators and very faint mint bushing lights. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_t3_off",
+    "file": "utilities/power_t3_off.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        73,
+        161,
+        5
+      ],
+      [
+        73,
+        172,
+        5
+      ],
+      [
+        184,
+        161,
+        5
+      ],
+      [
+        184,
+        172,
+        5
+      ]
+    ],
+    "steam": [],
+    "notes": "large high-voltage yard, tall gantries, ribbed insulator tower and two transformers. Offline; identical geometry; dark indicators. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "power_t3_on",
+    "file": "utilities/power_t3_on.png",
+    "category": "power",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        73,
+        161,
+        5
+      ],
+      [
+        73,
+        172,
+        5
+      ],
+      [
+        184,
+        161,
+        5
+      ],
+      [
+        184,
+        172,
+        5
+      ]
+    ],
+    "steam": [],
+    "notes": "large high-voltage yard, tall gantries, ribbed insulator tower and two transformers. Online: sparse amber indicators and very faint mint bushing lights. Static fan blades; NO steam clouds.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bike_a_ne",
+    "file": "vehicles/bike_a_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing teal shirt on a small bicycle, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "bike_a_nw",
+    "file": "vehicles/bike_a_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing teal shirt on a small bicycle, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "bike_a_se",
+    "file": "vehicles/bike_a_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing teal shirt on a small bicycle, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "bike_a_sw",
+    "file": "vehicles/bike_a_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing teal shirt on a small bicycle, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "bike_b_ne",
+    "file": "vehicles/bike_b_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing warm amber jacket on a bicycle, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "bike_b_nw",
+    "file": "vehicles/bike_b_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing warm amber jacket on a bicycle, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "bike_b_se",
+    "file": "vehicles/bike_b_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing warm amber jacket on a bicycle, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "bike_b_sw",
+    "file": "vehicles/bike_b_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "cyclist wearing warm amber jacket on a bicycle, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "bus_city_ne",
+    "file": "vehicles/bus_city_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "single-deck ivory and teal town bus, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "bus_city_nw",
+    "file": "vehicles/bus_city_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "single-deck ivory and teal town bus, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "bus_city_se",
+    "file": "vehicles/bus_city_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "single-deck ivory and teal town bus, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "bus_city_sw",
+    "file": "vehicles/bus_city_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "single-deck ivory and teal town bus, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_hatch_a_ne",
+    "file": "vehicles/car_hatch_a_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact hatchback, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_hatch_a_nw",
+    "file": "vehicles/car_hatch_a_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact hatchback, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_hatch_a_se",
+    "file": "vehicles/car_hatch_a_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact hatchback, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_hatch_a_sw",
+    "file": "vehicles/car_hatch_a_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact hatchback, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_hatch_b_ne",
+    "file": "vehicles/car_hatch_b_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact hatchback, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_hatch_b_nw",
+    "file": "vehicles/car_hatch_b_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact hatchback, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_hatch_b_se",
+    "file": "vehicles/car_hatch_b_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact hatchback, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_hatch_b_sw",
+    "file": "vehicles/car_hatch_b_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact hatchback, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_hatch_c_ne",
+    "file": "vehicles/car_hatch_c_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal compact hatchback, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_hatch_c_nw",
+    "file": "vehicles/car_hatch_c_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal compact hatchback, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_hatch_c_se",
+    "file": "vehicles/car_hatch_c_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal compact hatchback, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_hatch_c_sw",
+    "file": "vehicles/car_hatch_c_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal compact hatchback, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_hatch_d_ne",
+    "file": "vehicles/car_hatch_d_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "mustard gold compact hatchback, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_hatch_d_nw",
+    "file": "vehicles/car_hatch_d_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "mustard gold compact hatchback, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_hatch_d_se",
+    "file": "vehicles/car_hatch_d_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "mustard gold compact hatchback, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_hatch_d_sw",
+    "file": "vehicles/car_hatch_d_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "mustard gold compact hatchback, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_sedan_a_ne",
+    "file": "vehicles/car_sedan_a_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red elegant sedan, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_sedan_a_nw",
+    "file": "vehicles/car_sedan_a_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red elegant sedan, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_sedan_a_se",
+    "file": "vehicles/car_sedan_a_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red elegant sedan, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_sedan_a_sw",
+    "file": "vehicles/car_sedan_a_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red elegant sedan, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_sedan_b_ne",
+    "file": "vehicles/car_sedan_b_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory elegant sedan, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_sedan_b_nw",
+    "file": "vehicles/car_sedan_b_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory elegant sedan, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_sedan_b_se",
+    "file": "vehicles/car_sedan_b_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory elegant sedan, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_sedan_b_sw",
+    "file": "vehicles/car_sedan_b_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory elegant sedan, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_suv_a_ne",
+    "file": "vehicles/car_suv_a_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact SUV, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_suv_a_nw",
+    "file": "vehicles/car_suv_a_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact SUV, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_suv_a_se",
+    "file": "vehicles/car_suv_a_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact SUV, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_suv_a_sw",
+    "file": "vehicles/car_suv_a_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "brick red compact SUV, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "car_suv_b_ne",
+    "file": "vehicles/car_suv_b_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact SUV, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "car_suv_b_nw",
+    "file": "vehicles/car_suv_b_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact SUV, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "car_suv_b_se",
+    "file": "vehicles/car_suv_b_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact SUV, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "car_suv_b_sw",
+    "file": "vehicles/car_suv_b_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "warm ivory compact SUV, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "truck_box_ne",
+    "file": "vehicles/truck_box_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "ivory box delivery truck with teal cab, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "truck_box_nw",
+    "file": "vehicles/truck_box_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "ivory box delivery truck with teal cab, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "truck_box_se",
+    "file": "vehicles/truck_box_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "ivory box delivery truck with teal cab, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "truck_box_sw",
+    "file": "vehicles/truck_box_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "ivory box delivery truck with teal cab, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "van_delivery_ne",
+    "file": "vehicles/van_delivery_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "plain white delivery van, no logo, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "van_delivery_nw",
+    "file": "vehicles/van_delivery_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "plain white delivery van, no logo, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "van_delivery_se",
+    "file": "vehicles/van_delivery_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "plain white delivery van, no logo, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "van_delivery_sw",
+    "file": "vehicles/van_delivery_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "plain white delivery van, no logo, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "van_maintenance_ne",
+    "file": "vehicles/van_maintenance_ne.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal maintenance van, mint side stripe, amber rooftop light bar, heading UP-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "ne"
+  },
+  {
+    "key": "van_maintenance_nw",
+    "file": "vehicles/van_maintenance_nw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal maintenance van, mint side stripe, amber rooftop light bar, heading UP-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "nw"
+  },
+  {
+    "key": "van_maintenance_se",
+    "file": "vehicles/van_maintenance_se.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal maintenance van, mint side stripe, amber rooftop light bar, heading DOWN-RIGHT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "se"
+  },
+  {
+    "key": "van_maintenance_sw",
+    "file": "vehicles/van_maintenance_sw.png",
+    "category": "vehicle",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      84
+    ],
+    "footprint": "vehicle",
+    "fans": [],
+    "steam": [],
+    "notes": "deep teal maintenance van, mint side stripe, amber rooftop light bar, heading DOWN-LEFT, front points that direction. Correct separate rear/front geometry. Relight for upper-left sun; NEVER mirror lighting.",
+    "priority": "A",
+    "direction": "sw"
+  },
+  {
+    "key": "bridge_foot_x",
+    "file": "water/bridge_foot_x.png",
+    "category": "bridge",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "narrow timber pedestrian bridge with simple railings across teal water, axis upper-left to lower-right, both ends meet opposite diamond edges; no writing",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bridge_foot_y",
+    "file": "water/bridge_foot_y.png",
+    "category": "bridge",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "narrow timber pedestrian bridge with simple railings across teal water, axis upper-right to lower-left, both ends meet opposite diamond edges; no writing",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bridge_road_x",
+    "file": "water/bridge_road_x.png",
+    "category": "bridge",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "broad paved road bridge with two ivory parapets across teal water, axis upper-left to lower-right, both ends meet opposite diamond edges; no writing",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bridge_road_y",
+    "file": "water/bridge_road_y.png",
+    "category": "bridge",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "broad paved road bridge with two ivory parapets across teal water, axis upper-right to lower-left, both ends meet opposite diamond edges; no writing",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_barge",
+    "file": "water/prop_barge.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small flat working barge, low teal hull and cream wheelhouse",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_dock",
+    "file": "water/prop_dock.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small weathered timber dock with two posts",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_ducks",
+    "file": "water/prop_ducks.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "three small ivory ducks floating in a tight group, subtle water rings",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_reeds",
+    "file": "water/prop_reeds.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "clump of graceful river reeds and cattails",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_rowboat",
+    "file": "water/prop_rowboat.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small cream-and-teal wooden rowboat with two oars",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_0",
+    "file": "water/water_0.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat deep teal-blue river surface, subtle broad pale ripples variant 0; no directional lines, no land, no raised sides, no rim, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_1",
+    "file": "water/water_1.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat deep teal-blue river surface, subtle broad pale ripples variant 1; no directional lines, no land, no raised sides, no rim, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_2",
+    "file": "water/water_2.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat deep teal-blue river surface, subtle broad pale ripples variant 2; no directional lines, no land, no raised sides, no rim, no thickness",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_bank_ne",
+    "file": "water/water_bank_ne.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water tile with thin grass verge and stone/reed riverbank ONLY on TOP-RIGHT diamond edge, other three edges entirely open water, no raised sides",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_bank_nw",
+    "file": "water/water_bank_nw.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water tile with thin grass verge and stone/reed riverbank ONLY on TOP-LEFT diamond edge, other three edges entirely open water, no raised sides",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_bank_se",
+    "file": "water/water_bank_se.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water tile with thin grass verge and stone/reed riverbank ONLY on BOTTOM-RIGHT diamond edge, other three edges entirely open water, no raised sides",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_bank_sw",
+    "file": "water/water_bank_sw.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water tile with thin grass verge and stone/reed riverbank ONLY on BOTTOM-LEFT diamond edge, other three edges entirely open water, no raised sides",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_corner_e",
+    "file": "water/water_corner_e.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water diamond, one small GRASS WEDGE at the RIGHT vertex; its shoreline curves convexly toward the centre, touching the midpoints of the two edges adjacent to that vertex. The other three vertices and their edges are open water. Very low stone/reed shore detail, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_corner_n",
+    "file": "water/water_corner_n.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water diamond, one small GRASS WEDGE at the TOP vertex; its shoreline curves convexly toward the centre, touching the midpoints of the two edges adjacent to that vertex. The other three vertices and their edges are open water. Very low stone/reed shore detail, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_corner_s",
+    "file": "water/water_corner_s.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water diamond, one small GRASS WEDGE at the BOTTOM vertex; its shoreline curves convexly toward the centre, touching the midpoints of the two edges adjacent to that vertex. The other three vertices and their edges are open water. Very low stone/reed shore detail, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_corner_w",
+    "file": "water/water_corner_w.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat teal-blue water diamond, one small GRASS WEDGE at the LEFT vertex; its shoreline curves convexly toward the centre, touching the midpoints of the two edges adjacent to that vertex. The other three vertices and their edges are open water. Very low stone/reed shore detail, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_inner_e",
+    "file": "water/water_inner_e.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat diamond mostly grassy land around a CONCAVE curved riverbank: a teal WATER NOTCH enters from the RIGHT vertex and reaches the centre; the other three corners are grass. A very low stone/reed edge follows only the concave shoreline, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_inner_n",
+    "file": "water/water_inner_n.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat diamond mostly grassy land around a CONCAVE curved riverbank: a teal WATER NOTCH enters from the TOP vertex and reaches the centre; the other three corners are grass. A very low stone/reed edge follows only the concave shoreline, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_inner_s",
+    "file": "water/water_inner_s.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat diamond mostly grassy land around a CONCAVE curved riverbank: a teal WATER NOTCH enters from the BOTTOM vertex and reaches the centre; the other three corners are grass. A very low stone/reed edge follows only the concave shoreline, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "water_inner_w",
+    "file": "water/water_inner_w.png",
+    "category": "water",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "flat diamond mostly grassy land around a CONCAVE curved riverbank: a teal WATER NOTCH enters from the LEFT vertex and reaches the centre; the other three corners are grass. A very low stone/reed edge follows only the concave shoreline, no raised sides.",
+    "priority": "A",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_chapel",
+    "file": "buildings/common/civic_chapel.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small stone chapel, slate pitched roof and modest belfry; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_clinic",
+    "file": "buildings/common/civic_clinic.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        169,
+        119
+      ]
+    ],
+    "notes": "clean cream clinic, teal roof and cross pictogram; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_fire_station",
+    "file": "buildings/common/civic_fire_station.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small brick fire station with two red vehicle bay doors; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_library",
+    "file": "buildings/common/civic_library.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        174,
+        84
+      ]
+    ],
+    "notes": "ivory and brick public library with broad entrance and book pictogram; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_post_office",
+    "file": "buildings/common/civic_post_office.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        169,
+        93
+      ]
+    ],
+    "notes": "brick post office, envelope pictogram and teal mailboxes; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_school",
+    "file": "buildings/common/civic_school.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "friendly brick school, broad windows, fenced small playground; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_town_hall",
+    "file": "buildings/common/civic_town_hall.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "warm brick town hall, ivory entrance columns, small clock with plain tick marks; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_apartment_0",
+    "file": "buildings/common/home_apartment_0.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "three-storey ivory apartment building, stepped flat roof, recessed teal balconies, planted paved entrance. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_apartment_1",
+    "file": "buildings/common/home_apartment_1.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        101,
+        30
+      ],
+      [
+        163,
+        44
+      ]
+    ],
+    "notes": "three-storey red brick apartment building, hipped slate roof, broad grouped windows, corner cream bay. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_apartment_2",
+    "file": "buildings/common/home_apartment_2.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        157,
+        84
+      ]
+    ],
+    "notes": "two-storey sand-stucco apartment building, low terracotta roof, external stair and shaded teal balconies. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_detached_0",
+    "file": "buildings/common/home_detached_0.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        166,
+        117
+      ]
+    ],
+    "notes": "single-storey warm brick cottage, hipped terracotta roof, central ivory porch, small lawn and stepping-stone path. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_detached_1",
+    "file": "buildings/common/home_detached_1.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        159,
+        43
+      ]
+    ],
+    "notes": "two-storey ivory cottage, teal gabled roof, one projecting bay window, side porch and hedge garden. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_detached_2",
+    "file": "buildings/common/home_detached_2.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single-storey pale sage bungalow, low charcoal roof, attached small cream garage, front flower border. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_detached_3",
+    "file": "buildings/common/home_detached_3.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        105,
+        57
+      ],
+      [
+        164,
+        70
+      ]
+    ],
+    "notes": "two-storey red brick home, cross-gabled slate roof, ivory window surrounds, short front steps and lawn. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_detached_4",
+    "file": "buildings/common/home_detached_4.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        177,
+        113
+      ]
+    ],
+    "notes": "single-storey cream L-shaped courtyard cottage, terracotta roof, sheltered teal door and tree in small garden. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_detached_5",
+    "file": "buildings/common/home_detached_5.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        150,
+        66
+      ]
+    ],
+    "notes": "two-storey ochre-brick house, steep teal roof with one dormer, small timber porch and vegetable garden. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_terrace_0",
+    "file": "buildings/common/home_terrace_0.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        95,
+        19
+      ]
+    ],
+    "notes": "two-storey narrow red brick terrace, slate gabled roof, ivory bay window, teal door, paved front garden. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_terrace_1",
+    "file": "buildings/common/home_terrace_1.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        148,
+        37
+      ]
+    ],
+    "notes": "two-storey warm ivory terrace, terracotta mansard roof, paired tall windows, rust-red door and tiny hedge. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_terrace_2",
+    "file": "buildings/common/home_terrace_2.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        148,
+        48
+      ]
+    ],
+    "notes": "two-storey ochre brick end terrace, charcoal roof with chimney, side entrance and small flower garden. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_terrace_3",
+    "file": "buildings/common/home_terrace_3.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        99,
+        76
+      ],
+      [
+        165,
+        90
+      ]
+    ],
+    "notes": "two-storey pale sage terrace, teal slate roof, square cream window surrounds, narrow balcony over entrance. Own garden or sidewalk entirely inside plot. Door height22 final pixels; each storey30\u201334 pixels. No oversized trees.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ind_brewery",
+    "file": "buildings/common/ind_brewery.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        160,
+        79
+      ]
+    ],
+    "notes": "brick brewery, two copper tanks beside loading door; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ind_depot",
+    "file": "buildings/common/ind_depot.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small bus depot, wide roofed bay; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ind_factory_small",
+    "file": "buildings/common/ind_factory_small.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        183,
+        107
+      ]
+    ],
+    "notes": "small brick factory with metal roof, exhaust chimney WITHOUT smoke; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ind_warehouse_0",
+    "file": "buildings/common/ind_warehouse_0.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "low red brick warehouse with broad gabled metal roof and one teal loading shutter. Own garden or sidewalk entirely inside plot. For-sale board shows only a house and key pictogram, no writing.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ind_warehouse_1",
+    "file": "buildings/common/ind_warehouse_1.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "low ivory corrugated warehouse with sawtooth roof and two dark loading shutters. Own garden or sidewalk entirely inside plot. For-sale board shows only a house and key pictogram, no writing.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ind_warehouse_2",
+    "file": "buildings/common/ind_warehouse_2.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "low weathered grey warehouse with curved barrel roof and single rust-red loading door. Own garden or sidewalk entirely inside plot. For-sale board shows only a house and key pictogram, no writing.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ind_workshop",
+    "file": "buildings/common/ind_workshop.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "brick repair workshop, shutter door, compact stacked material; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "landmark_bandstand",
+    "file": "buildings/common/landmark_bandstand.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "octagonal cream-and-teal park bandstand, garden base; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "landmark_clock_tower",
+    "file": "buildings/common/landmark_clock_tower.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "four-storey brick clock tower, slate roof, clock ticks only NO numbers; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "landmark_fountain",
+    "file": "buildings/common/landmark_fountain.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "two-tier stone fountain with subtle turquoise water, cobbled plaza; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "landmark_obelisk",
+    "file": "buildings/common/landmark_obelisk.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "stone obelisk on stepped plinth, low planting; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "landmark_old_mill",
+    "file": "buildings/common/landmark_old_mill.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        103,
+        68
+      ],
+      [
+        169,
+        86
+      ]
+    ],
+    "notes": "historic stone watermill with timber wheel, slate roof and little garden; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "landmark_statue",
+    "file": "buildings/common/landmark_statue.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "stone civic statue on plinth, little formal garden; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "park_garden",
+    "file": "buildings/common/park_garden.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "formal garden, paths, grouped flowering beds and bench; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "park_playground",
+    "file": "buildings/common/park_playground.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "protected small green playground, slide and swings; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "park_pond",
+    "file": "buildings/common/park_pond.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small natural pond, reeds, grass and bench; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "park_sports_court",
+    "file": "buildings/common/park_sports_court.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small fenced ball court with white lines and a hoop; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "shop_bakery",
+    "file": "buildings/common/shop_bakery.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        169,
+        45
+      ]
+    ],
+    "notes": "bakery shop with flat above, bread loaf pictogram sign; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "shop_books",
+    "file": "buildings/common/shop_books.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        170,
+        19
+      ]
+    ],
+    "notes": "bookshop with flat above, open book pictogram sign; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "shop_cafe",
+    "file": "buildings/common/shop_cafe.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        169,
+        58
+      ]
+    ],
+    "notes": "cafe with flat above, striped teal awning, coffee cup pictogram sign; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "shop_grocer",
+    "file": "buildings/common/shop_grocer.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        163,
+        60
+      ]
+    ],
+    "notes": "grocer with flat above, crates and apple pictogram sign; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "shop_hardware",
+    "file": "buildings/common/shop_hardware.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        168,
+        43
+      ]
+    ],
+    "notes": "hardware store with flat above, hammer pictogram sign; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "shop_pharmacy",
+    "file": "buildings/common/shop_pharmacy.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        162,
+        39
+      ]
+    ],
+    "notes": "pharmacy with flat above, green cross pictogram sign; include small garden or sidewalk within plot",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bench",
+    "file": "props/bench.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "timber park bench with dark teal metal legs",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bike_rack",
+    "file": "props/bike_rack.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "simple ivory metal bicycle rack, three thick loops",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "billboard_blank_x",
+    "file": "props/billboard_blank_x.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "freestanding town billboard, single completely BLANK warm ivory rectangular advertising face, deep teal metal frame, two posts, amber lamp above, board plane runs upper-left to lower-right, no writing, no logos, no pictograms. Reserve the face for game-rendered fictional sponsor content.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "billboard_corners": [
+      [
+        96,
+        119
+      ],
+      [
+        157,
+        130
+      ],
+      [
+        157,
+        152
+      ],
+      [
+        96,
+        141
+      ]
+    ]
+  },
+  {
+    "key": "billboard_blank_y",
+    "file": "props/billboard_blank_y.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "freestanding town billboard, single completely BLANK warm ivory rectangular advertising face, deep teal metal frame, two posts, amber lamp above, board plane runs upper-right to lower-left, no writing, no logos, no pictograms. Reserve the face for game-rendered fictional sponsor content.",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "billboard_corners": [
+      [
+        98,
+        132
+      ],
+      [
+        158,
+        112
+      ],
+      [
+        158,
+        138
+      ],
+      [
+        98,
+        157
+      ]
+    ]
+  },
+  {
+    "key": "bin",
+    "file": "props/bin.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single small teal street litter bin",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bus_shelter",
+    "file": "props/bus_shelter.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "teal bus shelter with glass roof and bench, NO lettering",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bush_0",
+    "file": "props/bush_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "compact rounded leafy shrub, green variation 0, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bush_1",
+    "file": "props/bush_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "compact rounded leafy shrub, green variation 1, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bush_2",
+    "file": "props/bush_2.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "compact rounded leafy shrub, green variation 2, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cable_drum",
+    "file": "props/cable_drum.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "large timber cable drum, thick dark cable wound around it",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "cell_tower",
+    "file": "props/cell_tower.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "slender metal communications tower with three broad antenna panels",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "ev_charger",
+    "file": "props/ev_charger.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "ivory and teal EV charging pedestal with thick cable loop, no text",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "farm_barn",
+    "file": "props/farm_barn.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "red brick farm barn with ivory trim and broad pitched slate roof",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "farm_silo",
+    "file": "props/farm_silo.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single cylindrical pale metal grain silo with conical cap",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "fence_mesh_x",
+    "file": "props/fence_mesh_x.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "short mesh fence segment upper-left to lower-right",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "fence_mesh_y",
+    "file": "props/fence_mesh_y.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "short mesh fence segment upper-right to lower-left",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "flowerbed_0",
+    "file": "props/flowerbed_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "low flowerbed with pink and ivory grouped blooms, short stone border",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "flowerbed_1",
+    "file": "props/flowerbed_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "low flowerbed with amber and ivory grouped blooms, short stone border",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "forest_clump_0",
+    "file": "props/forest_clump_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cluster of three varied green deciduous trees",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "forest_clump_1",
+    "file": "props/forest_clump_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cluster of four deep teal conifers",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "forest_clump_2",
+    "file": "props/forest_clump_2.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "cluster of five mixed sage deciduous trees and pines",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "haybales",
+    "file": "props/haybales.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "three golden rectangular haybales stacked",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hedge_x",
+    "file": "props/hedge_x.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "neatly trimmed short hedge along upper-left to lower-right, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hedge_y",
+    "file": "props/hedge_y.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "neatly trimmed short hedge along upper-right to lower-left, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "hydrant",
+    "file": "props/hydrant.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small rust-red fire hydrant",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "mailbox",
+    "file": "props/mailbox.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small teal street mailbox, no text",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "pallet_stack",
+    "file": "props/pallet_stack.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "three wooden shipping pallets stacked neatly",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "picnic_table",
+    "file": "props/picnic_table.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "timber picnic table with attached benches",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "rock_0",
+    "file": "props/rock_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "low cluster of warm grey rocks",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "rock_1",
+    "file": "props/rock_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "angular larger grey boulder with moss patch",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "security_gate",
+    "file": "props/security_gate.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "campus security gate with striped barrier and small teal guard pedestal",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "solar_array",
+    "file": "props/solar_array.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "two dark teal solar panels on short angled stand",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "street_lamp_classic",
+    "file": "props/street_lamp_classic.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "classic dark teal street lamp with warm ivory lantern",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "street_lamp_modern",
+    "file": "props/street_lamp_modern.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "modern curved ivory street lamp",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "traffic_light",
+    "file": "props/traffic_light.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small traffic signal, red amber green lenses on teal pole",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "transformer_box",
+    "file": "props/transformer_box.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "small ivory and teal electrical transformer cabinet",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_pine_0",
+    "file": "props/tree_pine_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single conifer, broad deep green grouped needle tiers, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_pine_1",
+    "file": "props/tree_pine_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single conifer, tall teal green grouped needle tiers, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_pine_2",
+    "file": "props/tree_pine_2.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single conifer, compact sage green grouped needle tiers, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_round_0",
+    "file": "props/tree_round_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single deciduous tree, rounded grouped foliage, green variation 0, readable trunk, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_round_1",
+    "file": "props/tree_round_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single deciduous tree, rounded grouped foliage, green variation 1, readable trunk, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_round_2",
+    "file": "props/tree_round_2.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single deciduous tree, rounded grouped foliage, green variation 2, readable trunk, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_round_3",
+    "file": "props/tree_round_3.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single deciduous tree, rounded grouped foliage, green variation 3, readable trunk, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_round_4",
+    "file": "props/tree_round_4.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single deciduous tree, rounded grouped foliage, green variation 4, readable trunk, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "tree_round_5",
+    "file": "props/tree_round_5.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "single deciduous tree, rounded grouped foliage, green variation 5, readable trunk, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "wind_turbine",
+    "file": "props/wind_turbine.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "slender ivory wind turbine mast with nacelle and THREE STATIC blades, upright, no ground tile",
+    "priority": "B",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "hub": [
+      125,
+      74
+    ]
+  },
+  {
+    "key": "bridge_stone_arch_x",
+    "file": "buildings/oldbridge/bridge_stone_arch_x.png",
+    "category": "bridge",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "historic stone arch bridge over teal water, axis upper-left to lower-right, ivory parapets",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "bridge_stone_arch_y",
+    "file": "buildings/oldbridge/bridge_stone_arch_y.png",
+    "category": "bridge",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "historic stone arch bridge over teal water, axis upper-right to lower-left, ivory parapets",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_guildhall",
+    "file": "buildings/oldbridge/civic_guildhall.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "ornate three-storey historic brick guildhall, steep slate roof, small bell tower, cobbled base",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_townhouse_0",
+    "file": "buildings/oldbridge/home_townhouse_0.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        101,
+        50
+      ],
+      [
+        108,
+        48
+      ],
+      [
+        169,
+        65
+      ],
+      [
+        176,
+        62
+      ]
+    ],
+    "notes": "narrow THREE-storey historic red brick townhouse, slate roof, readable sash windows, front steps and tiny sidewalk",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_townhouse_1",
+    "file": "buildings/oldbridge/home_townhouse_1.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        105,
+        51
+      ],
+      [
+        112,
+        48
+      ],
+      [
+        157,
+        64
+      ],
+      [
+        164,
+        61
+      ]
+    ],
+    "notes": "narrow THREE-storey historic ochre brick townhouse, slate roof, readable sash windows, front steps and tiny sidewalk",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_townhouse_2",
+    "file": "buildings/oldbridge/home_townhouse_2.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        156,
+        51
+      ],
+      [
+        164,
+        49
+      ]
+    ],
+    "notes": "narrow THREE-storey historic warm grey brick townhouse, slate roof, readable sash windows, front steps and tiny sidewalk",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_townhouse_3",
+    "file": "buildings/oldbridge/home_townhouse_3.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        154,
+        48
+      ],
+      [
+        163,
+        50
+      ]
+    ],
+    "notes": "narrow THREE-storey historic dark red brick townhouse, slate roof, readable sash windows, front steps and tiny sidewalk",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "landmark_cathedral",
+    "file": "buildings/oldbridge/landmark_cathedral.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "tall stone cathedral fitting ONE plot, clustered buttresses, slate roof and two narrow spires, highest point y8",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "civic_water_tower",
+    "file": "buildings/sunsprawl/civic_water_tower.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "elevated pale cylindrical water tank on four teal steel legs, dry fenced base",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_stucco_0",
+    "file": "buildings/sunsprawl/home_stucco_0.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "ivory flat-roof stucco bungalow, dry front garden with a cactus and short path",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_stucco_1",
+    "file": "buildings/sunsprawl/home_stucco_1.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        172,
+        111
+      ]
+    ],
+    "notes": "sand adobe cottage with terracotta roof, dry front garden with a cactus and short path",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_stucco_2",
+    "file": "buildings/sunsprawl/home_stucco_2.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        168,
+        92
+      ]
+    ],
+    "notes": "pale peach two-storey stucco home, dry front garden with a cactus and short path",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "home_stucco_3",
+    "file": "buildings/sunsprawl/home_stucco_3.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [
+      [
+        84,
+        123
+      ]
+    ],
+    "notes": "cream flat-roof courtyard home, dry front garden with a cactus and short path",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_cactus_0",
+    "file": "buildings/sunsprawl/prop_cactus_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "branching saguaro cactus, muted teal green, no ground tile",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_cactus_1",
+    "file": "buildings/sunsprawl/prop_cactus_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "barrel cactus cluster, muted teal green, no ground tile",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_palm_0",
+    "file": "buildings/sunsprawl/prop_palm_0.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "upright palm tree, grouped green fronds, no ground tile",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_palm_1",
+    "file": "buildings/sunsprawl/prop_palm_1.png",
+    "category": "prop",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "curved palm tree, grouped green fronds, no ground tile",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "prop_solar_carport",
+    "file": "buildings/sunsprawl/prop_solar_carport.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [],
+    "steam": [],
+    "notes": "solar panel carport with two empty parking bays on dry paved plot",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  },
+  {
+    "key": "shop_diner",
+    "file": "buildings/sunsprawl/shop_diner.png",
+    "category": "building",
+    "canvas": [
+      256,
+      256
+    ],
+    "anchor": [
+      128,
+      136
+    ],
+    "footprint": "plot",
+    "fans": [
+      [
+        135,
+        111,
+        10
+      ],
+      [
+        159,
+        120,
+        10
+      ]
+    ],
+    "steam": [],
+    "notes": "low ivory and red mid-century roadside diner, cup pictogram ONLY, dry sidewalk",
+    "priority": "C",
+    "source_plot_cells": [
+      2,
+      2
+    ],
+    "grid_footprint": [
+      2,
+      2
+    ]
+  }
+]

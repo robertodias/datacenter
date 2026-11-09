@@ -90,6 +90,8 @@ var view_cluster: Panel
 var research_button: Button
 var dock_end := 0.0
 var inspector_open := true
+var cursor_icon: Control
+var hall_menu: PopupPanel
 
 func _ready() -> void:
 	get_tree().auto_accept_quit = false
@@ -292,12 +294,32 @@ func build_interface() -> void:
 	town.lot_selected.connect(on_selected)
 	town.lot_activated.connect(apply_tool)
 	town.cost_tag = tool_tag
+	# The ghost is mint only when a click would build right now.
+	town.ghost_valid = func(i):
+		var tag = tool_tag(i)
+		return tag.get("tone", "bad") != "bad" and String(tag.get("text", "")).begins_with("Build")
+	# The selected tool's glyph rides beside the cursor over the map.
+	cursor_icon = Panel.new()
+	var badge = style(Color(0.05, 0.12, 0.11, 0.9), MINT, 15)
+	cursor_icon.add_theme_stylebox_override("panel", badge)
+	cursor_icon.size = Vector2(30, 30)
+	cursor_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cursor_icon.set_meta("glyph", icon(cursor_icon, "inspect", Rect2(5, 5, 20, 20), MINT))
+	cursor_icon.visible = false
+	town.add_child(cursor_icon)
 	stage.add_child(town)
 	# --- Top bar: where am I, what time is it, and how healthy is the campus. ---
 	header = panel(stage, Rect2(12, 10, 1416, 56), Color("122826"), true)
 	district_card = header
-	town_heading = label(header, "LITTLEBROOK", Rect2(16, 7, 190, 24), 17, INK)
-	company_label = label(header, "", Rect2(16, 31, 190, 18), 11, MUTED)
+	var emblem = TextureRect.new()
+	emblem.texture = preload("res://assets/branding/hyperscale-icon.png")
+	emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	emblem.position = Vector2(10, 8); emblem.size = Vector2(40, 40)
+	emblem.tooltip_text = "Hyperscale: Datacenter Tycoon"
+	header.add_child(emblem)
+	town_heading = label(header, "LITTLEBROOK", Rect2(56, 7, 152, 24), 17, INK)
+	company_label = label(header, "", Rect2(56, 31, 152, 18), 11, MUTED)
 	clock_label = label(header, "", Rect2(212, 7, 112, 24), 16, INK)
 	time_status = label(header, "", Rect2(212, 31, 112, 18), 11, GOLD)
 	pause_button = button(header, "", Rect2(322, 10, 40, 36), toggle_pause)
@@ -375,6 +397,10 @@ func build_interface() -> void:
 				"menu": b = icon_button(toolbar, key, caption, "Esc", Rect2(bx, 6, wide, 54), func(): menu.open("pause"))
 				"help": b = icon_button(toolbar, key, caption, "F1", Rect2(bx, 6, wide, 54), show_help)
 				"sound": b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), toggle_sound); sound_button = b
+				"datacenter":
+					b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), func(): open_hall_menu()); tools_buttons[key] = b
+					var caret = label(b, "▴", Rect2(5, 2, 14, 14), 11, GOLD)
+					caret.tooltip_text = "Choose hardware"
 				_: b = icon_button(toolbar, key, caption, "", Rect2(bx, 6, wide, 54), func(): set_tool(key)); tools_buttons[key] = b
 			bx += wide + 4
 		bx += 10
@@ -424,7 +450,7 @@ func build_interface() -> void:
 	var help_content=VBoxContainer.new();help_content.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	help_content.add_theme_constant_override("separation",22);help_scroll.add_child(help_content)
 	var help_sections=[
-		["BUILD A CAMPUS","Pick a tool from the dock, then click the map: Buy land (B) buys the plot, Bulldoze (X) clears it, and Server hall / Substation / Cooling (1 / 2 / 3) build there. The tag beside the cursor shows the price, or why the action is not possible. Inspect (Q) or right-click only selects. Buy warehouse 04-06, clear it and build a server hall. Add power and cooling nearby. Utilities share capacity but reach only 4 / 7 / 12 blocks at tiers 1 / 2 / 3. Map layers show coverage, noise, ownership and opinion. Riverfront cooling gains 25% capacity. Remote road works cost extra; protected sites need a heritage hearing."],
+		["BUILD A CAMPUS","Pick a tool from the dock, then click the map: Buy land (B) buys the plot, Bulldoze (X) clears it, and Server hall / Substation / Cooling (1 / 2 / 3) build there. A see-through preview of the building follows the cursor (mint: can build; coral: cannot), and the tag beside it shows the price or the reason. The Server hall button opens a hardware menu. Inspect (Q) or right-click only selects. Buy warehouse 04-06, clear it and build a server hall. Add power and cooling nearby. Utilities share capacity but reach only 4 / 7 / 12 blocks at tiers 1 / 2 / 3. Map layers show coverage, noise, ownership and opinion. Riverfront cooling gains 25% capacity. Remote road works cost extra; protected sites need a heritage hearing."],
 		["GROW YOUR COMPANY","Contracts: C. Company: G. Projects pay on delivery; services pay hourly plus a bonus. Required delivery: 90% inference, 99% critical, 85% experimental. Review fees and deadline slack before signing. Use Active to prioritize scarce capacity. Two deliveries unlock tier 2; four unlock tier 3; eight unlock repeat commissions. Each town also has its own charter requirements. Click cash for finance, borrowing and hardware refits."],
 		["KEEP THE LIGHTS ON","Operations shows forecasts, failures and maintenance. Batteries bridge startup; generators need fuel and a working hub. Mobile chillers can cover heat or cooling service. Preventive crews reduce wear. Forecasts and incidents can pause time automatically; change this in Settings."],
 		["THE TOWN PUSHES BACK","Town council separates public approval from AI adoption. Homes, noise, traffic, resource strain and unreliable services create specific concerns. Warning → petition → demonstration → permit pause. At a pause, new halls and hall upgrades are restricted; utility upgrades, repairs, refits and remedies remain available. Reduce pressure below 12 to recover. Negotiate a 24h measurable promise, rehouse families, quiet or relocate equipment, restore parks, preserve heritage or fund infrastructure. Expedited permits last 24h and damage trust."],
@@ -631,8 +657,70 @@ func tool_tag(index: int) -> Dictionary:
 			return {"text": "Build " + money(cost) + " · no " + " / ".join(missing) + " in reach", "tone": "warn"}
 	return {}
 
+## Server hall flyout: one row per hardware profile, above the dock button. Picking a
+## row selects the hall tool with that hardware; locked rows explain how to unlock.
+func open_hall_menu() -> void:
+	set_tool("datacenter")
+	if hall_menu != null: hall_menu.queue_free()
+	hall_menu = PopupPanel.new()
+	var k = stage.scale.x
+	var sb = style(Color("122826"), Color("3e6359"), 10)
+	sb.content_margin_left = 10 * k; sb.content_margin_right = 10 * k; sb.content_margin_top = 10 * k; sb.content_margin_bottom = 10 * k
+	sb.shadow_color = Color(0, 0, 0, 0.4); sb.shadow_size = 12
+	hall_menu.add_theme_stylebox_override("panel", sb)
+	var rows = VBoxContainer.new(); rows.add_theme_constant_override("separation", int(6 * k))
+	hall_menu.add_child(rows)
+	var head = Label.new(); head.text = "SERVER HALL HARDWARE"
+	head.add_theme_font_size_override("font_size", roundi(11 * k * settings.ui_scale)); head.add_theme_color_override("font_color", MUTED)
+	rows.add_child(head)
+	for profile in Economy.HARDWARE.keys():
+		var hw: Dictionary = Economy.HARDWARE[profile]
+		var unlocked: bool = sim.hardware_unlocked(profile)
+		var row = Button.new()
+		row.custom_minimum_size = Vector2(330, 58) * k
+		row.toggle_mode = false
+		row.disabled = not unlocked
+		var active = profile == build_profile
+		row.add_theme_stylebox_override("normal", style(Color("2f5a4a") if active else Color("1a3431"), MINT if active else Color("2a4440")))
+		row.add_theme_stylebox_override("hover", style(Color("33574b"), MINT))
+		row.add_theme_stylebox_override("pressed", style(Color("3c6251"), MINT))
+		row.add_theme_stylebox_override("disabled", style(Color("162a27"), Color("243a36")))
+		row.add_theme_stylebox_override("focus", style(Color(0, 0, 0, 0), GOLD))
+		row.tooltip_text = hw.brief
+		var name_label = Label.new(); name_label.text = hw.name
+		name_label.position = Vector2(12, 6) * k; name_label.size = Vector2(220, 22) * k
+		name_label.add_theme_font_size_override("font_size", roundi(15 * k * settings.ui_scale))
+		name_label.add_theme_color_override("font_color", INK if unlocked else MUTED)
+		row.add_child(name_label)
+		var price = Label.new(); price.text = money(hw.cost) if unlocked else "Tier 2"
+		price.position = Vector2(230, 6) * k; price.size = Vector2(88, 22) * k
+		price.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		price.add_theme_font_size_override("font_size", roundi(15 * k * settings.ui_scale))
+		price.add_theme_color_override("font_color", GOLD if unlocked else MUTED)
+		row.add_child(price)
+		var summary = String(hw.brief).split(";")[0].split(". ")[0].trim_suffix(".")
+		var note = Label.new(); note.text = summary if unlocked else "Locked: deliver two customers to unlock tier 2."
+		note.position = Vector2(12, 30) * k; note.size = Vector2(306, 20) * k
+		note.clip_text = true; note.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		note.add_theme_font_size_override("font_size", roundi(11 * k * settings.ui_scale))
+		note.add_theme_color_override("font_color", MUTED)
+		row.add_child(note)
+		for child in [name_label, price, note]: child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.pressed.connect(func():
+			build_profile = profile; town.build_profile = profile; dirty = true
+			hall_menu.hide(); set_tool("datacenter")
+			toast(hw.name + " selected. Click an owned, cleared plot to build."))
+		rows.add_child(row)
+	add_child(hall_menu)
+	var anchor: Rect2 = tools_buttons.datacenter.get_global_rect()
+	hall_menu.reset_size()
+	var size_px = hall_menu.get_contents_minimum_size()
+	hall_menu.popup(Rect2i(Vector2i(int(anchor.position.x), int(anchor.position.y - size_px.y - 12 * k)), Vector2i(size_px)))
+
 func upgrade_selected() -> void:
-	complete_action(sim.upgrade(selected),"Building upgraded. Review the campus utility balance.")
+	var result = sim.upgrade(selected)
+	if result == "": town.start_build(selected, true)
+	complete_action(result,"Building upgraded. Review the campus utility balance.")
 
 func buy_selected() -> void:
 	var result = sim.buy(selected)
@@ -640,6 +728,7 @@ func buy_selected() -> void:
 
 func build_selected(kind: String) -> void:
 	var result = sim.build(selected, kind,build_profile if kind=="datacenter" else "balanced")
+	if result == "": town.start_build(selected)
 	complete_action(result, Sim.BUILDINGS[kind].name + " constructed. Check your power and cooling.")
 
 func demolish_selected() -> void:
@@ -651,8 +740,9 @@ func demolish_selected() -> void:
 	else: do_demolish(index)
 
 func do_demolish(index: int) -> void:
+	var key = town.building_key(sim.lots[index])
 	var result = sim.demolish(index)
-	if result == "": town.dust(index)
+	if result == "": town.start_demolition(index, key)
 	complete_action(result, "Site cleared. Your future has excellent floor space.")
 
 func complete_action(error: String, success: String) -> void:
@@ -828,6 +918,13 @@ func _process(delta: float) -> void:
 				accumulator=0
 				break
 	town.work_fraction=0.5 if settings.reduced_motion else accumulator/4.0
+	town.reduced_motion=settings.reduced_motion
+	if cursor_icon != null:
+		var over = tool != "inspect" and town.hovered >= 0 and town.play_area.has_point(town.mouse_position) and not business.visible and not menu.visible
+		cursor_icon.visible = over
+		if over:
+			cursor_icon.get_meta("glyph").glyph = tool
+			cursor_icon.position = town.mouse_position + Vector2(-36, -34)
 	if toast_timer<=0 and not notice_queue.is_empty():
 		toast(notice_queue.pop_front())
 		chime()
@@ -929,10 +1026,10 @@ func return_to_title() -> void:
 	business.visible=false
 	menu.open("title")
 
-func start_company(company:String,scenario:String,challenge:String,guide:bool=true) -> void:
+func start_company(company:String,scenario:String,challenge:String,guide:bool=true,carried:Array=[]) -> void:
 	menu.loading(10,"Preparing "+Sim.Scenarios.info(scenario).name+"…")
 	await get_tree().process_frame
-	sim.new_game(company,scenario,challenge)
+	sim.new_game(company,scenario,challenge,carried)
 	sim.tutorial.enabled=guide
 	if scenario=="sandbox":
 		sim.cash=1000000

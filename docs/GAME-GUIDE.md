@@ -8,8 +8,19 @@ testing, see the [README](../README.md). The in-game guide (F1 or ?) provides a 
 Pick a tool from the dock at the bottom of the screen, then click the map. **Buy land (B)**
 buys the plot, **Bulldoze (X)** clears it (homes, parks and landmarks ask for confirmation),
 and **Server hall / Substation / Cooling (1 / 2 / 3)** build on an owned, cleared plot. A tag
-beside the cursor shows the price, or why the action is not possible. **Inspect (Q)** and
+beside the cursor shows the price, or why the action is not possible. Building tools
+also show a see-through preview of the building on the plot under the cursor (mint when
+you can build there, coral when you cannot). The **Server hall** button opens a hardware
+submenu (balanced, refurbished, efficient inference, training accelerators). Construction,
+upgrades and demolition play a short on-site animation; the purchase itself is immediate. **Inspect (Q)** and
 right-click only select; the floating inspector on the right explains the selected plot.
+
+## The town and its edges
+
+Each town is 16 x 16 plots inside a gold boundary. The countryside beyond is scenery: it
+fills the screen at any size and zoom, but it is veiled, cannot be bought, and is not
+more city waiting to be unlocked. Roads leaving town lead to the wider region. The camera
+keeps the town in view; zoom in to reach its edge plots.
 
 ## Your first campus
 
@@ -20,7 +31,9 @@ right-click only select; the floating inspector on the right explains the select
    60 MW and 40 cooling units. Unreserved compute earns on the open market.
 4. Review and sign GPN and Synthopic. Delivering two customers unlocks
    tier 2; four unlock tier 3; all eight complete Littlebrook and unlock repeat
-   commissions. Expansion grants help fund each milestone.
+   commissions (about $1.44 per unit of work, above the $1.20 spot price). In Sunsprawl
+   and Oldbridge, repeat commissions open once the town's charter is complete. Expansion
+   grants help fund each milestone.
 
 Buying, clearing, building, road access, heritage hearings, upgrades and hardware
 all have visible costs. Construction is not refunded on demolition. Roads and
@@ -54,7 +67,15 @@ into delivered work differently for inference, training, critical services and
 cyclical experimental workloads. Projects pay on completion. Services pay for
 hourly delivery plus a completion bonus, requiring 90% inference, 99% critical,
 or 85% experimental delivery. Critical failure fees are 20%; other fees are 10%.
-Missed terms cost 5 reputation; cancellation costs 3. Failed customers can be retried.
+A service that falls behind schedule (an outage, refit or hot hour) can **catch up**
+using spare compute that would otherwise be sold on the spot market, at up to 125% of
+its hourly promise and only until it is back on schedule. It never takes compute
+reserved by another contract, so spare capacity is what makes strict services safe.
+
+**Reputation** starts at 30. Each delivery adds 10 (companion introductions 3); a missed deadline costs 5;
+cancelling costs 3, or 5 in the final quarter of the term (it counts as a failure).
+Reputation sets the pay on contracts you sign next: from -7.5% at 0 to +17.5% at 100.
+Signed terms never change, except that terms won by commercial staff are withdrawn if those teams are dismissed. Failed customers can be retried.
 Previously signed legacy contracts retain their original terms.
 
 **Review & sign** shows allocation, expected completion/slack, contribution versus
@@ -67,7 +88,9 @@ Loans have a $20,000 limit and cost 0.05% interest per hour ($2.50 per $5,000).
 Loan principal and grants are separate from sales and operating profit. All cash
 transactions reconcile to the cent. Balanced, refurbished, efficient and training
 hardware differ in purchase/refit cost, capacity, throughput, power, cooling, noise
-and wear. Refits stop a hall for two hours. Tier upgrades retain the chosen hardware.
+and wear. Refits stop a hall for two hours. A refit replaces racks, not the building:
+the hall keeps its condition, and a refit never costs less than the build-price
+difference between the old and new hardware. Tier upgrades retain the chosen hardware.
 
 The spot market pays $1.20 per compute-hour, with a town demand limit of
 **300 + 3 × average AI adoption**. Higher adoption expands this limit; it does not
@@ -84,19 +107,25 @@ are saved. Forecasts, impacts, failures and civic escalations can pause time aut
 Automatic preventive service (technicians and crews) waits while an incident is forecast,
 active or recovering, so healthy equipment is never taken offline mid-event; failed
 equipment is still repaired. Failed, serviced and refitting equipment draws no power or cooling.
+Neither do halls out of reach of a substation or cooling, or cooling plants without power.
 
 | Response | Cost and effect |
 | --- | --- |
-| Battery module | $1,800; 240 MW-h stored energy, 120 MW output; up to three |
-| Generator | $2,600; 180 MW after one hour startup; up to three |
+| Battery module | $1,800; 240 MW-h stored energy, 120 MW output; three per owned substation (up to 12) |
+| Generator | $2,600; 180 MW after one hour startup, during grid incidents only; three per owned substation (up to 12) |
 | Refuel | $50 per fuel unit, up to $600 per purchase; 36-unit total storage |
 | Warm standby | One hour to prepare; $6/h and 0.1 fuel per generator/h |
-| Mobile cooling | $750 for 24h, plus $12/h; 240 cooling and 20 MW demand; local staging/utility reach matters |
+| Mobile cooling | $750 for 24h, plus $12/h while it runs; 240 cooling and 20 MW demand; local staging/utility reach matters; moves with a relocated hall and is returned if no building remains |
 | Preventive crews | $3/h per building; 70% less wear; service visits still have fees |
 | Manual service / repair | Two / four hours of real downtime; fee depends on building/tier and failure |
 | Relocate backup hub | $500 to another owned substation |
 
-Batteries bridge unexpected startup gaps. Generators consume fuel according to
+Batteries bridge unexpected startup gaps. Generators are emergency supply: they run
+only while a grid incident is under way, never as permanent capacity for an under-built
+grid (build substations for that). Sunsprawl's weaker grid is not an incident. Modules
+above the current substation limit stay idle until another substation exists. If the last
+substation is demolished, backup goes offline and reconnects to the next substation you
+build. Generators consume fuel according to
 output. Spare grid capacity recharges batteries and incurs energy cost. Backup gear
 needs an operating hub. Cooling rentals can bridge a permanent plant's service.
 Forecast projections account for known overlaps and rental expiry. Heat tint,
@@ -126,7 +155,7 @@ cause and let stress fall to lift restrictions.
 
 | Council response | Consequence |
 | --- | --- |
-| Negotiate, $600 | Promise to reduce the leading concern to the shown target within 24h; freezes escalation, with a 48h meeting cooldown. Kept promises improve trust; broken promises worsen it. Existing permit pauses remain. |
+| Negotiate, $600 | Promise to reduce the leading concern to the shown target within 24h (35% lower, and always at least 2 points lower; for reliability, no further disruption, and only while a disruption is ongoing); freezes escalation, with a 48h meeting cooldown. Kept promises improve trust; broken promises worsen it. Existing permit pauses remain. |
 | Acoustic barriers, $900/site | Reduce that site's noise contribution 60%; visible barriers remain at that parcel |
 | Relocate a hall, $1,500 + access | Keeps tier, hardware and condition; needs owned vacant land and a destination permit; two hours offline; utility reach is checked in review |
 | Delivery routing, $1,600 | Adds 10 trips/h of capacity in that district |
@@ -173,7 +202,9 @@ compute **before** customers, so it competes with contracts; completed projects 
 | Visionary | Experimental scheduler (600) | Experimental throughput floor 90% (was 65%); research commissions |
 | Visionary | Water recovery loop (1,600) | Cooling uses 35% less water, plants draw 10% more power |
 
-The second project in each branch requires the first. A companion journal comments on
+Companion introductions (scout services) pay about $1.50 per unit of work including the
+bonus, need 90% delivery, and add 3 reputation instead of 10. The second project in each
+branch requires the first. A companion journal comments on
 what is actually happening in the campus.
 
 ## Staff
@@ -185,7 +216,7 @@ wages are then hourly, and service visit fees still apply.
 | --- | --- | --- |
 | Technicians | $7 | Each team auto-dispatches one service visit at a time for failed equipment or condition below 45% |
 | Engineers | $9 | Each team removes one hour from new service visits and refits (minimum one hour) |
-| Commercial staff | $6 | Each team adds four hours to new project deadlines and cuts new failure/cancellation fees 10% |
+| Commercial staff | $6 | Each team adds four hours to new project deadlines and cuts new failure/cancellation fees 10%; terms last only while the teams stay employed |
 
 Dispatch priority: Failures first, Utilities first or Halls first. Repair vans,
 deliveries and workers in the world correspond to real queued jobs.
@@ -197,7 +228,8 @@ build, first revenue, first customer, upgrade, forecast preparation, neighborhoo
 dilemma). Controls it refers to are highlighted, and a checklist tracks progress.
 At 1× one simulation hour takes four seconds; F4 cycles to 3× and 6×.
 
-Ten local achievements are stored per company save and disabled in sandbox:
+Ten local achievements are stored per company save, carried when the company continues
+to the next town, and disabled in sandbox:
 First watt, Trusted provider, Neural scale, Feed the AI, The human touch, Town steward,
 Keep the lights on, and one per town charter. **Company → Companies** profiles the nine
 fictional customer firms ([FICTIONAL-COMPANIES.md](FICTIONAL-COMPANIES.md)).

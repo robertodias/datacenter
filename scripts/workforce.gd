@@ -1,6 +1,6 @@
 extends RefCounted
 const Economy=preload("res://scripts/economy.gd")
-const ROLES={"technicians":{"name":"Technicians","wage":7,"brief":"Each team automatically dispatches one service visit at a time. Normal visit fees still apply; failed equipment and condition below 45% enter the queue."},"engineers":{"name":"Engineers","wage":9,"brief":"Each team removes one hour from new service visits and hardware refits, to a minimum of one hour. Work already underway keeps its agreed duration."},"commercial":{"name":"Commercial staff","wage":6,"brief":"Each team negotiates four extra hours for new project deadlines and 10% lower new failure/cancellation fees. Service durations and existing contracts stay fixed."}}
+const ROLES={"technicians":{"name":"Technicians","wage":7,"brief":"Each team automatically dispatches one service visit at a time. Normal visit fees still apply; failed equipment and condition below 45% enter the queue."},"engineers":{"name":"Engineers","wage":9,"brief":"Each team removes one hour from new service visits and hardware refits, to a minimum of one hour. Work already underway keeps its agreed duration."},"commercial":{"name":"Commercial staff","wage":6,"brief":"Each team negotiates four extra hours for new project deadlines and 10% lower new failure/cancellation fees. Terms last while the teams stay: dismissing them withdraws the extra hours and fee discount."}}
 const PRIORITIES=["Failures first","Utilities first","Halls first"]
 static func fresh() -> Dictionary:
 	return {"technicians":0,"engineers":0,"commercial":0,"priority":"Failures first","jobs":[],"history":[],"next_id":0}
@@ -16,7 +16,20 @@ static func set_team(sim,role:String,count:int) -> String:
 		if sim.cash<fee: return "Recruiting costs %d per team (12 hours of wages)." % hiring_fee(role)
 		sim.post("staff",-fee,"Recruit %d %s" % [added,ROLES[role].name.to_lower()])
 	sim.workforce[role]=count
+	if role=="commercial": renegotiate(sim,count)
 	return ""
+
+## Commercial terms last only while the teams that negotiated them stay employed.
+static func renegotiate(sim,teams:int) -> void:
+	for c in sim.active:
+		var signed=int(c.get("commercial",0))
+		if teams>=signed: continue
+		var lost=signed-teams
+		if c.type=="project":
+			c.deadline=maxi(1,int(c.deadline)-4*lost);c.remaining=clampi(int(c.remaining)-4*lost,1,int(c.deadline))
+		c.penalty_rate=minf(1.0,float(c.penalty_rate)/(1.0-0.1*signed)*(1.0-0.1*teams))
+		c.commercial=teams
+		sim.notices.append("%s: commercial terms withdrawn with the staff who negotiated them." % c.name)
 static func hiring_fee(role:String) -> int:
 	return ROLES[role].wage*12
 

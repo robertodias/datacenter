@@ -95,6 +95,45 @@ func run() -> void:
 	s=campus()
 	s.completed=["bakery","scout_0","open_1"]
 	expect(s.campaign_count()==1,"Campaign count ignores scout/open commissions")
+	# Reputation: starts at 30 and scales new contract terms; signed terms do not change.
+	s=campus()
+	expect(s.reputation==30 and is_equal_approx(s.reputation_factor(),1.0),"New companies start at reputation 30 with neutral terms")
+	var base_reward=s.contract_definition("bakery").reward
+	s.reputation=100
+	expect(s.contract_definition("bakery").reward==roundi(base_reward*1.175),"Reputation 100 pays 17.5% more on new contracts")
+	s.reputation=30;s.accept_contract("bakery");s.reputation=100
+	expect(s.active[0].reward==base_reward,"Signed contracts keep their terms")
+	# Late cancellation counts as a missed deadline.
+	s=campus();s.accept_contract("bakery")
+	var rep_before=s.reputation
+	s.cancel_contract("bakery")
+	expect(s.reputation==rep_before-3,"Early cancellation costs 3 reputation")
+	s=campus();s.accept_contract("bakery");s.demolish(82)
+	var term=int(s.active[0].deadline)
+	for i in range(term-2): s.tick()
+	rep_before=s.reputation
+	expect(s.cancel_contract("bakery")=="" and s.reputation==rep_before-5,"Cancelling in the final quarter costs the same as missing")
+	# Repeat commissions pay above the spot market.
+	s=campus();s.completed=["bakery","support","studio","robotics","research","council","atlas","orbital"];s.check_milestones()
+	var open=s.contract_definition("open_%d" % s.next_ticket)
+	expect(not open.is_empty() and open.reward/float(open.work)>1.2,"Repeat commissions pay more per work unit than spot")
+	# Reliability promises: only while disruption is ongoing, judged against natural decay.
+	expect(is_equal_approx(Sim.Civic.promise_target("reliability",30.0),30.0*pow(0.96,24)+1.0),"Reliability target is the natural-decay value plus tolerance")
+	s=campus();s.cash=50000
+	var ward=s.civic.wards.oldtown;ward.service_loss=90.0;ward.last_talk=-100
+	Sim.Civic.refresh(s)
+	expect(s.civic_reports.oldtown.primary=="reliability" and s.council("negotiate","oldtown").contains("already stopped"),"No reliability promise once disruption has stopped")
+	# Generators only run during grid incidents.
+	s=campus();s.cash=50000
+	s.operate("generator",82);s.operate("fuel")
+	s.buy(98);s.demolish(98);s.build(98,"datacenter");s.buy(115);s.build(115,"datacenter")
+	for i in range(3): s.tick()
+	expect(s.metrics().generator_output==0,"Generators do not cover an under-built grid without an incident")
+	# Backup capacity scales with substations.
+	s=campus()
+	expect(Ops.module_limit(s)==3,"One substation supports three modules")
+	s.cash=50000;s.buy(98);s.demolish(98);s.build(98,"power")
+	expect(Ops.module_limit(s)==6,"Each extra substation adds three modules")
 	# Map tools act on click.
 	var game=load("res://main.tscn").instantiate();root.add_child(game)
 	await process_frame
@@ -108,6 +147,18 @@ func run() -> void:
 	game.apply_tool(plot)
 	expect(game.sim.lots[plot].kind=="datacenter","Hall tool builds on an owned cleared plot")
 	expect(game.tool_tag(game.sim.cell(0,4)).tone=="bad" or game.sim.lots[game.sim.cell(0,4)].kind not in ["road","water"],"Public land is refused")
+	expect(game.town.anims.has(plot) and game.town.anims[plot].type=="build","Building starts a construction animation")
+	for i in range(40): game.town._process(0.1)
+	expect(not game.town.anims.has(plot),"Construction animation finishes after a few seconds")
+	game.set_tool("demolish");game.apply_tool(plot)
+	if game.dialog.visible: game.dialog.hide();game.do_demolish(plot)
+	expect(game.town.anims.has(plot) and game.town.anims[plot].type=="demolish" and game.sim.lots[plot].kind=="grass","Demolition plays a demolition animation")
+	game.set_tool("datacenter")
+	expect(not game.town.ghost_valid.call(game.sim.cell(6,7)),"Ghost is invalid on a plot you do not own")
+	expect(game.town.ghost_valid.call(plot),"Ghost is valid on an owned cleared plot")
+	game.open_hall_menu()
+	expect(game.hall_menu!=null and game.hall_menu.visible and game.tool=="datacenter","Server hall button opens the hardware submenu")
+	game.hall_menu.hide()
 	game.set_tool("inspect");game.apply_tool(game.sim.cell(6,7))
 	expect(not game.sim.lots[game.sim.cell(6,7)].owned,"Inspect never buys")
 	game.inspector_open=false;game.inspector.visible=false

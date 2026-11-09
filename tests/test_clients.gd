@@ -20,6 +20,7 @@ func run() -> void:
 	reached.append(scout.client)
 	expect(roster.all(func(c):return c in reached),"All nine requested companies have playable contracts")
 	for c in Sim.CONTRACTS: sim.completed.append(c.id)
+	sim.check_milestones()
 	for i in range(18):
 		sim.next_ticket=i
 		var offer=sim.contract_definition("open_%d" % i)

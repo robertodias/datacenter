@@ -56,7 +56,7 @@ static func campaign(sim,ward:String,preview:bool=false) -> String:
 static func offer(sim,vision:bool=false) -> Dictionary:
 	var ticket:int=sim.research.vision_ticket if vision else sim.research.ticket
 	var id=("vision_" if vision else "scout_")+str(ticket)
-	return Economy.contract({"id":id,"type":"project" if vision else "service","compute":120 if vision else 50,"work":3600 if vision else 1200,"deadline":40 if vision else 24,"reward":5200 if vision else 900,"rate":0.0 if vision else 2.1,"unlock":0,"workload":"experimental" if vision else "inference","min_delivery":0.85 if vision else 0.95})
+	return Economy.contract({"id":id,"type":"project" if vision else "service","compute":120 if vision else 50,"work":3600 if vision else 1200,"deadline":40 if vision else 24,"reward":5200 if vision else 480,"rate":0.0 if vision else 1.1,"unlock":0,"workload":"experimental" if vision else "inference","min_delivery":0.85 if vision else 0.9})
 
 static func say(sim,key:String,message:String) -> void:
 	if key in sim.research.seen: return

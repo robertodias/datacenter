@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/branding/hyperscale-logo.png" alt="Hyperscale: Datacenter Tycoon" width="520"></p>
+
 # Hyperscale: Datacenter Tycoon
 
 A native Windows construction and management game built with **Godot 4.5.1**.
@@ -12,7 +14,7 @@ town that has its own opinions about your expansion.
 | Platform | Windows x64, offline, single player, no account or AI service required |
 | Status | Phases 1–13 implemented and locally verified. Standalone demo and Steam materials ready; not yet on Steam. |
 
-![First campus](release/steam/screenshots/01-first-campus.png)
+![Hyperscale key art](assets/branding/hyperscale-splash.png)
 
 ## Play
 

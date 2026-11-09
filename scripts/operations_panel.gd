@@ -63,7 +63,7 @@ func draw(parent:Node) -> void:
 	fuel_button=game.button(p,"Refuel · up to $600",Rect2(650,140,315,40),func():perform("fuel"))
 	rental_button=game.button(p,"Hire cooling · $750 / 24h",Rect2(20,194,440,40),func():perform("rental"))
 	warm_button=game.button(p,"",Rect2(480,194,485,40),func():perform("warm"))
-	game.paragraph(p,"Battery: 240 MW-h / 120 MW. Generator: 180 MW after 1h startup. Warm standby takes 1h to prepare, then costs $6/h + 0.1 fuel per generator/hour. Batteries bridge surprises.",Rect2(20,243,930,38),12)
+	game.paragraph(p,"Three modules of each type per owned substation. Battery: 240 MW-h / 120 MW. Generator: 180 MW after 1h startup, during grid incidents only. Warm standby takes 1h to prepare, then costs $6/h + 0.1 fuel per generator/hour. Batteries bridge surprises.",Rect2(20,243,930,38),12)
 	p=board.card(parent,122)
 	game.label(p,"Preventive maintenance contract",Rect2(20,10,720,29),21)
 	game.paragraph(p,"$3/h per building reduces wear 70%. At condition <35%, crews service one building at a time, charging the normal visit fee. Base visits take 2h (service) / 4h (repair); engineers reduce new visit times.",Rect2(20,49,710,64),14)
@@ -114,10 +114,11 @@ func update_live() -> void:
 	gauges.fuel.value.text=("%.1f / 36 units" % state.fuel) if state.generators>0 else "No generators"
 	gauges.fuel.meter.set_values(state.fuel,36.0 if state.generators>0 else 0.0)
 	reserves.text="Power headroom %.1f MW · Cooling headroom %.1f CU\nStored energy %.0f / %.0f MW-h (~%.1fh at current load; rate limit applies)\nGenerator fuel %.2f / 36 (~%.1fh at current load); output now %.1f MW" % [m.power-m.power_need,m.cooling-m.cooling_need,state.charge,state.batteries*240,battery_hours,state.fuel,fuel_hours,m.generator_output]
-	gear_label.text="%d / 3 battery modules · %d / 3 generators · Hub %s\nBattery output %.1f MW · Recharge %.1f MW · Generator startup %s\nMobile cooling: %s · Range 4 blocks · 240 CU / 20 MW · $12/h operation" % [state.batteries,state.generators,("%02d-%02d" % [sim.lots[int(state.hub)].x+1,sim.lots[int(state.hub)].y+1]) if state.hub>=0 else "not installed",m.battery_output,m.battery_recharge,"NO FUEL" if state.generators>0 and state.fuel<=0 else ("ready" if (state.warm and state.warm_ready<=sim.hour) or (state.generator_ready>=0 and sim.hour>=state.generator_ready) else "1h warmup / startup"),("%dh at %02d-%02d" % [state.rental_until-sim.hour,sim.lots[int(state.rental_site)].x+1,sim.lots[int(state.rental_site)].y+1]) if state.rental_until>sim.hour else "not hired"]
+	var limit=Ops.module_limit(sim)
+	gear_label.text=("%d / "+str(limit)+" battery modules · %d / "+str(limit)+" generators · Hub %s\nBattery output %.1f MW · Recharge %.1f MW · Generator startup %s\nMobile cooling: %s · Range 4 blocks · 240 CU / 20 MW · $12/h operation") % [state.batteries,state.generators,("%02d-%02d" % [sim.lots[int(state.hub)].x+1,sim.lots[int(state.hub)].y+1]) if state.hub>=0 else "not installed",m.battery_output,m.battery_recharge,"NO FUEL" if state.generators>0 and state.fuel<=0 else ("ready" if (state.warm and state.warm_ready<=sim.hour) or (state.generator_ready>=0 and sim.hour>=state.generator_ready) else "1h warmup / startup"),("%dh at %02d-%02d" % [state.rental_until-sim.hour,sim.lots[int(state.rental_site)].x+1,sim.lots[int(state.rental_site)].y+1]) if state.rental_until>sim.hour else "not hired"]
 	if state.hub>=0 and not m.hub_online: gear_label.text+="\nHUB OFFLINE: repair or relocate it to use backup power."
-	battery_button.disabled=state.batteries>=3 or sim.cash<1800
-	generator_button.disabled=state.generators>=3 or sim.cash<2600
+	battery_button.disabled=state.batteries>=limit or sim.cash<1800
+	generator_button.disabled=state.generators>=limit or sim.cash<2600
 	fuel_button.disabled=state.generators==0 or state.fuel>=35.99 or sim.cash<minf(12,36-state.fuel)*50
 	rental_button.disabled=state.rental_until>sim.hour+4 or sim.cash<750
 	warm_button.text="Warm standby: "+(("warming %dh" % (state.warm_ready-sim.hour)) if state.warm and state.warm_ready>sim.hour else ("ON" if state.warm else "OFF"))

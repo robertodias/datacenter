@@ -58,6 +58,9 @@ var completed: Array = []
 var history: Array = []
 var notices: Array = []
 var reputation: int = 0
+## New companies start as an unproven provider. Reputation moves payouts on newly
+## signed contracts between -7.5% (0) and +17.5% (100); signed terms never change.
+const REPUTATION_START = 30
 var next_ticket: int = 0
 var community_hour: int = -24
 var milestone_claims: Array = []
@@ -82,7 +85,8 @@ var metrics_generator=0.0
 func _init() -> void:
 	new_game()
 
-func new_game(company:String="Littlebrook Infrastructure Co.",scenario:String="littlebrook",challenge:String="standard") -> void:
+## `carried` keeps a company's achievements when it continues to the next town.
+func new_game(company:String="Littlebrook Infrastructure Co.",scenario:String="littlebrook",challenge:String="standard",carried:Array=[]) -> void:
 	lots.clear()
 	cash = 22000.0
 	earned = 0.0
@@ -98,7 +102,7 @@ func new_game(company:String="Littlebrook Infrastructure Co.",scenario:String="l
 	history.clear()
 	notices.clear()
 	milestone_claims.clear()
-	reputation = 0
+	reputation = REPUTATION_START
 	next_ticket = 0
 	community_hour = -24
 	campaign_won = false
@@ -117,7 +121,7 @@ func new_game(company:String="Littlebrook Infrastructure Co.",scenario:String="l
 	workforce=Workforce.fresh()
 	scenario_progress=Scenarios.fresh()
 	tutorial=Tutorial.fresh(scenario_id=="littlebrook")
-	achievements=[]
+	achievements=carried.filter(func(id):return Achievements.ITEMS.has(id))
 	for y in range(MAP_SIZE):
 		for x in range(MAP_SIZE): lots.append(Geography.authored_lot(x,y,scenario_id))
 	civic=Civic.fresh(approval,hour);Civic.refresh(self)
@@ -194,6 +198,7 @@ func demolish(index: int) -> String:
 	lot.kind = "grass"
 	lot.level = 1
 	for key in ["hardware","refit_until","civic_home","civic_park"]: lot.erase(key)
+	lot.permit=false
 	if int(ops.hub)==index:
 		ops.hub=-1
 		for other in lots:
@@ -203,6 +208,9 @@ func demolish(index: int) -> String:
 		ops.rental_site=-1
 		for other in lots:
 			if BUILDINGS.has(other.kind) and other.owned: ops.rental_site=cell(int(other.x),int(other.y));break
+		if ops.rental_site<0 and int(ops.rental_until)>0:
+			ops.rental_until=0
+			Operations.alert(ops,"Mobile cooling returned: no building remains to stage it.")
 	cleared = true
 	Civic.refresh(self)
 	return ""
@@ -227,6 +235,9 @@ func build(index: int, kind: String, profile:String="balanced") -> String:
 	if kind == "datacenter":
 		built = true
 		lot.hardware=profile;lot.refit_until=0
+	if kind=="power" and int(ops.hub)<0 and int(ops.batteries)+int(ops.generators)>0:
+		ops.hub=index
+		Operations.alert(ops,"Backup equipment reconnected to the new substation.",index)
 	Workforce.dispatch(self,"construction",index,2)
 	Civic.refresh(self)
 	return ""
@@ -266,19 +277,32 @@ func upgrade(index: int) -> String:
 	post("upgrade",-cost,"Tier %d %s" % [level+1,BUILDINGS[lot.kind].name])
 	Workforce.dispatch(self,"upgrade",index,2)
 	lot.level = level+1
-	lot.condition=maxf(85,float(lot.get("condition",100)))
+	lot.condition=maxf(85,float(lot.get("condition",100)));lot.wear_warned=false
 	Civic.refresh(self)
 	return ""
+
+func reputation_factor() -> float:
+	return 1.0+(reputation-REPUTATION_START)/400.0
+
+func reputation_terms(c:Dictionary) -> Dictionary:
+	if c.is_empty(): return c
+	var factor=reputation_factor()
+	c.reward=roundi(float(c.reward)*factor)
+	c.rate=snappedf(float(c.rate)*factor,0.0001)
+	c.reputation_factor=factor
+	return c
 
 func contract_definition(id: String) -> Dictionary:
 	for vision in [false,true]:
 		if Research.has(self,"scheduler" if vision else "discover"):
 			var offer=Research.offer(self,vision)
-			if offer.id==id: return Research.negotiate(self,offer)
+			if offer.id==id: return reputation_terms(Research.negotiate(self,offer))
 	for c in CONTRACTS:
-		if c.id == id: return Research.negotiate(self,Economy.contract(c))
-	if id == "open_%d" % next_ticket and campaign_count() == CONTRACTS.size():
-		return Research.negotiate(self,Economy.contract({"id":id,"type":"project","compute":360+(next_ticket%3)*60,"work":18000,"deadline":72,"reward":20000,"rate":0.0,"unlock":8}))
+		if c.id == id: return reputation_terms(Research.negotiate(self,Economy.contract(c)))
+	if id == "open_%d" % next_ticket and campaign_won:
+		# Repeat commissions tie up a large share of the campus for three days, so they
+		# pay about $1.44 per unit of work: clearly above the $1.20 spot market.
+		return reputation_terms(Research.negotiate(self,Economy.contract({"id":id,"type":"project","compute":360+(next_ticket%3)*60,"work":18000,"deadline":72,"reward":26000,"rate":0.0,"unlock":8})))
 	return {}
 
 func offers() -> Array:
@@ -291,7 +315,7 @@ func offers() -> Array:
 		if Research.has(self,"scheduler" if vision else "discover"):
 			var offer=Research.offer(self,vision)
 			if not active.any(func(a):return a.id.begins_with("vision_" if vision else "scout_")): result.append(contract_definition(offer.id))
-	if campaign_count() == CONTRACTS.size():
+	if campaign_won:
 		result.append(contract_definition("open_%d" % next_ticket))
 	return result
 
@@ -307,6 +331,7 @@ func accept_contract(id: String) -> String:
 	c.progress = 0.0
 	c.remaining = int(c.deadline)
 	c.paid = 0.0
+	c.commercial = int(workforce.get("commercial",0))
 	active.append(c)
 	if id.begins_with("open_"): next_ticket += 1
 	if id.begins_with("scout_"): research.ticket+=1
@@ -319,11 +344,16 @@ func cancel_contract(id: String) -> String:
 			var c = active[i]
 			var penalty = roundi(c.reward*c.get("penalty_rate",0.1))
 			post("penalty",-penalty,"Customer: "+c.name)
-			reputation = maxi(0,reputation-3)
+			reputation = maxi(0,reputation-cancel_reputation(c))
 			receipt(c,"Cancelled",-penalty)
 			active.remove_at(i)
 			return ""
 	return "This contract has already finished."
+
+## Cancelling early costs 3 reputation; in the final quarter of the term it counts
+## as a failure (5), so walking away at the last hour is never better than trying.
+static func cancel_reputation(c:Dictionary) -> int:
+	return 5 if int(c.get("remaining",c.deadline))<=ceili(float(c.deadline)*0.25) else 3
 
 func receipt(c: Dictionary, outcome: String, amount: float) -> void:
 	var item = {"name":c.name,"outcome":outcome,"amount":amount,"hour":hour}
@@ -352,7 +382,7 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 	var equipment=0
 	var weather=Operations.conditions(ops) if weather_override.is_empty() else weather_override
 	if scenario_id=="sunsprawl":
-		weather=weather.duplicate();weather.heat*=1.1;weather.cooling*=0.85;weather.grid*=0.9;weather.temperature=maxi(32,weather.temperature)
+		weather=weather.duplicate();weather.incident_grid=weather.get("incident_grid",weather.grid);weather.heat*=1.1;weather.cooling*=0.85;weather.grid*=0.9;weather.temperature=maxi(32,weather.temperature)
 	var check_hour=int(weather.get("at_hour",hour))
 	for lot in lots:
 		var kind:String=lot.kind
@@ -363,8 +393,10 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 		if lot.get("failed",false): failures.append(cell(int(lot.x),int(lot.y)))
 		if int(lot.get("service_until",0))>check_hour: servicing.append(cell(int(lot.x),int(lot.y)))
 		base_upkeep+=b.upkeep
+		var powered=not utility_for(lot,"power",check_hour).is_empty()
 		if Operations.available(lot,check_hour) and int(lot.get("refit_until",0))<=check_hour:
-			power_need+=b.power;cooling_need+=b.cooling
+			if kind=="datacenter" and powered and not cooling_for(lot,check_hour).is_empty(): power_need+=b.power;cooling_need+=b.cooling
+			elif kind=="cooling" and powered: power_need+=b.power
 		if kind=="datacenter":
 			compute+=b.capacity;halls+=1
 			if int(lot.get("refit_until",0))>check_hour: refitting.append(cell(int(lot.x),int(lot.y)));continue
@@ -374,13 +406,13 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 				weights[profile]=weights.get(profile,0.0)+b.capacity*condition
 			else: disconnected.append(cell(int(lot.x),int(lot.y)))
 		if kind=="power": power_supply+=b.capacity*condition
-		if kind=="cooling" and not utility_for(lot,"power",check_hour).is_empty(): cooling_supply+=b.capacity*condition
+		if kind=="cooling" and powered: cooling_supply+=b.capacity*condition
 	cooling_need*=weather.heat
-	if ops.rental_until>check_hour: power_need+=20
+	var mobile_powered=ops.rental_until>check_hour and ops.rental_site>=0 and BUILDINGS.has(lots[int(ops.rental_site)].kind) and not utility_for(lots[int(ops.rental_site)],"power",check_hour).is_empty()
+	if mobile_powered: power_need+=20
 	var power_plan=Operations.power_plan(self,power_supply,power_need,weather)
 	power_supply=power_plan.supply
 	var power_ratio=minf(1,power_supply/power_need) if power_need>0 else 1.0
-	var mobile_powered=ops.rental_until>check_hour and ops.rental_site>=0 and BUILDINGS.has(lots[int(ops.rental_site)].kind) and not utility_for(lots[int(ops.rental_site)],"power",check_hour).is_empty()
 	var available_cooling=(cooling_supply*weather.cooling+(240 if mobile_powered else 0))*power_ratio
 	var cooling_ratio=minf(1,available_cooling/cooling_need) if cooling_need>0 else 1.0
 	var online=connected_compute*minf(power_ratio,cooling_ratio)
@@ -388,7 +420,7 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 	var maintenance=Economy.money(base_upkeep*0.6)
 	var staff=Economy.money(base_upkeep-maintenance+Workforce.wages(self))
 	var energy=Economy.money(power_plan.grid_used*Economy.ENERGY_PRICE)
-	var operations_cost=Economy.money((equipment*3 if ops.crews else 0)+(ops.generators*6 if ops.warm and ops.fuel>0 else 0)+(12 if ops.rental_until>check_hour else 0)+(ops.generators*2 if power_plan.generator>0 else 0))
+	var operations_cost=Economy.money((equipment*3 if ops.crews else 0)+(ops.generators*6 if ops.warm and ops.fuel>0 else 0)+(12 if mobile_powered else 0)+(ops.generators*2 if power_plan.generator>0 else 0))
 	var interest=Economy.money(finance.debt*Economy.INTEREST)
 	var upkeep=Economy.money(maintenance+staff+energy+interest+operations_cost)
 	var research_compute=Research.draw(self,online)
@@ -410,6 +442,20 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 		deliveries[c.id]=allocation*speed_factor
 		remaining-=allocation;reserved+=c.compute;allocated_total+=allocation
 		service_revenue+=deliveries[c.id]*c.rate
+	# Catch-up: a service behind schedule may use compute that would otherwise be sold
+	# on the spot market (never another contract's reservation), up to 125% of its
+	# hourly promise, and only until it is back on schedule.
+	for c in queue:
+		if c.type!="service" or remaining<=0.001: continue
+		var elapsed=float(int(c.deadline)-int(c.get("remaining",c.deadline)))
+		var behind=maxf(0,elapsed*c.compute-float(c.get("progress",0.0)))
+		if behind<=0.001: continue
+		var base:float=deliveries[c.id]
+		var extra_work=minf(behind+c.compute-base,c.compute*1.25-base)
+		if extra_work<=0.001: continue
+		var catch_up=minf(remaining,extra_work/maxf(0.001,speeds[c.id]))
+		allocations[c.id]+=catch_up;deliveries[c.id]+=catch_up*speeds[c.id]
+		remaining-=catch_up;allocated_total+=catch_up;service_revenue+=catch_up*speeds[c.id]*c.rate
 	var campaign_wards=[]
 	for ward in civic.get("wards",{}):
 		if Research.campaign_active(self,ward): campaign_wards.append(ward)
@@ -460,7 +506,7 @@ func tick() -> void:
 			post("project_income" if c.type=="project" else "bonus_income",c.reward,c.name)
 			completed.append(c.id)
 			Civic.delivered(self,c.id)
-			reputation = mini(100,reputation+10)
+			reputation = mini(100,reputation+(3 if c.id.begins_with("scout_") or c.id.begins_with("vision_") else 10))
 			receipt(c,"Delivered",c.reward)
 			active.remove_at(i)
 		elif c.remaining <= 0:
@@ -509,7 +555,7 @@ func save_game(path: String = SAVE_PATH) -> bool:
 	var data = {"version": SAVE_VERSION, "lots": lots, "cash": cash, "earned": earned,
 		"hour": hour, "approval": approval, "bought": bought, "cleared": cleared,
 		"built": built, "won": won, "rescued": rescued,"active":active,"completed":completed,
-		"history":history,"reputation":reputation,"next_ticket":next_ticket,"community_hour":community_hour,
+		"history":history,"reputation":reputation,"reputation_scale":1,"next_ticket":next_ticket,"community_hour":community_hour,
 		"milestone_claims":milestone_claims,"campaign_won":campaign_won,
 		"company_name":company_name,"scenario_id":scenario_id,"difficulty":difficulty,
 		"play_seconds":play_seconds,"view":view_state,"metadata":save_metadata,"finance":finance,"operations":ops,"civic":civic,"research":research,"workforce":workforce,"scenario_progress":scenario_progress,"tutorial":tutorial,"achievements":achievements}
@@ -607,6 +653,8 @@ func load_game(path: String = SAVE_PATH) -> bool:
 			if c.type not in ["project","service"] or c.id in seen: return false
 			seen.append(c.id)
 			c.remaining=int(c.remaining)
+			if not valid_number(c.get("commercial",0)) or c.get("commercial",0)<0 or c.get("commercial",0)>3: return false
+			c.commercial=int(c.get("commercial",0))
 			for key in ["compute","work","deadline","reward","unlock"]:
 				if c[key]==int(c[key]): c[key]=int(c[key])
 			if data.version>=5:
@@ -673,7 +721,8 @@ func load_game(path: String = SAVE_PATH) -> bool:
 	completed=loaded_completed
 	history=loaded_history
 	milestone_claims=loaded_claims
-	reputation=clampi(int(data.get("reputation",0)),0,100)
+	# Saves from before reputation mattered started at 0; lift them to the new baseline.
+	reputation=clampi(int(data.get("reputation",0))+(0 if data.has("reputation_scale") else REPUTATION_START),0,100)
 	next_ticket=maxi(0,int(data.get("next_ticket",0)))
 	community_hour=int(data.get("community_hour",-24))
 	campaign_won=campaign_count()>=8
@@ -735,13 +784,19 @@ func refit(index:int,profile:String) -> String:
 	if lot.get("hardware","balanced")==profile: return "This hall already uses that hardware."
 	if not Operations.available(lot,hour): return "Repair or finish servicing this hall before refitting it."
 	if int(lot.get("refit_until",0))>hour: return "Wait for the current refit to finish."
-	var cost=Economy.HARDWARE[profile].refit
+	var cost=refit_cost(lot,profile)
 	if cash<cost: return "Not enough cash for this hardware refit."
 	post("hardware",-cost,Economy.HARDWARE[profile].name)
-	lot.hardware=profile;lot.refit_until=hour+Workforce.duration(self,2);lot.condition=100.0
+	lot.hardware=profile;lot.refit_until=hour+Workforce.duration(self,2)
 	Workforce.dispatch(self,"refit",index,Workforce.duration(self,2))
 	Civic.refresh(self)
 	return ""
+
+## A refit replaces racks, not the building: condition carries over, and it never
+## costs less than the price difference of building the new hardware directly.
+func refit_cost(lot:Dictionary,profile:String) -> int:
+	var current=Economy.HARDWARE[lot.get("hardware","balanced")]
+	return maxi(int(Economy.HARDWARE[profile].refit),int(Economy.HARDWARE[profile].cost)-int(current.cost))
 
 func prioritize(id:String,direction:int) -> String:
 	for i in range(active.size()):
@@ -829,6 +884,7 @@ func relocate_hall(source:int,target:int,preview:bool=false) -> String:
 	b.kind="datacenter";b.refit_until=hour+2
 	a.kind="grass";a.level=1
 	for key in ["hardware","condition","failed","service_until","wear_warned","refit_until"]: a.erase(key)
+	if int(ops.rental_site)==source: ops.rental_site=target
 	Civic.refresh(self)
 	return ""
 
