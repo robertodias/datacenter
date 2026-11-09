@@ -1,0 +1,8 @@
+.godot/
+.tools/
+build/
+*.log
+__pycache__/
+*.pyc
+# Generated release footage (large; regenerate or store outside git)
+*.mp4
