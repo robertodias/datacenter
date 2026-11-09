@@ -12,7 +12,7 @@ func hold(seconds:float=1.0) -> void:
 	else:
 		for i in range(roundi(seconds*30)): await process_frame
 func shot(name:String) -> void:
-	game.pause_button.text="||  Pause" if not game.paused else ">  Run"
+	game.update_time_controls()
 	game.refresh_hud()
 	await hold()
 	await RenderingServer.frame_post_draw

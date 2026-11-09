@@ -41,7 +41,7 @@ func read_metadata(path:String) -> Dictionary:
 	meta.cash=data.get("cash",0)
 	meta.day=int(data.get("hour",0))/24+1
 	meta.play_seconds=data.get("play_seconds",0)
-	meta.deliveries=data.get("completed",[]).size()
+	meta.deliveries=data.get("completed",[]).filter(func(id):return id is String and not (id.begins_with("scout_") or id.begins_with("vision_") or id.begins_with("open_"))).size()
 	meta.modified=FileAccess.get_modified_time(path)
 	meta.thumbnail=path.get_basename()+".png"
 	meta.damaged=not data.has("lots") or data.get("version",999)>Sim.SAVE_VERSION

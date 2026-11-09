@@ -3,6 +3,14 @@
 Detailed rules reference for **1.2.0**. For a project overview, building and
 testing, see the [README](../README.md). The in-game guide (F1 or ?) provides a shorter reference.
 
+## Building on the map
+
+Pick a tool from the dock at the bottom of the screen, then click the map. **Buy land (B)**
+buys the plot, **Bulldoze (X)** clears it (homes, parks and landmarks ask for confirmation),
+and **Server hall / Substation / Cooling (1 / 2 / 3)** build on an owned, cleared plot. A tag
+beside the cursor shows the price, or why the action is not possible. **Inspect (Q)** and
+right-click only select; the floating inspector on the right explains the selected plot.
+
 ## Your first campus
 
 1. Buy warehouse **04-06** for $1,200, clear it for $250, and build a server hall.
@@ -71,7 +79,11 @@ create capacity or replace customer contracts.
 Heat and planned grid work give 12 hours' warning; surprise faults do not.
 Later heat and grid events can overlap. Equipment wears, derates below 50%
 condition, and can break down below 30%. All incident schedules and random state
-are saved. Forecasts and impacts can pause time automatically in Settings.
+are saved. Forecasts, impacts, failures and civic escalations can pause time automatically
+(Settings); routine dispatches, reminders and easing concerns are announced without pausing.
+Automatic preventive service (technicians and crews) waits while an incident is forecast,
+active or recovering, so healthy equipment is never taken offline mid-event; failed
+equipment is still repaired. Failed, serviced and refitting equipment draws no power or cooling.
 
 | Response | Cost and effect |
 | --- | --- |
@@ -125,7 +137,7 @@ cause and let stress fall to lift restrictions.
 | Replacement monument, $2,500 | Builds a protected landmark and restores one lost monument |
 | Preserve, $700 | Permanent conservation covenant on a park/landmark; standing +2; cannot later demolish it |
 | Skills program, $1,000 | Two jobs and +12 adoption target per program, up to three per district |
-| Expedite, $2,500 | 24h hall expansion waiver; standing -8, local grievance +12, stress +4. Heritage and conservation protections still apply. |
+| Expedite, $2,500 | Only while that district's hall permits are paused. 24h hall expansion waiver; standing -8, local grievance +12, stress +4. Heritage and conservation protections still apply. |
 
 Resource comfort budgets express civic strain, not equipment capacity. You still
 need enough substations and cooling plants. Public projects on unowned land stay
@@ -166,7 +178,8 @@ what is actually happening in the campus.
 
 ## Staff
 
-Hire zero to three teams per role. Wages are hourly; service visit fees still apply.
+Hire zero to three teams per role. Recruiting a team costs 12 hours of its wages up front;
+wages are then hourly, and service visit fees still apply.
 
 | Role | Wage/h per team | Effect |
 | --- | --- | --- |

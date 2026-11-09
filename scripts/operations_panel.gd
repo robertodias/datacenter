@@ -14,6 +14,7 @@ var fuel_button:Button
 var rental_button:Button
 var battery_button:Button
 var generator_button:Button
+var gauges:Dictionary={}
 
 func _init(owner_board) -> void:
 	board=owner_board;game=board.game
@@ -23,11 +24,20 @@ func draw(parent:Node) -> void:
 	var teams=board.card(parent,65)
 	game.label(teams,"Specialist teams / dispatch priorities and wages",Rect2(20,16,710,30),19)
 	game.button(teams,"Manage teams",Rect2(780,14,185,38),func():board.open("workforce"))
-	var p=board.card(parent,195)
+	var p=board.card(parent,262)
 	game.label(p,"Operations / prepare, protect, recover",Rect2(20,10,730,30),22)
 	game.button(p,"Jump to equipment",Rect2(780,10,185,34),func():board.content_scroll.scroll_vertical=roundi(equipment_heading.position.y))
 	overview=game.paragraph(p,"",Rect2(20,50,930,57),15,game.INK)
-	reserves=game.paragraph(p,"",Rect2(20,116,930,70),14,game.MINT)
+	var x=20
+	for spec in [["power","power","POWER USE"],["cooling","cooling","COOLING USE"],["battery","power","BATTERY CHARGE"],["fuel","operations","GENERATOR FUEL"]]:
+		game.icon(p,spec[1],Rect2(x,116,18,18),game.MINT)
+		game.label(p,spec[2],Rect2(x+24,114,200,18),11,game.MUTED)
+		var value=game.label(p,"",Rect2(x+24,132,200,22),15,game.INK)
+		var meter=game.Meter.new();meter.position=Vector2(x+24,158);meter.size=Vector2(190,6);p.add_child(meter)
+		if spec[0] in ["battery","fuel"]: meter.invert=true
+		gauges[spec[0]]={"value":value,"meter":meter}
+		x+=235
+	reserves=game.paragraph(p,"",Rect2(20,178,930,78),14,game.MINT)
 	var visible_events=sim.ops.events.filter(func(e):return e.phase in ["forecast","active","recovery"])
 	visible_events.sort_custom(func(a,b):
 		var pa=["active","recovery","forecast"].find(a.phase)*10+["outage","grid_maintenance","heatwave"].find(a.kind)
@@ -39,7 +49,10 @@ func draw(parent:Node) -> void:
 		game.paragraph(p,"Heat and planned grid work give 12h notice. Surprise faults do not. Keep battery charge and fuel ready; forecasts and impacts can pause time in Settings.",Rect2(20,46,930,39),14)
 	for event in visible_events:
 		p=board.card(parent,132)
-		game.label(p,Ops.NAMES[event.kind]+" / "+event.phase.to_upper(),Rect2(20,10,930,29),22,game.GOLD)
+		var live=event.phase in ["active","recovery"]
+		p.add_theme_stylebox_override("panel",board.accent(p.get_theme_stylebox("panel").duplicate(),Color("ef8a6f") if live else Color("e4ca8b")))
+		game.icon(p,"alert",Rect2(20,12,24,24),Color("ef8a6f") if live else game.GOLD)
+		game.label(p,Ops.NAMES[event.kind]+" / "+event.phase.to_upper(),Rect2(54,10,900,29),22,Color("ef8a6f") if live else game.GOLD)
 		var row=game.paragraph(p,"",Rect2(20,49,930,75),14,game.INK)
 		event_rows.append({"event":event,"text":row})
 	p=board.card(parent,286)
@@ -93,6 +106,13 @@ func update_live() -> void:
 	var battery_hours=state.charge/maxf(1,m.power_need)
 	var fuel_hours=state.fuel*180/maxf(1,m.power_need)
 	overview.text="Temperature %d°C · Grid %.0f%% · Online %.0f / %.0f compute\nPower %.1f / %.1f MW · Cooling %.1f / %.1f CU · Resilience operations %s/h" % [m.weather.temperature,m.weather.grid*100,m.compute,m.capacity,m.power,m.power_need,m.cooling,m.cooling_need,game.money_detail(m.operations)]
+	var stored=state.batteries*240.0
+	gauges.power.value.text="%.0f / %.0f MW" % [m.power_need,m.power];gauges.power.meter.set_values(m.power_need,m.power)
+	gauges.cooling.value.text="%.0f / %.0f CU" % [m.cooling_need,m.cooling];gauges.cooling.meter.set_values(m.cooling_need,m.cooling)
+	gauges.battery.value.text=("%.0f / %.0f MW-h" % [state.charge,stored]) if state.batteries>0 else "No batteries"
+	gauges.battery.meter.set_values(state.charge,maxf(stored,1) if state.batteries>0 else 0.0)
+	gauges.fuel.value.text=("%.1f / 36 units" % state.fuel) if state.generators>0 else "No generators"
+	gauges.fuel.meter.set_values(state.fuel,36.0 if state.generators>0 else 0.0)
 	reserves.text="Power headroom %.1f MW · Cooling headroom %.1f CU\nStored energy %.0f / %.0f MW-h (~%.1fh at current load; rate limit applies)\nGenerator fuel %.2f / 36 (~%.1fh at current load); output now %.1f MW" % [m.power-m.power_need,m.cooling-m.cooling_need,state.charge,state.batteries*240,battery_hours,state.fuel,fuel_hours,m.generator_output]
 	gear_label.text="%d / 3 battery modules · %d / 3 generators · Hub %s\nBattery output %.1f MW · Recharge %.1f MW · Generator startup %s\nMobile cooling: %s · Range 4 blocks · 240 CU / 20 MW · $12/h operation" % [state.batteries,state.generators,("%02d-%02d" % [sim.lots[int(state.hub)].x+1,sim.lots[int(state.hub)].y+1]) if state.hub>=0 else "not installed",m.battery_output,m.battery_recharge,"NO FUEL" if state.generators>0 and state.fuel<=0 else ("ready" if (state.warm and state.warm_ready<=sim.hour) or (state.generator_ready>=0 and sim.hour>=state.generator_ready) else "1h warmup / startup"),("%dh at %02d-%02d" % [state.rental_until-sim.hour,sim.lots[int(state.rental_site)].x+1,sim.lots[int(state.rental_site)].y+1]) if state.rental_until>sim.hour else "not hired"]
 	if state.hub>=0 and not m.hub_online: gear_label.text+="\nHUB OFFLINE: repair or relocate it to use backup power."

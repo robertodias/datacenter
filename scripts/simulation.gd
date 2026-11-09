@@ -193,7 +193,16 @@ func demolish(index: int) -> String:
 	workforce.jobs=workforce.jobs.filter(func(job):return job.site!=index)
 	lot.kind = "grass"
 	lot.level = 1
-	for key in ["hardware","refit_until","quiet","civic_home","civic_park"]: lot.erase(key)
+	for key in ["hardware","refit_until","civic_home","civic_park"]: lot.erase(key)
+	if int(ops.hub)==index:
+		ops.hub=-1
+		for other in lots:
+			if other.kind=="power" and other.owned: ops.hub=cell(int(other.x),int(other.y));break
+		Operations.alert(ops,"Backup equipment moved to another substation." if ops.hub>=0 else "Backup hub demolished: batteries and generators are offline until you build a substation.",int(ops.hub))
+	if int(ops.rental_site)==index:
+		ops.rental_site=-1
+		for other in lots:
+			if BUILDINGS.has(other.kind) and other.owned: ops.rental_site=cell(int(other.x),int(other.y));break
 	cleared = true
 	Civic.refresh(self)
 	return ""
@@ -250,6 +259,7 @@ func upgrade(index: int) -> String:
 		if error!="": return error
 	var level = int(lot.get("level",1))
 	if level >= 3: return "This building is fully upgraded."
+	if lot.get("failed",false) or int(lot.get("service_until",0))>hour or int(lot.get("refit_until",0))>hour: return "Repair this building and let current work finish before upgrading."
 	if level >= tech_level(): return "Complete %d customer contracts to unlock this upgrade." % (2 if level == 1 else 4)
 	var cost = TIERS[lot.kind][level].cost
 	if cash < cost: return "Not enough cash for this upgrade."
@@ -352,7 +362,9 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 		var condition=Operations.condition_factor(lot,check_hour)
 		if lot.get("failed",false): failures.append(cell(int(lot.x),int(lot.y)))
 		if int(lot.get("service_until",0))>check_hour: servicing.append(cell(int(lot.x),int(lot.y)))
-		power_need+=b.power;cooling_need+=b.cooling;base_upkeep+=b.upkeep
+		base_upkeep+=b.upkeep
+		if Operations.available(lot,check_hour) and int(lot.get("refit_until",0))<=check_hour:
+			power_need+=b.power;cooling_need+=b.cooling
 		if kind=="datacenter":
 			compute+=b.capacity;halls+=1
 			if int(lot.get("refit_until",0))>check_hour: refitting.append(cell(int(lot.x),int(lot.y)));continue
@@ -368,7 +380,7 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 	var power_plan=Operations.power_plan(self,power_supply,power_need,weather)
 	power_supply=power_plan.supply
 	var power_ratio=minf(1,power_supply/power_need) if power_need>0 else 1.0
-	var mobile_powered=ops.rental_until>check_hour and ops.rental_site>=0 and not utility_for(lots[int(ops.rental_site)],"power",check_hour).is_empty()
+	var mobile_powered=ops.rental_until>check_hour and ops.rental_site>=0 and BUILDINGS.has(lots[int(ops.rental_site)].kind) and not utility_for(lots[int(ops.rental_site)],"power",check_hour).is_empty()
 	var available_cooling=(cooling_supply*weather.cooling+(240 if mobile_powered else 0))*power_ratio
 	var cooling_ratio=minf(1,available_cooling/cooling_need) if cooling_need>0 else 1.0
 	var online=connected_compute*minf(power_ratio,cooling_ratio)
@@ -376,7 +388,7 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 	var maintenance=Economy.money(base_upkeep*0.6)
 	var staff=Economy.money(base_upkeep-maintenance+Workforce.wages(self))
 	var energy=Economy.money(power_plan.grid_used*Economy.ENERGY_PRICE)
-	var operations_cost=Economy.money((equipment*3 if ops.crews else 0)+(ops.generators*6 if ops.warm else 0)+(12 if ops.rental_until>check_hour else 0)+(ops.generators*2 if power_plan.generator>0 else 0))
+	var operations_cost=Economy.money((equipment*3 if ops.crews else 0)+(ops.generators*6 if ops.warm and ops.fuel>0 else 0)+(12 if ops.rental_until>check_hour else 0)+(ops.generators*2 if power_plan.generator>0 else 0))
 	var interest=Economy.money(finance.debt*Economy.INTEREST)
 	var upkeep=Economy.money(maintenance+staff+energy+interest+operations_cost)
 	var research_compute=Research.draw(self,online)
@@ -390,7 +402,7 @@ func metrics(extra:Dictionary={},weather_override:Dictionary={}) -> Dictionary:
 		for profile in weights: speed_factor+=weights[profile]*Economy.HARDWARE[profile][workload]
 		speed_factor=speed_factor/connected_compute if connected_compute>0 else 1.0
 		if c.get("legacy_speed",false): speed_factor=1.0
-		elif workload=="experimental": speed_factor*=(0.9 if Research.has(self,"scheduler") else 0.65) if hour%12<3 else 1.15
+		elif workload=="experimental": speed_factor*=(0.9 if Research.has(self,"scheduler") else 0.65) if check_hour%12<3 else 1.15
 		var allocation=minf(c.compute,remaining)
 		if c.type=="service": allocation=minf(allocation,c.compute/maxf(0.001,speed_factor))
 		else: allocation=minf(allocation,maxf(0,c.work-c.get("progress",0))/maxf(0.001,speed_factor))
@@ -473,7 +485,7 @@ func check_milestones() -> void:
 		{"id":"gpu","ready":campaign_count()>=2,"reward":3000,"text":"GPU clusters and regional utilities unlocked"},
 		{"id":"neural","ready":campaign_count()>=4,"reward":4500,"text":"Neural superclusters and advanced utilities unlocked"},
 		{"id":"frontier","ready":campaign_count()>=6,"reward":6000,"text":"Frontier AI customers unlocked"},
-		{"id":"v1","ready":Scenarios.ready(self),"reward":10000,"text":Scenarios.info(scenario_id).name.to_upper()+" COMPLETE! new company commissions are now available"}]
+		{"id":"v1","ready":Scenarios.ready(self),"reward":0 if scenario_id=="sandbox" else 10000,"text":Scenarios.info(scenario_id).name.to_upper()+" COMPLETE! new company commissions are now available"}]
 	for goal in goals:
 		if goal.ready and goal.id not in milestone_claims:
 			milestone_claims.append(goal.id)
@@ -770,6 +782,7 @@ func cooling_for(lot:Dictionary,at_hour:int=-1) -> Dictionary:
 	var when=hour if at_hour<0 else at_hour
 	if not result.is_empty() or ops.rental_until<=when or ops.rental_site<0: return result
 	var site:Dictionary=lots[int(ops.rental_site)]
+	if not BUILDINGS.has(site.kind): return {}
 	if Geography.distance(lot,site)<=4 and not utility_for(site,"power",when).is_empty(): return site
 	return {}
 

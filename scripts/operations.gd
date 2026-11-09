@@ -17,8 +17,11 @@ static func random_int(state:Dictionary,maximum:int) -> int:
 	state.rng=(int(state.rng)*1103515245+12345)%2147483647
 	return int(state.rng)%maximum
 
-static func alert(state:Dictionary,message:String,lot:int=-1) -> void:
-	state.alerts.append({"message":message,"lot":lot})
+## Routine alerts (dispatches, reminders) are announced but never auto-pause time.
+static func alert(state:Dictionary,message:String,lot:int=-1,routine:bool=false) -> void:
+	var row={"message":message,"lot":lot}
+	if routine: row.routine=true
+	state.alerts.append(row)
 	if state.alerts.size()>24: state.alerts.pop_front()
 
 static func add_event(state:Dictionary,kind:String,start:int,duration:int,lead:int,severity:float=1.0) -> void:
@@ -37,6 +40,11 @@ static func conditions(state:Dictionary) -> Dictionary:
 		elif event.kind=="grid_maintenance": grid=minf(grid,0.8 if recovering else 0.45)
 		elif event.kind=="outage": grid=minf(grid,0.75 if recovering else 0.0)
 	return {"grid":grid,"cooling":cooling,"heat":heat,"temperature":temperature}
+
+## True while any incident is forecast, active or recovering. Automatic preventive
+## service waits for it to clear so crews never take healthy equipment offline mid-event.
+static func incident_pending(sim) -> bool:
+	return sim.ops.events.any(func(e):return e.phase in ["forecast","active","recovery"])
 
 static func available(lot:Dictionary,hour:int) -> bool:
 	return not lot.get("failed",false) and int(lot.get("service_until",0))<=hour
@@ -72,14 +80,15 @@ static func act(sim,action:String,index:int=-1) -> String:
 	if action in ["battery","generator"]:
 		var key="batteries" if action=="battery" else "generators"
 		if state[key]>=3: return "Three modules is the campus limit."
-		if state.hub<0:
+		var hub_missing=state.hub<0 or state.hub>=sim.lots.size() or sim.lots[int(state.hub)].kind!="power"
+		if hub_missing:
 			if index<0 or index>=sim.lots.size() or sim.lots[index].kind!="power":
 				for lot in sim.lots:
 					if lot.kind=="power" and lot.owned: index=sim.cell(int(lot.x),int(lot.y));break
 			if index<0 or index>=sim.lots.size() or sim.lots[index].kind!="power": return "Build a substation before installing backup equipment."
 		cost=1800 if action=="battery" else 2600
 		if sim.cash<cost: return "Not enough cash for this backup module."
-		if state.hub<0: state.hub=index
+		if hub_missing: state.hub=index
 		state[key]+=1
 		if action=="battery": state.charge+=240.0
 		elif state.generators==1 and conditions(state).grid<1: state.generator_ready=sim.hour+1
@@ -98,7 +107,7 @@ static func act(sim,action:String,index:int=-1) -> String:
 		if index<0 or index>=sim.lots.size() or not sim.BUILDINGS.has(sim.lots[index].kind): return "Build a campus before hiring mobile cooling."
 		cost=750;category="rental"
 		if sim.cash<cost: return "Mobile cooling rental costs $750 for 24 hours, plus $12/h operation."
-		state.rental_until=sim.hour+24;state.rental_site=index
+		state.rental_until=maxi(int(state.rental_until),sim.hour)+24;state.rental_site=index
 	elif action=="warm":
 		if state.generators==0: return "Install a generator first."
 		if not state.warm and state.fuel<=0: return "Refuel the generator before enabling warm standby."
@@ -179,8 +188,9 @@ static func advance(sim,m:Dictionary) -> void:
 			sim.notices.append("Service complete at %02d-%02d. Equipment restored." % [lot.x+1,lot.y+1])
 		if not available(lot,h):
 			if lot.get("failed",false) and int(lot.get("service_until",0))<=h and state.crews and working_count==0:
-				if act(sim,"service",sim.cell(int(lot.x),int(lot.y)))=="": alert(state,"Crew dispatched to repair failed equipment.",sim.cell(int(lot.x),int(lot.y)))
-			working_count+=1;continue
+				if act(sim,"service",sim.cell(int(lot.x),int(lot.y)))=="":
+					working_count+=1;alert(state,"Crew dispatched to repair failed equipment.",sim.cell(int(lot.x),int(lot.y)),true)
+			continue
 		if int(lot.get("refit_until",0))>h: continue
 		var wear=0.08*(1+0.25*(int(lot.level)-1))*heat
 		if lot.kind=="datacenter": wear*=Economy.HARDWARE[lot.get("hardware","balanced")].wear
@@ -192,10 +202,14 @@ static func advance(sim,m:Dictionary) -> void:
 			lot.wear_warned=true;alert(state,"Condition warning at %02d-%02d. Plan a service visit before failure." % [lot.x+1,lot.y+1],index)
 		if lot.condition<=0 or (lot.condition<30 and random_int(state,100)<10):
 			lot.failed=true;alert(state,"Equipment failure at %02d-%02d. Schedule repair in Operations." % [lot.x+1,lot.y+1],index)
-		if state.crews and working_count==0 and lot.condition<35:
-			if act(sim,"service",index)=="": working_count+=1;alert(state,"Maintenance crew started service at %02d-%02d." % [lot.x+1,lot.y+1],index)
+		if state.crews and working_count==0 and lot.condition<35 and not lot.get("failed",false) and not incident_pending(sim):
+			if act(sim,"service",index)=="": working_count+=1;alert(state,"Maintenance crew started service at %02d-%02d." % [lot.x+1,lot.y+1],index,true)
 	if m.fuel_used>0 and state.fuel<3 and state.fuel+m.fuel_used>=3: alert(state,"Generator fuel is low. Refill the tank in Operations.",int(state.hub))
-	if state.rental_until==h+4: alert(state,"Mobile cooling expires in 4h. Renew it if the heat is continuing.")
+	if state.rental_until==h+4: alert(state,"Mobile cooling expires in 4h. Renew it if the heat is continuing.",-1,true)
+	# Warm standby without fuel only costs money; switch it off and say so.
+	if state.warm and state.fuel<=0:
+		state.warm=false;state.warm_ready=-1
+		alert(state,"Warm standby stopped: the generator tank is empty. Refuel in Operations.",int(state.hub))
 
 static func valid(state,lots:Array) -> bool:
 	if not state is Dictionary: return false

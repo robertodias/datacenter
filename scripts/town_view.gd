@@ -1,5 +1,7 @@
 extends Control
 signal lot_selected(index:int)
+## Left click with a construction tool: the game applies that tool to the plot.
+signal lot_activated(index:int)
 const Sim=preload("res://scripts/simulation.gd")
 const Art=preload("res://scripts/town_art.gd")
 var sim
@@ -37,6 +39,8 @@ var static_objects:Array=[]
 var text_scale=1.0
 var thought_panel:PanelContainer
 var thought_label:Label
+## Returns {text, tone} for the plot under the cursor while a tool is active.
+var cost_tag:Callable
 
 func _ready() -> void:
 	mouse_filter=Control.MOUSE_FILTER_STOP
@@ -359,7 +363,28 @@ func _draw() -> void:
 	for i in range(16):
 		draw_rect(Rect2(0,i*12,size.x,12),Color(0.07,0.15,0.12,0.65*(1-i/16.0)))
 		draw_rect(Rect2(0,size.y-(i+1)*12,size.x,12),Color(0.07,0.15,0.12,0.65*(1-i/16.0)))
-	draw_string(font,Vector2(play_area.position.x+20,size.y-182),"48 walkers · %d residents · %d jobs · Town council explains local concerns" % [town_population(),town_jobs()],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("eef0d5"))
+	var census="%d residents · %d jobs · %d walkers · hover a walker to hear their thoughts" % [town_population(),town_jobs(),pedestrians.size()]
+	var census_at=Vector2(play_area.position.x,play_area.end.y-12)
+	draw_string(font,census_at+Vector2(1,1),census,HORIZONTAL_ALIGNMENT_RIGHT,play_area.size.x-12,12,Color(0,0,0,0.6))
+	draw_string(font,census_at,census,HORIZONTAL_ALIGNMENT_RIGHT,play_area.size.x-12,12,Color("eef0d5"))
+	draw_cost_tag()
+
+func draw_cost_tag() -> void:
+	if tool=="inspect" or hovered<0 or not cost_tag.is_valid() or not play_area.has_point(mouse_position): return
+	var tag:Dictionary=cost_tag.call(hovered)
+	if tag.is_empty(): return
+	var tones={"ok":Color("a5dfbc"),"warn":Color("e4ca8b"),"bad":Color("ef8a6f")}
+	var color:Color=tones.get(tag.tone,Color.WHITE)
+	var font_size=roundi(14*text_scale)
+	var extent=font.get_string_size(tag.text,HORIZONTAL_ALIGNMENT_LEFT,-1,font_size)
+	var box=Rect2(mouse_position+Vector2(18,20),extent+Vector2(20,12))
+	if box.end.x>play_area.end.x: box.position.x=mouse_position.x-box.size.x-12
+	if box.end.y>play_area.end.y: box.position.y=mouse_position.y-box.size.y-12
+	var pill=StyleBoxFlat.new();pill.bg_color=Color(0.05,0.12,0.11,0.94);pill.border_color=color
+	pill.set_border_width_all(1);pill.set_corner_radius_all(6)
+	pill.shadow_color=Color(0,0,0,0.35);pill.shadow_size=6
+	draw_style_box(pill,box)
+	draw_string(font,box.position+Vector2(10,6+font.get_ascent(font_size)),tag.text,HORIZONTAL_ALIGNMENT_LEFT,-1,font_size,color)
 
 func draw_placement(lot:Dictionary) -> void:
 	var preview=sim.site_preview(Sim.cell(int(lot.x),int(lot.y)),tool,build_profile)
@@ -422,7 +447,7 @@ func _gui_input(event:InputEvent) -> void:
 			update_camera();pan+=event.position-point(before.x,before.y);update_camera()
 		if event.button_index==MOUSE_BUTTON_LEFT:
 			var index=pick(event.position)
-			if index>=0: selected=index;lot_selected.emit(index)
+			if index>=0: selected=index;lot_selected.emit(index);lot_activated.emit(index)
 		if event.button_index==MOUSE_BUTTON_RIGHT: tool="inspect";lot_selected.emit(selected)
 
 func dust(index:int) -> void:
